@@ -33,11 +33,11 @@ x = fdtd.getdata(m2,"x")
 y = fdtd.getdata(m2,"y")
 z = fdtd.getdata(m4,"z") 
 
-x_pts = fdtd.size(x)     # Points in the axis
-z_pts = fdtd.size(z)
+x_pts = np.size(x)     # Points in the axis
+z_pts = np.size(z)
 
-x_res = int(xy_span/x_pts) # resolution of simulation region
-midpoint = np.floor(x_pts[0]/2)+1
+x_res = xy_span/x_pts # resolution of simulation region
+midpoint = np.floor(x_pts/2)+1
 
 f = np.squeeze(fdtd.getdata(m2,"f")) #Gets frequency data and removes singleton dimensions
 lam = sc.c/f

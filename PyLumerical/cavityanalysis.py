@@ -45,6 +45,8 @@ class CavityAnalysis:
         #################################################
         w = self.fdtd.fftw(t,1,zero_pad);  #Angular frequency	axis					###Returns angular frequency. Value of zero_pad specifies the resolution of the frequency domain result.
         field_w = self.fdtd.matrix(len(w) ,6*num_mons);	
+        
+        component = ''
 
         ###Initialize a 2x2 matrix of length(w) and 6xNumber of monitors.
         for i in range(num_mons):
@@ -64,14 +66,12 @@ class CavityAnalysis:
                 component = "Hz"
             
             if j > 3.5: 
-                extra_factor = np.sqrt(sc.mu0/sc.e0)
+                extra_factor = np.sqrt(sc.mu_0/sc.epsilon_0)
             else: 
                 extra_factor = 1
-            
-            print('1')
-            # if self.fdtd.havedata(mname, component):
-              # field_w[0:len(w), 6*(i-1)+j:] = 2*extra_factor*((0:len(w)) <= (len(w)/2+0.1)) * self.fdtd.fft(self.fdtd.pinch(self.fdtd.getdata(mname,component)),1,zero_pad)
                
+            if self.fdtd.havedata(mname, component):
+                field_w[0:len(w), (6*i)+j:] = 2*extra_factor* (np.arange(0, len(w), 1) <= (len(w)/2+0.1)) * self.fdtd.fft(self.fdtd.pinch(self.fdtd.getdata(mname,component)),1,zero_pad)
         
         
         # #################################################
@@ -80,16 +80,16 @@ class CavityAnalysis:
         # w_i=find((w_range_min<w)&(w<w_range_max));
         # w_zm=w(w_i);
         
-        # f_source=abs(sourcenorm(w/(2*pi)))^2*( (1:length(w)) <= (length(w)/2+0.1));
-        # f_spectrum= sum(abs(field_w)^2,2)/f_source;
+        # f_source = abs(sourcenorm(w/(2*pi)))^2*( (1:length(w)) <= (length(w)/2+0.1));
+        # f_spectrum = sum(abs(field_w)^2,2)/f_source;
         
-        # f_spectrum_zm=f_spectrum(w_i); #zm - zoom
-        # f_spectrum_zm=f_spectrum_zm-min(f_spectrum_zm);
+        # f_spectrum_zm = f_spectrum(w_i); #zm - zoom
+        # f_spectrum_zm = f_spectrum_zm-min(f_spectrum_zm);
         
-        # p_zm=findpeaks(f_spectrum_zm,number_resonances);
-        # p=find(w,w_zm(p_zm));
-        # f0_zm=w_zm(p_zm)/(2*pi);
-        # f0=w(p)/(2*pi);
+        # p_zm = findpeaks(f_spectrum_zm,number_resonances);
+        # p = find(w,w_zm(p_zm));
+        # f0_zm = w_zm(p_zm)/(2*pi);
+        # f0 = w(p)/(2*pi);
         
         # #w_i=find((spec_minangf<w)&(w<spec_maxangf));
         # #p = findpeaks(f_spectrum(w_i),number_resonances); 	## Find the largest peaks, number = number_resonances.
