@@ -94,4 +94,59 @@ class Simulation:
         self.fdtd.set('pml min layers',min_layers);
         self.fdtd.set('pml max layers',max_layers);
         self.fdtd.set("auto shutoff min",autoshutoff);
+        
+    def add_mesh(self, name='mesh', x=0, y=0, zmin=0, zmax=1e-06,
+                 xspan=1e-06, yspan=1e-06, dx=0.1e-06, dy=0.1e-06, dz=0.1e-06,
+                 based_on_struct=False, struct=""):
+        """Add an overriding mesh region to the simulation.
+
+        Params:
+            name (str, optional): 
+                Name of the mesh. Default is 'mesh'.
+            x (float, optional):
+                x-coordinate of the mesh origin. Default is 0.
+            y (float, optional): 
+                y-coordinate of the mesh origin. Default is 0.
+            zmin (float, optional): 
+                Minimum z-coordinate of the mesh region. Default is 0.
+            zmax (float, optional): 
+                Maximum z-coordinate of the mesh region. Default is 1e-06.
+            xspan (float, optional): 
+                x-span of the mesh region. Default is 1e-06.
+            yspan (float, optional): 
+                y-span of the mesh region. Default is 1e-06.
+            dx (float, optional): 
+                Spatial step size in the x-direction. Default is 0.1e-06.
+            dy (float, optional): 
+                Spatial step size in the y-direction. Default is 0.1e-06.
+            dz (float, optional): 
+                Spatial step size in the z-direction. Default is 0.1e-06.
+            based_on_struct (bool, optional):
+                Choose whether to base the mesh geometry on an existing structure
+            struct (string, optional):
+                structure on which to base the mesh, if based_on_struct is True
+                
+        Returns:
+            
+
+        """
+        self.fdtd.addmesh()
+        self.fdtd.set("name",name)
+        self.fdtd.set("override x mesh", 1)
+        self.fdtd.set("override y mesh", 1)
+        self.fdtd.set("override z mesh", 1)
+        self.fdtd.set("dx", dx)
+        self.fdtd.set("dy", dy)
+        self.fdtd.set("dz", dz)
+        
+        if based_on_struct:
+            self.fdtd.set("based on a structure", 1);
+            self.fdtd.set("structure", struct);
+        else:
+            self.fdtd.set("x",x)
+            self.fdtd.set("x span",xspan)
+            self.fdtd.set("y",y)
+            self.fdtd.set("y span",yspan)
+            self.fdtd.set("z min",zmin)
+            self.fdtd.set("z max",zmax)
     

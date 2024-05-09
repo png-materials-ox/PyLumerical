@@ -46,6 +46,13 @@ sim.fdtd_region(x_min_bc="Symmetric", y_min_bc="Anti-Symmetric", z_min_bc="PML",
                     dt_stab=0.99, fdtd_layers=8, min_layers=8, max_layers=64,
                     autoshutoff=1e-05)
 
+# ADD MESH OVERRIDE
+sim.add_mesh(name='planar mesh', dx=0.01e-06, dy=0.01e-06, dz=0.01e-06, 
+             based_on_struct=True, struct="planar mirror")
+
+sim.add_mesh(name='feat mesh', dx=0.01e-06, dy=0.01e-06, dz=0.01e-06, 
+             based_on_struct=True, struct="featured mirror")
+
 # ADD SOURCE
 ##############################################################################
 src = source.Source(fdtd=fdtd, wlen=wlen)
