@@ -1,7 +1,9 @@
-README.md
+README.rst
 setup.py
 PyLumerical/__init__.py
+PyLumerical/analysis.py
 PyLumerical/cavity.py
+PyLumerical/cavityanalysis.py
 PyLumerical/main.py
 PyLumerical/monitor.py
 PyLumerical/simulation.py
