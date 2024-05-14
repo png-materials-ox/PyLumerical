@@ -117,9 +117,9 @@ mon.power_monitor(name='yz_edge', montype="2D X-normal", plane="yz",
                       x=.5*cav.xy_span,
                       apod="Start", apod_center=apod_center, apod_time_width=apod_start_w)  
 
-# fdtd.select('FDTD');
-# fdtd.set('x min bc','PML');
-# fdtd.set('y min bc','PML');  
+fdtd.select('FDTD');
+fdtd.set('x min bc','PML');
+fdtd.set('y min bc','PML');  
 
 if save:
     fdtd.save(filename)
