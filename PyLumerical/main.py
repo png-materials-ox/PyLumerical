@@ -66,7 +66,7 @@ xy_span_pml = cav.xy_span + pml_thickness
 
 mon = monitor.Monitor(fdtd=fdtd)
 
-apod_center = 1000e-15
+apod_center = 100e-15
 apod_start_w = 10e-15
 
 # mon.Q_monitor(Qmonitor_zspan=10, Qmonitor_zlayer=1, t_sample=10, dipole_shift=0)
