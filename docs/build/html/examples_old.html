@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Usage" href="usage.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.05.06 -->
         <title>Examples - PyLumerical 0.1 documentation</title>
@@ -212,9 +212,9 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 
 </div>
@@ -235,7 +235,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="_sources/examples.rst.txt" title="View this page">
+  <a class="muted-link" href="_sources/examples_old.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -265,8 +265,11 @@
 <p>First, start by importing the necessary python libraries</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">imp</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">PyLumerical</span> <span class="kn">import</span> <span class="n">cavity</span><span class="p">,</span> <span class="n">simulation</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">monitor</span><span class="p">,</span> <span class="n">analysisobjects</span>
+<span class="c1"># import os</span>
+<span class="kn">import</span> <span class="nn">cavity</span>
+<span class="kn">import</span> <span class="nn">simulation</span>
+<span class="kn">import</span> <span class="nn">source</span>
+<span class="kn">import</span> <span class="nn">monitor</span>
 </pre></div>
 </div>
 <p>‘imp’ is a standard python library which allows us to import a local file. We need to link the main script to the
@@ -278,8 +281,8 @@ may be found at the following address (depending on distribution).</p>
 </div>
 <p>Above, the <strong>os.add_dll_directory</strong> is only used if there is any difficulty adding the file.</p>
 <p>We can choose whether or not to save the file, and asign a filename if necessary:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">save</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;DIRECTORY_NAME&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">save</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;testrun.fsp&quot;</span>
 </pre></div>
 </div>
 <p>The FDTD object from the lumapi now needs to be instantiated:</p>
@@ -316,7 +319,7 @@ cut the simulation time by exploiting the symmetry, with Symmetric and Anti-Symm
                         <span class="n">runtime</span><span class="o">=</span><span class="mf">3000e-15</span><span class="p">,</span> <span class="n">meshacc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">z_min</span><span class="o">=</span><span class="n">Region_min</span><span class="p">,</span>
                         <span class="n">z_max</span><span class="o">=</span><span class="n">Region_max</span><span class="p">)</span>
 
-<span class="n">sim</span><span class="o">.</span><span class="n">fdtd_region</span><span class="p">(</span><span class="n">x_min_bc</span><span class="o">=</span><span class="s2">&quot;Anti-Symmetric&quot;</span><span class="p">,</span> <span class="n">y_min_bc</span><span class="o">=</span><span class="s2">&quot;Symmetric&quot;</span><span class="p">,</span> <span class="n">z_min_bc</span><span class="o">=</span><span class="s2">&quot;PML&quot;</span><span class="p">,</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">fdtd_region</span><span class="p">(</span><span class="n">x_min_bc</span><span class="o">=</span><span class="s2">&quot;Symmetric&quot;</span><span class="p">,</span> <span class="n">y_min_bc</span><span class="o">=</span><span class="s2">&quot;Anti-Symmetric&quot;</span><span class="p">,</span> <span class="n">z_min_bc</span><span class="o">=</span><span class="s2">&quot;PML&quot;</span><span class="p">,</span>
                     <span class="n">dt_stab</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">fdtd_layers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">min_layers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">max_layers</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
                     <span class="n">autoshutoff</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">)</span>
 </pre></div>
@@ -335,64 +338,70 @@ with a seperate mesh for each mirror:</p>
 <span class="n">src</span><span class="o">.</span><span class="n">dipole</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">emission_width</span><span class="o">=</span><span class="mf">100e-09</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We may want to add a number of different monitors. For example, we can add a refractive index monitor
-and a power monitor. To set the geometry, we first need to determine the xy span. Then, we may wish to
-set the apodisation. This is a cutoff for when to start / stop collecting field data. We may need this if, for
-example, we want to remove the impact of the initial emitter pulse from our measurements. We set the apodisation
-such that we start collecting field data after the pulse has rung down, and with a filter window width (see
-Lumericals documentation for more information).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pml_thickness</span> <span class="o">=</span> <span class="mf">0e-09</span>
 <span class="n">xy_span_pml</span> <span class="o">=</span> <span class="n">cav</span><span class="o">.</span><span class="n">xy_span</span> <span class="o">+</span> <span class="n">pml_thickness</span>
 
 <span class="n">mon</span> <span class="o">=</span> <span class="n">monitor</span><span class="o">.</span><span class="n">Monitor</span><span class="p">(</span><span class="n">fdtd</span><span class="o">=</span><span class="n">fdtd</span><span class="p">)</span>
 
-<span class="n">apod_center</span> <span class="o">=</span> <span class="mf">100e-15</span>
-<span class="n">apod_start_w</span> <span class="o">=</span> <span class="mf">10e-15</span>
-
-<span class="n">mon</span><span class="o">.</span><span class="n">index_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">monitor_type</span><span class="o">=</span><span class="s2">&quot;2D Y-normal&quot;</span><span class="p">,</span>
+<span class="n">apod_center</span> <span class="o">=</span> <span class="mf">0e-15</span>
+<span class="n">apod_start_w</span> <span class="o">=</span> <span class="mf">100e-15</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mon</span><span class="o">.</span><span class="n">Q_monitor</span><span class="p">(</span><span class="n">Qmonitor_zspan</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">Qmonitor_zlayer</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">t_sample</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">dipole_shift</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mon</span><span class="o">.</span><span class="n">index_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">monitor_type</span><span class="o">=</span><span class="s2">&quot;2D Y-normal&quot;</span><span class="p">,</span>
                     <span class="n">x_min</span><span class="o">=-.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span>
                     <span class="n">z_min</span><span class="o">=</span><span class="n">Region_min</span><span class="o">-.</span><span class="mi">5</span><span class="o">*</span><span class="n">pml_thickness</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">Region_max</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="n">pml_thickness</span><span class="p">)</span>
-
-<span class="n">mon</span><span class="o">.</span><span class="n">power_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;xy_power&#39;</span><span class="p">,</span> <span class="n">montype</span><span class="o">=</span><span class="s2">&quot;2D Z-normal&quot;</span><span class="p">,</span> <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mon</span><span class="o">.</span><span class="n">power_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;xy_exoplanar&#39;</span><span class="p">,</span> <span class="n">montype</span><span class="o">=</span><span class="s2">&quot;2D Z-normal&quot;</span><span class="p">,</span> <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
                   <span class="n">x_min</span><span class="o">=-.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span>
                   <span class="n">y_min</span><span class="o">=-.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span>
                   <span class="n">z</span><span class="o">=</span><span class="n">Region_max</span><span class="p">,</span>
                   <span class="n">apod</span><span class="o">=</span><span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="n">apod_center</span><span class="o">=</span><span class="n">apod_center</span><span class="p">,</span> <span class="n">apod_time_width</span><span class="o">=</span><span class="n">apod_start_w</span><span class="p">)</span>
+
+<span class="n">mon</span><span class="o">.</span><span class="n">power_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;xy_mid&#39;</span><span class="p">,</span> <span class="n">montype</span><span class="o">=</span><span class="s2">&quot;2D Z-normal&quot;</span><span class="p">,</span> <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+                  <span class="n">x_min</span><span class="o">=-.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span>
+                  <span class="n">y_min</span><span class="o">=-.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span>
+                  <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                  <span class="n">apod</span><span class="o">=</span><span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="n">apod_center</span><span class="o">=</span><span class="n">apod_center</span><span class="p">,</span> <span class="n">apod_time_width</span><span class="o">=</span><span class="n">apod_start_w</span><span class="p">)</span>
+
+<span class="n">mon</span><span class="o">.</span><span class="n">power_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;xy_exofeatured&#39;</span><span class="p">,</span> <span class="n">montype</span><span class="o">=</span><span class="s2">&quot;2D Z-normal&quot;</span><span class="p">,</span> <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+                  <span class="n">x_min</span><span class="o">=-.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span>
+                  <span class="n">y_min</span><span class="o">=-.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span>
+                  <span class="n">z</span><span class="o">=</span><span class="n">Region_min</span><span class="p">,</span>
+                  <span class="n">apod</span><span class="o">=</span><span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="n">apod_center</span><span class="o">=</span><span class="n">apod_center</span><span class="p">,</span> <span class="n">apod_time_width</span><span class="o">=</span><span class="n">apod_start_w</span><span class="p">)</span>
+
+<span class="n">mon</span><span class="o">.</span><span class="n">power_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;xz_middle&#39;</span><span class="p">,</span> <span class="n">montype</span><span class="o">=</span><span class="s2">&quot;2D Y-normal&quot;</span><span class="p">,</span> <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">,</span>
+                  <span class="n">x_min</span><span class="o">=-.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span>
+                  <span class="n">z_min</span><span class="o">=</span><span class="n">Region_min</span><span class="o">-</span><span class="n">pml_thickness</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">Region_max</span><span class="o">+</span><span class="n">pml_thickness</span><span class="p">,</span>
+                  <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                  <span class="n">apod</span><span class="o">=</span><span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="n">apod_center</span><span class="o">=</span><span class="n">apod_center</span><span class="p">,</span> <span class="n">apod_time_width</span><span class="o">=</span><span class="n">apod_start_w</span><span class="p">)</span>
+
+<span class="n">mon</span><span class="o">.</span><span class="n">power_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;xz_edge&#39;</span><span class="p">,</span> <span class="n">montype</span><span class="o">=</span><span class="s2">&quot;2D Y-normal&quot;</span><span class="p">,</span> <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">,</span>
+                  <span class="n">x_min</span><span class="o">=-.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span>
+                  <span class="n">z_min</span><span class="o">=</span><span class="n">Region_min</span><span class="o">-</span><span class="n">pml_thickness</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">Region_max</span><span class="o">+</span><span class="n">pml_thickness</span><span class="p">,</span>
+                  <span class="n">y</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="n">cav</span><span class="o">.</span><span class="n">xy_span</span><span class="p">,</span>
+                  <span class="n">apod</span><span class="o">=</span><span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="n">apod_center</span><span class="o">=</span><span class="n">apod_center</span><span class="p">,</span> <span class="n">apod_time_width</span><span class="o">=</span><span class="n">apod_start_w</span><span class="p">)</span>
+
+<span class="n">mon</span><span class="o">.</span><span class="n">power_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;yz_middle&#39;</span><span class="p">,</span> <span class="n">montype</span><span class="o">=</span><span class="s2">&quot;2D X-normal&quot;</span><span class="p">,</span> <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;yz&quot;</span><span class="p">,</span>
+                  <span class="n">y_min</span><span class="o">=-.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span>
+                  <span class="n">z_min</span><span class="o">=</span><span class="n">Region_min</span><span class="o">-</span><span class="n">pml_thickness</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">Region_max</span><span class="o">+</span><span class="n">pml_thickness</span><span class="p">,</span>
+                  <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                  <span class="n">apod</span><span class="o">=</span><span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="n">apod_center</span><span class="o">=</span><span class="n">apod_center</span><span class="p">,</span> <span class="n">apod_time_width</span><span class="o">=</span><span class="n">apod_start_w</span><span class="p">)</span>
+
+<span class="n">mon</span><span class="o">.</span><span class="n">power_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;yz_edge&#39;</span><span class="p">,</span> <span class="n">montype</span><span class="o">=</span><span class="s2">&quot;2D X-normal&quot;</span><span class="p">,</span> <span class="n">plane</span><span class="o">=</span><span class="s2">&quot;yz&quot;</span><span class="p">,</span>
+                  <span class="n">y_min</span><span class="o">=-.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">xy_span_pml</span><span class="p">,</span>
+                  <span class="n">z_min</span><span class="o">=</span><span class="n">Region_min</span><span class="o">-</span><span class="n">pml_thickness</span><span class="p">,</span> <span class="n">z_max</span><span class="o">=</span><span class="n">Region_max</span><span class="o">+</span><span class="n">pml_thickness</span><span class="p">,</span>
+                  <span class="n">x</span><span class="o">=.</span><span class="mi">5</span><span class="o">*</span><span class="n">cav</span><span class="o">.</span><span class="n">xy_span</span><span class="p">,</span>
+                  <span class="n">apod</span><span class="o">=</span><span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="n">apod_center</span><span class="o">=</span><span class="n">apod_center</span><span class="p">,</span> <span class="n">apod_time_width</span><span class="o">=</span><span class="n">apod_start_w</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>For cavity simulations, we usually want to calculate the Quality factor, mode volume, purcell factor, and
-perhaps collection efficiency. We can start by adding special structures known as ‘analysis groups’. These are
-created in the AnalysisObjects class. Here, we will look at farfield collection efficiency, quality factor,
-and mode volume. Once the simulation has run, we will run these analyses and extract the desired data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">objects</span> <span class="o">=</span> <span class="n">analysisobjects</span><span class="o">.</span><span class="n">AnalysisObjects</span><span class="p">(</span><span class="n">fdtd</span><span class="o">=</span><span class="n">fdtd</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+    <span class="n">fdtd</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
-<span class="n">z_span</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Region_min</span><span class="p">)</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Region_max</span><span class="p">)</span>
-
-<span class="n">objects</span><span class="o">.</span><span class="n">farfield</span><span class="p">(</span><span class="n">xy_span</span><span class="o">=</span><span class="n">xy_span</span><span class="p">,</span> <span class="n">z_span</span><span class="o">=</span><span class="n">z_span</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mf">0.55e-06</span><span class="p">,</span> <span class="n">theta_max</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
-                <span class="n">N_theta</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">Nphi</span><span class="o">=</span><span class="mi">91</span><span class="p">)</span>
-
-<span class="n">objects</span><span class="o">.</span><span class="n">Qfactor</span><span class="p">()</span>
-
-<span class="n">objects</span><span class="o">.</span><span class="n">mode_volume_3D</span><span class="p">(</span><span class="n">xy_span</span><span class="o">=</span><span class="n">xy_span</span><span class="p">,</span> <span class="n">z_span</span><span class="o">=</span><span class="n">z_span</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mf">0.55e-06</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Before running any simulation, it is generally a good idea to check if the index data makes sense visually.
-So, it can be useful to temporarily change the boundary conditions back to all PML by uncommenting the associated
-variables, and commenting out the <strong>fdtd.run()</strong> line. We also want to save our simulation file to a well named
-directory.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#fdtd.select(&#39;FDTD&#39;)</span>
-<span class="c1">#fdtd.set(&#39;x min bc&#39;,&#39;PML&#39;)</span>
-<span class="c1">#fdtd.set(&#39;y min bc&#39;,&#39;PML&#39;)</span>
-
-<span class="k">if</span> <span class="n">save</span><span class="p">:</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">fdtd</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;fsp&#39;</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="ne">FileExistsError</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t write file&quot;</span><span class="p">)</span>
+<span class="n">fdtd</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
@@ -404,6 +413,83 @@ directory.</p>
 scripting language, but at present, I am porting this over to python in the most natural way I can. As a
 result, this will take a bit of time to get fully finished.</p>
 </div>
+<p>As before, we start by importing the necessary libraries. this time, we need to import the cavityanalysis class,
+which contains the required methods for calculating Quality Factor, Purcell Factor, Mode Volume, etc.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">imp</span>
+<span class="c1"># import os</span>
+<span class="kn">import</span> <span class="nn">scipy.constants</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">import</span> <span class="nn">cavityanalysis</span>
+</pre></div>
+</div>
+<p>The FDTD object must be instantiated again:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># os.add_dll_directory(&quot;C:\\Program Files\\Lumerical\\v232\\api\\python\\&quot;)</span>
+<span class="n">lumapi</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">load_source</span><span class="p">(</span><span class="s2">&quot;lumapi&quot;</span><span class="p">,</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Program Files</span><span class="se">\\</span><span class="s2">Lumerical</span><span class="se">\\</span><span class="s2">v232</span><span class="se">\\</span><span class="s2">api</span><span class="se">\\</span><span class="s2">python</span><span class="se">\\</span><span class="s2">lumapi.py&quot;</span><span class="p">)</span>
+
+<span class="n">fdtd</span> <span class="o">=</span> <span class="n">lumapi</span><span class="o">.</span><span class="n">FDTD</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now, the lumerical simulation file (.fsp) and data file (.ldf) must be loaded. These contain all of the simulation
+structures and variables.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pdir</span> <span class="o">=</span> <span class="s1">&#39;&lt; DIRECTORY CONTAINING SIMULATION .FSP FILE &gt;&#39;</span>
+
+<span class="n">fdtd</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pdir</span> <span class="o">+</span> <span class="s1">&#39;fsp.fsp&#39;</span><span class="p">)</span>
+<span class="n">fdtd</span><span class="o">.</span><span class="n">loaddata</span><span class="p">(</span><span class="n">pdir</span> <span class="o">+</span> <span class="s1">&#39;lnp.ldf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We will need to extract information from the simulation monitors. We can get the monitor names using the FDTD
+object, but since we already know the monitor names (since we defined them), we can make this easier by just assinging
+the monitor variable names directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Monitor names</span>
+<span class="n">m0</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
+<span class="n">m1</span> <span class="o">=</span> <span class="s1">&#39;xy_exoplanar&#39;</span>
+<span class="n">m2</span> <span class="o">=</span> <span class="s1">&#39;xy_middle&#39;</span>
+<span class="n">m3</span> <span class="o">=</span> <span class="s1">&#39;xy_exofeatured&#39;</span>
+<span class="n">m4</span> <span class="o">=</span> <span class="s1">&#39;xz_middle&#39;</span>
+<span class="n">m5</span> <span class="o">=</span> <span class="s1">&#39;xz_edge&#39;</span>
+<span class="n">m6</span> <span class="o">=</span> <span class="s1">&#39;yz_middle&#39;</span>
+<span class="n">m7</span> <span class="o">=</span> <span class="s1">&#39;yz_edge&#39;</span>
+</pre></div>
+</div>
+<p>We can acquire some required variables directly from the simulation data, and use these to define further necessary
+variables:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">xy_span</span> <span class="o">=</span> <span class="n">fdtd</span><span class="o">.</span><span class="n">getnamed</span><span class="p">(</span><span class="s2">&quot;structure::dielectric mediu&quot;</span><span class="p">,</span> <span class="s2">&quot;x span&quot;</span><span class="p">)</span>
+<span class="n">wlen</span> <span class="o">=</span> <span class="n">fdtd</span><span class="o">.</span><span class="n">getnamed</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;center wavelength&quot;</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">fdtd</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">fdtd</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">fdtd</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">m4</span><span class="p">,</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
+
+<span class="n">x_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>     <span class="c1"># Points in the axis</span>
+<span class="n">z_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+<span class="n">x_res</span> <span class="o">=</span> <span class="n">xy_span</span><span class="o">/</span><span class="n">x_pts</span> <span class="c1"># resolution of simulation region</span>
+<span class="n">midpoint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">x_pts</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">fdtd</span><span class="o">.</span><span class="n">getdata</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span><span class="s2">&quot;f&quot;</span><span class="p">))</span> <span class="c1">#Gets frequency data and removes singleton dimensions</span>
+<span class="n">lam</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">c</span><span class="o">/</span><span class="n">f</span>
+</pre></div>
+</div>
+<p>The first thing we will calculate is the quality factor. to do this, we must first define a range of wavelengths
+over which to search for the peak centre frequency and bandwidth:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">### Define the freq ROI for the peak interested ####</span>
+
+<span class="n">max_wlen</span> <span class="o">=</span> <span class="mf">638.0</span><span class="o">*</span><span class="mf">1e-09</span>
+<span class="n">min_wlen</span> <span class="o">=</span> <span class="mf">630.0</span><span class="o">*</span><span class="mf">1e-09</span>
+
+<span class="n">max_wlen</span> <span class="o">=</span> <span class="n">fdtd</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">max_wlen</span><span class="p">)</span>
+<span class="n">min_wlen</span> <span class="o">=</span> <span class="n">fdtd</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">min_wlen</span><span class="p">)</span>
+<span class="n">w_range_max</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">sc</span><span class="o">.</span><span class="n">c</span><span class="p">)</span><span class="o">/</span><span class="n">min_wlen</span>
+<span class="n">w_range_min</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">sc</span><span class="o">.</span><span class="n">c</span><span class="p">)</span><span class="o">/</span><span class="n">max_wlen</span>
+<span class="n">f_range_max</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">c</span><span class="o">/</span><span class="n">min_wlen</span>
+<span class="n">f_range_min</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">c</span><span class="o">/</span><span class="n">max_wlen</span>
+</pre></div>
+</div>
+<p>Now, we can call the cavityanalysis class, and instantiate the QFactor method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cavana</span> <span class="o">=</span> <span class="n">cavityanalysis</span><span class="o">.</span><span class="n">CavityAnalysis</span><span class="p">(</span><span class="n">fdtd</span><span class="o">=</span><span class="n">fdtd</span><span class="p">)</span>
+<span class="n">cavana</span><span class="o">.</span><span class="n">Qfactor</span><span class="p">()</span>
+</pre></div>
+</div>
 </section>
 </section>
 </section>
@@ -414,17 +500,7 @@ result, this will take a bit of time to get fully finished.</p>
         
         <div class="related-pages">
           
-          <a class="prev-page" href="usage.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">Usage</div>
-                
-              </div>
-            </a>
+          
         </div>
         <div class="bottom-of-page">
           <div class="left-details">

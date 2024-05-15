@@ -123,12 +123,12 @@ objects = analysisobjects.AnalysisObjects(fdtd=fdtd)
 xy_span = cav.xy_span
 z_span = abs(Region_min) + abs(Region_max)
 
-objects.farfield(xy_span=xy_span, z_span=z_span, x=0, y=0, z=0.55, theta_max=90,
+objects.farfield(xy_span=xy_span, z_span=z_span, x=0, y=0, z=0.55e-06, theta_max=90,
                  N_theta=180, Nphi=91)
 
 objects.Qfactor()
 
-objects.mode_volume_3D(xy_span=xy_span, z_span=z_span, x=0, y=0, z=0.55)
+objects.mode_volume_3D(xy_span=xy_span, z_span=z_span, x=0, y=0, z=0.55e-06)
 
 fdtd.select('FDTD');
 fdtd.set('x min bc','PML');

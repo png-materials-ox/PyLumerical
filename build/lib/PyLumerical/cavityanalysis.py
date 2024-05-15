@@ -2,121 +2,112 @@
 import numpy as np
 import scipy.constants as sc
 
+from scipy.fft import fft, ifft
+from scipy.signal import find_peaks
+
 class CavityAnalysis:
-    def __init__(self, fdtd=None):
+    def __init__(self, builder=None, fdtd=None):
         self.fdtd = fdtd
         if not self.fdtd:
             raise IOError ("A lumerical FDTD object must be defined in the constructor")
+            
+        self.builder = builder
     
     def Qfactor(self):    
-        tlower = np.linspace(0.55,0,10);    # lower limit of time signal
-        tupper = np.linspace(0.65,1,10);    # upper limit of time signal
-    
-        # simplify input variable names by removing spaces
-        number_resonances = 1;
         
-        min_filter_width = 1; # min width of filter in units of resonance FWHM
-        max_filter_width = 6; # max width of filter in units of resonance FWHM
-        filter_width_test_points = 20;
-        zero_pad = 2**16; # fft zero padding
-                         # Note fft zero pad should be a power of 2, 
-                         # and larger gives more resolution in the 
-                         # frequency domain.
+        # Input properties
+        number_resonances = 2 # Fill in the value
+        make_plots = 0 # Fill in the value
+        
+        min_filter_width = 1  # min width of filter in units of resonance FWHM
+        max_filter_width = 6  # min width of filter in units of resonance FWHM
+        filter_width_test_points = 20
+        zero_pad = 2 ** 16  # fft zero padding
+        
         self.fdtd.groupscope("::model::Q monitors");
         
+        # Load monitor data for the first monitor
+        t = self.fdtd.getdata("t_h_1","t");		## Getting the time axis.        
+        field0_t_Ex = np.squeeze(self.fdtd.getdata("t_h_1","Ex"));	##Getting the field evolution
+        field0_t_Ey = np.squeeze(self.fdtd.getdata("t_h_1","Ey"));
+        field0_t_Ez = np.squeeze(self.fdtd.getdata("t_h_1","Ez"));
         
-        # for(N=0; havedata("t_h_"+num2str(N+1)); N=N+1) { 1; } ##Determine how many monitors are there. 
-        # 														## When havedata() is not true, it out puts 'Warning: Q_analysis_high_2.lsf line 33: in havedata, no data structures named t_h_19 were found'
-        # 														##Then it records current N as the total number. 
-        # 														##{1;} does not do anything. 
+        N = 4
         
-        num_mons = 5
+        tp1_lim = np.linspace(0.55,0,10);    # lower limit of time signal
+        tp2_lim = np.linspace(0.65,1,10);    # upper limit of time signal
+        
+        # Perform fft to frequency domain for all monitors
+        # w = np.fft.fftfreq(len(t), d=t[1] - t[0])
+        w = self.fdtd.fftw(t, 1, zero_pad).flatten()
+        field_w = np.zeros((len(w), 6 * N), dtype=complex)
+        for i in range(N):
+            mname = "t_h_" + str(i + 1)
+            for j in range(6):
+                if j == 0:
+                    component = "Ex"
+                elif j == 1:
+                    component = "Ey"
+                elif j == 2:
+                    component = "Ez"
+                elif j == 3:
+                    component = "Hx"
+                elif j == 4:
+                    component = "Hy"
+                elif j == 5:
+                    component = "Hz"
+                    
+                if j > 3.5: 
+                    extra_factor = np.sqrt(sc.mu_0/sc.epsilon_0)
+                else: 
+                    extra_factor = 1
+                if self.fdtd.havedata(mname, component):  # Assuming havedata() checks if data exists
+                    extra = 2*extra_factor*(np.arange(0,len(w), 1) <= (len(w)/2+0.1))
+                    ft = self.fdtd.fft(self.fdtd.pinch(self.fdtd.getdata(mname,component)),1,zero_pad)
+                    field_w[:, (6*i)+j] = extra * ft.flatten()
+                    
         
         #################################################
-        # get the monitor data for the first monitor
+        # find resonant peaks, including all monitors
         #################################################
-        t = self.fdtd.getdata("t_h_1","t");		## Getting the time axis.
-        field0_t_Ex = self.fdtd.pinch(self.fdtd.getdata("t_h_1","Ex"));	##Getting the field evolution
-        field0_t_Ey = self.fdtd.pinch(self.fdtd.getdata("t_h_1","Ey"));
-        field0_t_Ez = self.fdtd.pinch(self.fdtd.getdata("t_h_1","Ez"));
-        
-        #################################################
-        # do fft to frequency domain for all monitors
-        #################################################
-        w = self.fdtd.fftw(t,1,zero_pad);  #Angular frequency	axis					###Returns angular frequency. Value of zero_pad specifies the resolution of the frequency domain result.
-        field_w = self.fdtd.matrix(len(w) ,6*num_mons);	
-        
-        component = ''
 
-        ###Initialize a 2x2 matrix of length(w) and 6xNumber of monitors.
-        for i in range(num_mons):
-          mname = "t_h_" + self.fdtd.num2str(i)
-          for j in range(5):
-            if self.fdtd.almostequal(j,1): 
-                component = "Ex"
-            elif self.fdtd.almostequal(j,2): 
-                component = "Ey"
-            elif self.fdtd.almostequal(j,3): 
-                component = "Ez"
-            elif self.fdtd.almostequal(j,4): 
-                component = "Hx"
-            elif self.fdtd.almostequal(j,5): 
-                component = "Hy"
-            elif self.fdtd.almostequal(j,6): 
-                component = "Hz"
+        w_i = np.where((self.builder.w_range_min  < w) & (self.builder.w_range_max > w))[0]
+        w_zm = w[w_i]
+
+        f_source = (abs(self.fdtd.sourcenorm(w/(2*np.pi)))**2).flatten() *( (np.arange(0, len(w), 1)) <= (len(w)/2+0.1))
+        f_spectrum = np.sum(abs(field_w)**2,1)/f_source
+        
+        f_spectrum_zm = f_spectrum[w_i] #zm - zoom
+        f_spectrum_zm = f_spectrum_zm - min(f_spectrum_zm)
+        
+        p_zm = self.fdtd.findpeaks(f_spectrum_zm, number_resonances).flatten()
+        p_zm = [int(pz) for pz in p_zm]
+        p = self.fdtd.find(w, w_zm[p_zm]).flatten()
+        p = [int(pa) for pa in p]
+        f0_zm = w_zm[p_zm]/(2*np.pi)
+        f0 = w[p]/(2*np.pi)
+        
+        # reserve memory for results
+        peak_spectra = self.fdtd.matrix(len(w),number_resonances)
+        peak_filters2 = self.fdtd.matrix(len(w),number_resonances)
+        
+        ranges = 3
+        # calculate slope of decay using 40-60% of time signal
+        tp1 = int(np.round(tp1_lim[ranges]*len(t))+1)
+        tp2 = int(np.round(tp2_lim[ranges]*len(t)))
+        t2 = t[tp1:tp2]
+        log_field_all = self.fdtd.matrix(tp2-tp1+1,number_resonances); ## Selecting 40-60% of time axis.
+        
+        Q = self.fdtd.matrix(number_resonances)
+        delta_Q = self.fdtd.matrix(number_resonances)+1e300        ## Starting value of error in Q
+        slope_mean0 = self.fdtd.matrix(number_resonances)
+        slope_delta0 = self.fdtd.matrix(number_resonances)
             
-            if j > 3.5: 
-                extra_factor = np.sqrt(sc.mu_0/sc.epsilon_0)
-            else: 
-                extra_factor = 1
-               
-            if self.fdtd.havedata(mname, component):
-                field_w[0:len(w), (6*i)+j:] = 2*extra_factor* (np.arange(0, len(w), 1) <= (len(w)/2+0.1)) * self.fdtd.fft(self.fdtd.pinch(self.fdtd.getdata(mname,component)),1,zero_pad)
-        
-        
-        # #################################################
-        # # find resonant peaks, including all monitors
-        # #################################################
-        # w_i=find((w_range_min<w)&(w<w_range_max));
-        # w_zm=w(w_i);
-        
-        # f_source = abs(sourcenorm(w/(2*pi)))^2*( (1:length(w)) <= (length(w)/2+0.1));
-        # f_spectrum = sum(abs(field_w)^2,2)/f_source;
-        
-        # f_spectrum_zm = f_spectrum(w_i); #zm - zoom
-        # f_spectrum_zm = f_spectrum_zm-min(f_spectrum_zm);
-        
-        # p_zm = findpeaks(f_spectrum_zm,number_resonances);
-        # p = find(w,w_zm(p_zm));
-        # f0_zm = w_zm(p_zm)/(2*pi);
-        # f0 = w(p)/(2*pi);
-        
-        # #w_i=find((spec_minangf<w)&(w<spec_maxangf));
-        # #p = findpeaks(f_spectrum(w_i),number_resonances); 	## Find the largest peaks, number = number_resonances.
-        # #f0 = w(w_i(p))/(2*pi);	## Find the central frequency
-        # ##################################################
-        # # find quality factors
-        # #################################################
-        
-        # # reserve memory for results
-        # peak_spectra = matrix(length(w),number_resonances);
-        # peak_filters2 = matrix(length(w),number_resonances);
-        
-        # # calculate slope of decay using 40-60% of time signal
-        # tp1 = round(tp1_lim(ranges)*length(t))+1;
-        # tp2 = round(tp2_lim(ranges)*length(t));
-        # t2 = t(tp1:tp2);
-        # log_field_all = matrix(tp2-tp1+1,number_resonances); ## Selecting 40-60% of time axis.
-        
-        # Q = matrix(number_resonances);
-        # delta_Q = matrix(number_resonances)+1e300;        ## Starting value of error in Q
-        # slope_mean0=matrix(number_resonances);
-        # slope_delta0=matrix(number_resonances);
-        # # loop over each peak 
-        # for(i=1:number_resonances) {
-        #     # find FWHM of peak
-        #     peak_val = f_spectrum_zm(p_zm(i));
-        #     continue_search = 1;
+        # loop over each peak 
+        for i in range(number_resonances):
+            # find FWHM of peak
+            peak_val = f_spectrum_zm[p_zm[i]]
+            continue_search = 1
         #     for(p1_zm=p_zm(i)-1; (p1_zm>1) & continue_search ; 1) {        ###Not sure what '&' means?
         #         if(f_spectrum_zm(p1_zm)<=peak_val/2) {         ### peak_val/2 -->Half maximum
         #             continue_search = 0; 
@@ -175,7 +166,7 @@ class CavityAnalysis:
         #     ?"    frequency = " + num2str(w(p(i))/(2*pi)*1e-12) + "THz, or "+num2str(2*pi*c/w(p(i))*1e9)+" nm";
         #     ?"    Q = " + num2str(Q(i)) +" +/- " + num2str(delta_Q(i));
         #     ?"    FWHM = " + num2str(FWHM/(2*pi)) + "Hz, or " + num2str(((2*pi*c)/FWHM)*1e09) +" nm";     
-        # }
+        
         # #?'Centre = ' + num2str(c/f0);
         # #?'FWHM = ' + num2str((2*pi*c)/FWHM);
         # #?Q;
@@ -183,31 +174,5 @@ class CavityAnalysis:
         # #?slope_mean0;
         # #?slope_delta0;
         
-        # groupscope("::model");
-        
-        # cd(filepath_data);##############################
-        # #closeall;
-        #     #titlebuff="Q at ranges=4 - Field decay vs t";
-        #     #plot(t2,log_field,"time","log10(I) a.u.",titlebuff);
-        #     #outbuff=titlebuff+".jpg";
-        #     #selectfigure(1);
-        #     #exportfigure(outbuff);
-        
-        #     #closeall;
-        #     #titlebuff="Q at ranges=4 - slope (gradient) vs t";
-        #     #plot(t2(1:(length(t2)-1)),slope,"time","a.u.",titlebuff);
-        #     #outbuff=titlebuff+".jpg";
-        #     #selectfigure(1);
-        #     #exportfigure(outbuff);
+    # groupscope("::model");
             
-        #     ## Plot Q spectrum and filtering
-        #     p1 = find(w,0.8*min(w(p)));
-        #     p2 = find(w,1.2*max(w(p)));
-        #     f_Q = w/(2*pi);
-        #     #closeall;
-        #     titlebuff="Q at ranges=4 - spectrum filtering";
-        #     plot(c/f_Q(p1:p2)*1e9,f_spectrum(p1:p2)/max(f_spectrum(p1:p2)),peak_filters2(p1:p2,1:number_resonances)
-        #                  ,"Wavelength (nm)","Arbitrary units","Q Spectrum and filters");
-        #     outbuff=titlebuff+".jpg";                     
-        #     selectfigure(1);
-        #     exportfigure(outbuff);   

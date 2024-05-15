@@ -2,17 +2,14 @@
 
     import numpy as np 
     import imp
-    # import os
-    import cavity
-    import simulation
-    import source 
-    import monitor
+    import os
+    from PyLumerical import cavity, simulation, source, monitor, analysisobjects
 
     # os.add_dll_directory("C:\\Program Files\\Lumerical\\v232\\api\\python\\")
     lumapi = imp.load_source("lumapi","C:\\Program Files\\Lumerical\\v232\\api\\python\\lumapi.py")
 
-    save = False
-    filename = "testrun.fsp"
+    save = True
+    filename = "DIRECTORY_NAME"
 
     fdtd = lumapi.FDTD()
 
@@ -37,7 +34,7 @@
                                 runtime=3000e-15, meshacc=3, z_min=Region_min, 
                                 z_max=Region_max)
 
-    sim.fdtd_region(x_min_bc="Symmetric", y_min_bc="Anti-Symmetric", z_min_bc="PML", 
+    sim.fdtd_region(x_min_bc="Anti-Symmetric", y_min_bc="Symmetric", z_min_bc="PML", 
                         dt_stab=0.99, fdtd_layers=8, min_layers=8, max_layers=64,
                         autoshutoff=1e-05)
 
@@ -60,10 +57,8 @@
 
     mon = monitor.Monitor(fdtd=fdtd)
 
-    apod_center = 0e-15
-    apod_start_w = 100e-15
-
-    mon.Q_monitor(Qmonitor_zspan=10, Qmonitor_zlayer=1, t_sample=10, dipole_shift=0)
+    apod_center = 100e-15
+    apod_start_w = 10e-15
 
     mon.index_monitor(name="n", monitor_type="2D Y-normal",
                             x_min=-.5*xy_span_pml, x_max=.5*xy_span_pml, 
@@ -73,51 +68,32 @@
                         x_min=-.5*xy_span_pml, x_max=.5*xy_span_pml, 
                         y_min=-.5*xy_span_pml, y_max=.5*xy_span_pml, 
                         z=Region_max,
-                        apod="Start", apod_center=apod_center, apod_time_width=apod_start_w)
-
-    mon.power_monitor(name='xy_mid', montype="2D Z-normal", plane="xy",
-                        x_min=-.5*xy_span_pml, x_max=.5*xy_span_pml, 
-                        y_min=-.5*xy_span_pml, y_max=.5*xy_span_pml, 
-                        z=0,
-                        apod="Start", apod_center=apod_center, apod_time_width=apod_start_w)
-
-    mon.power_monitor(name='xy_exofeatured', montype="2D Z-normal", plane="xy",
-                        x_min=-.5*xy_span_pml, x_max=.5*xy_span_pml, 
-                        y_min=-.5*xy_span_pml, y_max=.5*xy_span_pml, 
-                        z=Region_min,
-                        apod="Start", apod_center=apod_center, apod_time_width=apod_start_w)
-
-
-    mon.power_monitor(name='xz_middle', montype="2D Y-normal", plane="xz",
-                        x_min=-.5*xy_span_pml, x_max=.5*xy_span_pml, 
-                        z_min=Region_min-pml_thickness, z_max=Region_max+pml_thickness, 
-                        y=0,
-                        apod="Start", apod_center=apod_center, apod_time_width=apod_start_w)    
-
-    mon.power_monitor(name='xz_edge', montype="2D Y-normal", plane="xz",
-                        x_min=-.5*xy_span_pml, x_max=.5*xy_span_pml, 
-                        z_min=Region_min-pml_thickness, z_max=Region_max+pml_thickness,  
-                        y = .5*cav.xy_span,
-                        apod="Start", apod_center=apod_center, apod_time_width=apod_start_w)    
-
-    mon.power_monitor(name='yz_middle', montype="2D X-normal", plane="yz",
-                        y_min=-.5*xy_span_pml, y_max=.5*xy_span_pml, 
-                        z_min=Region_min-pml_thickness, z_max=Region_max+pml_thickness, 
-                        x=0,
-                        apod="Start", apod_center=apod_center, apod_time_width=apod_start_w)    
-
-    mon.power_monitor(name='yz_edge', montype="2D X-normal", plane="yz",
-                        y_min=-.5*xy_span_pml, y_max=.5*xy_span_pml, 
-                        z_min=Region_min-pml_thickness, z_max=Region_max+pml_thickness, 
-                        x=.5*cav.xy_span,
                         apod="Start", apod_center=apod_center, apod_time_width=apod_start_w)  
 
-    ## Toggle these when viewing the cavity index, to ensure everything is okay before running the simulation
-    # fdtd.select('FDTD');
-    # fdtd.set('x min bc','PML');
-    # fdtd.set('y min bc','PML');  
+    objects = analysisobjects.AnalysisObjects(fdtd=fdtd)
+
+    xy_span = cav.xy_span
+    z_span = abs(Region_min) + abs(Region_max)
+
+    objects.farfield(xy_span=xy_span, z_span=z_span, x=0, y=0, z=0.55e-06, theta_max=90,
+                    N_theta=180, Nphi=91)
+
+    objects.Qfactor()
+
+    objects.mode_volume_3D(xy_span=xy_span, z_span=z_span, x=0, y=0, z=0.55e-06)
+
+    fdtd.select('FDTD');
+    fdtd.set('x min bc','PML');
+    fdtd.set('y min bc','PML');  
 
     if save:
-        fdtd.save(filename)
+        if not os.path.exists(filename):
+            os.mkdir(filename)
+            
+        else:
+            try:
+                fdtd.save(filename + 'fsp')
+            except:
+                FileExistsError("Couldn't write file")
         
-    fdtd.run()
+    # fdtd.run()
