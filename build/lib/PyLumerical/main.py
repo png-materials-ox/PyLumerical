@@ -130,9 +130,13 @@ objects.Qfactor()
 
 objects.mode_volume_3D(xy_span=xy_span, z_span=z_span, x=0, y=0, z=0.55e-06)
 
-fdtd.select('FDTD');
-fdtd.set('x min bc','PML');
-fdtd.set('y min bc','PML');  
+objects.mode_volume_2D(xy_span_pml=xy_span_pml, apod="Start",
+                       pod_center=100e-09, apod_start_w=10e-09,
+                       z_min=Region_min - pml_thickness, z_max=Region_max + pml_thickness)
+
+# fdtd.select('FDTD');
+# fdtd.set('x min bc','PML');
+# fdtd.set('y min bc','PML');  
 
 if save:
     fdtd.save(filename)
