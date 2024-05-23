@@ -1,0 +1,67 @@
+# INPUTS: dipole_shift = 0, lambda_res = 0
+
+m0 = 'n';
+m1 = 'xy_middle';
+m2 = 'xz_middle'; 
+m3 = 'yz_middle';
+
+x = getdata(m1,"x");    # Gets data from monitor m1 called x
+y = getdata(m1,"y");
+z = getdata(m2,"z");    # Gets data from monitor m2 called z
+x_pt=size(x);           # Points in the axis
+z_pt=size(z);
+
+#XY_span = getnamed('FDTD', 'x span');
+
+#if(lambda_res == 0){
+    #lambda_res = getnamed('source', 'center wavelength'); # CHANGE TO BE A SET INPUT
+#};
+
+xz_mid_I = pinch(getelectric(m1));
+xz_mid_Ires = pinch(xz_mid_I,3,res_i);
+yz_mid_I = pinch(getelectric(m3));
+yz_mid_Ires = pinch(yz_mid_I,3,res_i);
+
+i_xmid=floor(x_pt(1)/2)+1;
+n_xz = pinch(getdata(m0,"index_z"));                        # Gets refractive index from the n-monitor
+
+## Integration of I(r,z)*n(r,z)*2*pi*r*dz*dr
+n_air = 1;
+V_n = n_xz(1:i_xmid,1:z_pt(1));
+V_I = xz_mid_Ires(1:i_xmid,1:z_pt(1));                      # half of the x-z cut
+V_In2 = real(V_n^2)*V_I;
+V_z_int = z;                                                # range of dz 
+V_r_int = x(1:i_xmid);                                      # range of dr
+V0 = V_I*real(V_n^2)*2*pi;                                  # n^2 
+Vol_raw1 = integrate(V0,2,V_z_int);
+Vol_raw2 = 1e18*abs(integrate(Vol_raw1*V_r_int,1,V_r_int)); # Unit in um^3.
+
+i_nv_z = find(z, dipole_shift);
+n_nv_xz = real(V_n(i_xmid, i_nv_z));
+In2_nv_xz = V_In2(i_xmid, i_nv_z);                          # In2 at NV
+In2_max_xz = max(V_In2);                                    ## find I_max and n at I_max
+Vol_abs_xz = Vol_raw2/(In2_max_xz);                         # unit:um^3, for air-like mode
+Vol_lam_xz = Vol_abs_xz/(lambda_res^3*1e18);                # unit:lam^3
+
+## Double check with yz_mid monitor
+n_air = 1;
+V_n = n_xz(1:i_xmid,1:z_pt(1));
+V_I = yz_mid_Ires(1:i_xmid,1:z_pt(1));                      # half of the y-z cut
+V_In2 = real(V_n^2)*V_I;
+V_z_int = z;                                                # range of dz 
+V_r_int = y(1:i_xmid);                                      # range of dr
+V0 = V_I*real(V_n^2)*2*pi;                                  # n^2 for dielectric constant
+Vol_raw1 = integrate(V0,2,V_z_int);
+Vol_raw2 = 1e18*abs(integrate(Vol_raw1*V_r_int,1,V_r_int)); # Unit in um^3.    
+n_nv_yz =real(V_n(i_xmid,i_nv_z));
+In2_nv_yz = V_In2(i_xmid,i_nv_z);                           # In2 at NV
+In2_max_yz = max(V_In2);                                    ## find I_max and n at I_max 
+Vol_abs_yz = Vol_raw2/(In2_max_yz);                         # unit:um^3, for air-like mode
+Vol_lam_yz = Vol_abs_yz/(lambda_res^3*1e18);                   # unit:lam^3
+
+## Average mode volume
+Vol_abs_avg = (Vol_abs_xz+Vol_abs_yz)/2;
+Vol_lam_avg = (Vol_lam_xz+Vol_lam_yz)/2;
+n_nv_avg = (n_nv_xz+n_nv_yz)/2;
+In2_nv_avg = (In2_nv_xz+In2_nv_yz)/2;
+In2_max_avg = (In2_max_xz+In2_max_yz)/2;

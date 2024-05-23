@@ -36,7 +36,7 @@ class AnalysisObjects:
         self.fdtd.set('N theta', N_theta)
         self.fdtd.unselectall()
 
-    def Qfactor(self):
+    def Qfactor(self, x=0, y=0, z=0):
         
         self.fdtd.unselectall()
         self.fdtd.select('source')
@@ -50,6 +50,9 @@ class AnalysisObjects:
         self.fdtd.set('f min', fstart)
         self.fdtd.set('f max', fstop)
         self.fdtd.set('t start', 100e-15)
+        self.fdtd.set('x', x)
+        self.fdtd.set('y', y)
+        self.fdtd.set('z', z)
         self.fdtd.addanalysisresult('f_spectrum')
         self.fdtd.unselectall()
 
@@ -65,10 +68,17 @@ class AnalysisObjects:
         self.fdtd.unselectall
         
     def mode_volume_2D(self, xy_span_pml=1e-06, apod="Start", apod_center=0, apod_start_w=100e-09,
-                       z_min=0, z_max=1e-06):
+                       z_min=0, z_max=1e-06, dipole_shift=0, lambda_res=640e-09):
         # self.fdtd.unselectall
         self.fdtd.addanalysisgroup()
         self.fdtd.set('name', 'mode volume 2D')
+        
+        self.mon.index_monitor(name="n", monitor_type="2D Y-normal",
+                        x_min=-.5*xy_span_pml, x_max=.5*xy_span_pml, 
+                        z_min=z_min, z_max=z_max)
+        
+        self.fdtd.select('n')
+        self.fdtd.addtogroup('mode volume 2D')
         
         self.mon.power_monitor(name='xy_middle', montype="2D Z-normal", plane="xy",
                               x_min=-.5*xy_span_pml, x_max=.5*xy_span_pml, 
@@ -95,22 +105,25 @@ class AnalysisObjects:
         self.fdtd.addtogroup('mode volume 2D')        
         
         self.fdtd.select('yz_middle')
-        self.fdtd.addtogroup('mode volume 2D')   
+        self.fdtd.addtogroup('mode volume 2D')  
         
-        with open('mode-vol_2D_script.txt', 'r', encoding="utf8") as f:
+        with open('modeVol_2D.txt', 'r', encoding="utf8") as f:
             script = f.read().rstrip()
     
+        self.fdtd.select('mode volume 2D')
+        self.fdtd.addanalysisprop('dipole_shift', 0, dipole_shift)
+        self.fdtd.addanalysisprop('lambda_res', 0, lambda_res)
+        self.fdtd.addanalysisprop('XY_span', 0, 5e-06) # CHANGE THIS
+        self.fdtd.addanalysisprop('res_i', 0, 10)
+        
         self.fdtd.set('analysis script', script)
-        # self.fdtd.addanalysisresult('T')
-        # self.fdtd.addanalysisresult('Purcell')
-        # self.fdtd.addanalysisresult('P_vs_theta')
-        # self.fdtd.addanalysisprop("near field points per wavelength", 0, 3)
-        # self.fdtd.addanalysisprop("N phi per half", 0, Nphi)
-        # self.fdtd.addanalysisprop("project all wavelengths", 0, 1)
-        # self.fdtd.addanalysisprop('include_z_min_boundary', 0, 1);
-        # self.fdtd.set('theta max', theta_max)
-        # self.fdtd.set('N theta', N_theta)
-        # self.fdtd.unselectall()
+        self.fdtd.addanalysisresult('Vol_abs_xz')
+        self.fdtd.addanalysisresult('Vol_lam_xz')
+        self.fdtd.addanalysisresult('Vol_abs_yz')
+        self.fdtd.addanalysisresult('Vol_lam_yz')
+        self.fdtd.addanalysisresult('Vol_abs_avg')
+        self.fdtd.addanalysisresult('Vol_lam_avg')
+        
         
         self.fdtd.unselectall()
     
