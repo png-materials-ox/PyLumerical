@@ -1,0 +1,377 @@
+Theory
+========
+
+Calculating Mode Volume
+----------------------------------------------
+
+.. note::
+
+   This section is under development.
+
+Precisely what is the mode volume $V$ of a cavity is a difficult quantity to define. Edwin Purcell defined this 
+"the volume of the resonator"~\cite{PurcellAPS1946}, and therefore the quantity may represent spatial confinement 
+of the cavity mode. From this, one can intuit that the calculation of $V$ simply involves taking a volume integral 
+over the domain of the resonator which supports electromagnetic waves. 
+
+When quantised, by construction the mode volume is defined by the energy normalisation condition of the field per 
+photon, $E_{0}$. In a closed system, there exists an inner product on a closed space of wavefunctions which 
+guarantees orthogonality:
+
+.. math::
+
+    \bra{\psi_m}\ket{\psi_{n}} = \int_{\Omega}\Psi^{*}_{m}(\zeta)\Psi_{n}(\zeta) d\zeta =\delta_{mn}
+
+An equivalent way to write the mode volume in the language of cavity QED therefore is:
+
+.. math::
+    V = \frac{\bra{\Psi_{c}}\ket{\Psi_{c}}}{\epsilon(r_{c}) \Psi_{c}^{2}(r_{c})}
+
+
+....where $\Psi_{c}$ represents a cavity mode, and $\Psi_{c}(r_{0})$ is the cavity mode at a position which 
+guarantees it is maximal. This form can be directly related to equation~\ref{HermitianModeVolBckrnd}. If the 
+Hamiltonian of the cavity is Hermitian, it is guaranteed to be diagonalisable in a basis of elements (here, 
+normal modes) with real valued eigenvalues corresponding to energy / resonance frequency. 
+
+Starting with the wave equation:
+
+.. math::
+    \nabla\times\left[\epsilon^{-1}(r)\nabla \times H(r)\right] = \left(\frac{\omega}{c}\right)^{2} H(r)
+
+
+....the inner product is defined by 
+
+.. math::
+    \bra{\psi_m}\ket{\psi_{n}} = \frac{1}{2} \int_{V} \left(\epsilon E^{*}_{m} \cdot \epsilon E_{n} + \mu H^{*}_{m} \cdot \mu H_{n} \right) d^{3}r
+
+
+The normal modes of this system are $\ket{\Psi_{m}} = \left[H_{m}, E_{m}\right]$ with real eigenvalues $\frac{\omega^{2}_{m}}{c^{2}}$ corresponding to infinite lifetimes. The cavity modes are normalised by:
+
+.. math::
+    \bra{\psi_m}\ket{\psi_{n}} = \frac{1}{2} \int_{V} \left(\epsilon \left|E\right|^{2} + \mu_{0} \left|H_{m}\right|^{2} \right) d^{3}r = 1
+
+Since the cavity modes are orthonormal, they can be said to be complete, since every Cauchy sequence of vectors 
+admits a limit in the space itself. Therefore:
+
+.. math::
+
+    \begin{bmatrix}
+        H \\ E
+    \end{bmatrix} 
+    = \sum_{m}\beta_{m}
+    \begin{bmatrix}
+        H_{m} \\ E_{m}
+    \end{bmatrix} 
+
+....where $\beta_{m}$ are the excitation coefficients or amplitudes of the normal mode $m$.
+
+When the EM field is induced by an excitation from an incident field $\left[\bm{H}_{inc}, \bm{E}_{inc}\right]$, 
+the total EM field $\left[\bm{H}, \bm{E}\right]$ can therefore be expanded over the normal modes as
+
+.. math::
+
+    \begin{bmatrix}
+        H \\ E
+    \end{bmatrix} 
+    = 
+    \begin{bmatrix}
+        H_{\text{inc}} \\ E_\text{inc}
+    \end{bmatrix} 
+    + \sum_{m}\beta_{m}
+    \begin{bmatrix}
+        H_{m} \\ E_{m}
+    \end{bmatrix} 
+
+
+Since the energy of the normal mode is $U_{m}=1$, the quantity $\left|\beta_{m}(\omega)\right|^{2}$ gives the 
+total amount of energy stored in the mode. The mode volume is the ratio between the total energy in the normal 
+mode $U_{m}=1$ and the maximum value of the density of the electronic energy 
+maxima ($\epsilon \left|\bm{E}_{m}\right|^{2}/2$). Therefore, the mode volume can be written as:
+
+.. math::
+
+    V = \frac{ \int_{V} \epsilon_{r}(r)\left| E_{m}(r) \right|^{2} + \mu_{r}(r)\left| H_{m}(r) \right|^{2}}{\max{\left(\epsilon_{r}(r)\left| E_{m}(r) \right|^{2}\right)}} = \frac{2U_{m}}{\max{\left(\epsilon_{r}(r)\left| E_{m}(r) \right|^{2}\right)}}
+    \label{NormModeVol}
+
+
+It is clear then that the quantised mode volume for an Hermitian system directly corresponds to a physical 
+intuition regarding the spatial confinement of the cavity mode. 
+
+% and a general approach was derived following a normalisation condition given by~\cite{lee1999dyadic} 
+(since known as the LK-Norm).
+
+Neat though this overlap is, Kristensen and colleagues identified an evident problem in the derivation for most 
+practical systems~\cite{kristensen2012generalized}. The derivation of $V$ implicitly relied on two assumptions; 
+namely, the boundary conditions can be described as Dirichlet or von-Neuman; and therefore, the Hamiltonian of 
+the cavity is Hermitian. In this picture, the cavity mode lifetimes are infinite, although they do not radiate 
+out to infinity due to the hard boundary. 
+
+.. \begin{figure}[htbp]
+..     \centering
+..     \includegraphics[width=.5\textwidth]{figs/mode_volume/CavityDirichlet.png}
+..     \caption{Hermitian system with  Dirichlet Boundary Conditions}
+..     \label{Fig:DirichetCavity}
+.. \end{figure}
+
+In reality, these conditions are not true, and in a similar manner to the Linbladian construction of the quantum 
+dynamics of open systems, a description of open-system cavity QED is required.
+
+
+Open Boundary Conditions 
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+In practical systems, energy within the cavity may dissipate through absorption, dispersion, and coupling to 
+leaky radiative modes. Now, the mode lifetime $\tau_{m}$ is finite, and the eigenfrequency $\om$ takes on a 
+complex component:
+
+.. math::
+
+        \Im{\eigval{\omega}} = \frac{-1}{\tau_{m}}
+
+In addition, the assumption of Dirichlet boundary conditions is not physically meaningful. In reality, the cavity 
+modes radiate in the limit as the distance $r$ goes to infinity. Consequently, the correct boundary condition 
+must account for this radiation. A typically suitable choice is the Sommerfeld radiation condition~\cite{sommerfeld1912greensche}. Starting with the inhomogeneous Helmholtz equation 
+$\left(\nabla^{2}+k^{2} \right)u = -f \in \mathbb{R}^{n}$, the boundary condition is:
+
+.. math::
+
+    \lim_{|r|\rightarrow\infty} |r|^{\frac{n-1}{2}}\left( \frac{\partial}{\partial |r|} - ik\right) u(r) = 0
+
+.. \begin{figure}[htbp]
+..     \centering
+..     \includegraphics[width=.5\textwidth]{figs/mode_volume/CavitySommerfeld.png}
+..     \caption{Hermitian system with Radiative Boundary Conditions}
+..     \label{Fig:DirichetCavity}
+.. \end{figure}
+
+\textcolor{red}{Since the cavity modes are only conservative for a finite period, and the boundary condition is 
+radiative, the time evolution operator is no longer Hermitian. Therefore, the cavity modes have been referred to 
+as \textit{quasi-normal modes} (QNMs) \cite{sauvan2013theory}. This creates a problem when calculating the mode 
+volume. As $\Im{\eigval{\omega}} < 0$, the EM fields become amplified as they propagate. This results in an 
+exponential divergence of the QNM field as $|\bm{r}|\rightarrow\infty$, and the integral of eq.~\ref{NormModeVol} 
+therefore diverges also.} 
+
+Quasi-Normal Mode Expansion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Since the electric field mode forms a quasi normal basis, it can be decomposed into a small set of QNM modes:
+
+.. math::
+
+    \left[\eigfunc{E}(r, \omega), \eigfunc{H}(r, \omega) \right] \approx \sum_{m=1}^{M} \alpha_{m}(\omega) \left[\eigfunc{E}(r), \eigfunc{H}(r)\right]
+
+
+.... where $\alpha_{m}$ are unknown amplitude coefficients. The number of QNMs is determined by increasing M 
+until convergence is reached.
+
+An adequate modal representation of a dissipative resonant system should rely on the natural eigenmodes of the 
+structure. These are no longer normal modes with real eigenfrequencies but, rather, poles of the scattering matrix 
+associated with complex eigenfrequencies.
+
+.. \begin{figure}[htbp]
+..     \centering
+..     \includegraphics[width=\textwidth]{figs/mode_volume/complex_plane.png}
+..     \caption{<caption>}
+..     \label{<label>}
+.. \end{figure}
+
+The eigenvalue distribution in the complex frequency plane consists of a discrete set of QNMs, represented with 
+red dots. These are natural frequencies, since they are frequencies for which there is a finite response for even 
+an infinitesimal excitation. They are thus poles of the scattering operator.
+
+From the causality principle, $\bm{\mu}^{*}(\bm{r},\om) = \bm{\mu}(\bm{r},-\om)$ and so if ($\eigfunc{E}$, 
+$\eigfunc{H}$, $\eigval{\om}$) is a source free solution of Maxwell's equations, so too is ($\eigfunc{E}^{*}$, 
+$\eigfunc{H}^{*}$, $-\eigval{\om}^{*}$). This is why every eigenfrequency $\eigval{\om}$ in the lower right 
+quadrant is paired with another twin frequency $-\eigval{\om}^{*}$ in the lower left quadrant.
+
+QNM Spectrum 
+^^^^^^^^^^^^
+
+**Accumulation Points:**  These can arise from materials resonances, manifesting as either poles of the
+$\epsilon(\om)$ or $\mu(\om)$, corner modes, or plasmonic resonances. The latter appear in the case of metallic
+particles surrounded by a dielectric material and correspond to complex frequencies for which 
+$\epsilon(\om) = -\epsilon_{B}$, where $\epsilon_{B}$ is the permittivity of the dielectric medium. 
+Accumulation points are responsible for physical effects such as quenching, which is a detrimental process for a 
+light emitting molecule in the vicinity of a metallic material. 
+
+**Branch Cuts:** These can occur when the cavity is not surrounded by a uniform medium. Different outgoing 
+wave conditions should be satisfied in two different half spaces; the substrate and superstrate. For cavities 
+surrounded by complex environments which support guided modes, this becomes more difficult.
+
+**Exceptional Points:**  These are spectral singularities for which two or more QNMs coalesce for specific 
+values of an opto-geometrical parameter. These have have recently generated interest since optical gain and loss 
+can be used as nonconservative ingredients to create exceptional points, which in turn result in new optical 
+properties.
+
+QNM Regularisation
+^^^^^^^^^^^^^^^^^^
+
+The purpose of regularisation is to attempt to reproduce the tools of Hermitian electrodynamics, i.e. with a
+defined inner product, one can normalise vectors, construct an orthogonal basis, and project onto basis vectors.
+So, if an inner product can be defined for non-Hermitian systems, the treatment can be simplified significantly. 
+
+Regularisation in Quantum Mechanics
+"""""""""""""""""""""""""""""""""""
+
+.. Regularisation is used in QM to properly map divergent QNMs of open space onto a Hilbert space, and enforce QNMs to be square-integrable. These now bounded QNMs can be considered as new vectors of a new Hilbert space. Starting with the classical Hamiltonian format, and assigning $\breve{\Psi}=\left[\breve{\bm{E}}, \breve{\bm{H}}\right]$:
+
+.. \begin{equation}
+..     H\breve{\Psi} = E\breve{\Psi}
+.. \end{equation}
+
+.. The similarity transform
+
+.. \begin{equation}
+..     \breve{\Psi}_{r} = \hat{U}\breve{\Psi}
+.. \end{equation}
+
+.. maps divergent QNMs of $\left( \left| \breve{\Psi} \right| \rightarrow \infty\right)$ as $\bm{r}\rightarrow\infty$ to $\left( \left| \breve{\Psi}_{r} \right| \rightarrow 0\right)$ as $\bm{r}\rightarrow\infty$.
+
+.. This transformation requires solving a new spectral problem:
+
+.. \begin{equation}
+..     \hat{H}_{r} \breve{\Psi}_{r} = E\breve{\Psi}_{r}
+.. \end{equation}
+
+.. \begin{equation}
+..     \hat{H}_{r}=\hat{U}\hat{H}\hat{U}^{-1}
+.. \end{equation}
+
+.. ....with identical eigenvalues $E$.
+
+.. The question is how to achieve this mapping. In non-Hermitian QM, various approaches exist, such as Gaussian regularisation. In EM, the preferred path is through PMLs.
+
+.. \begin{figure}[htbp]
+..     \centering
+..     \includegraphics[width=\textwidth]{figs/mode_volume/PML.png}
+..     \caption{<caption>}
+..     \label{<label>}
+.. \end{figure}
+
+.. In the PML layer assignment above, the coordinate transform is achieved by the following conditions:
+
+.. \begin{align}
+..     x^{\prime} &= \Re(x) \\
+..     \breve{X} &= 
+..     \begin{cases}
+..     x^{\prime} & x^{\prime} < x_{0} \\
+..     x^{\prime} + i\tan\theta(x^{\prime}-x_{0}) & x^{\prime} > x_{0}
+..     \end{cases} \\
+..     \tan\theta &= \frac{\Im(\breve{X})}{x^{\prime}-x_{0}}
+.. \end{align}
+
+.. Since both $\epsilon$ and $\mu$ are frequency independent for $x>x_{0}$, following a modal expansion with radiation and guided waves, the QNBM in infinite space can be decomposed as a superposition of waves in the form:
+
+.. \begin{equation}
+..     \bm{\Psi}_{k}(y, z)\exp(i\breve{k}_{x}x-i\breve{\om}t)
+.. \end{equation}
+
+.. Since $\bm{\Psi}(x,y,z)$ satisfies the outgoing wave condition, it decays as $1/r$ and oscillates at large distances $r$ from the resonator. So, $\bm{\Psi}$ admits an analytic continuation $\bm{\Psi}(\breve{X},y,z)$ in the complex domain defined by $\Re(\breve{X})>x_{0}$ and $\Im(\breve{X})>0$, with $\bm{\Psi}\rightarrow 0$ as $\breve{X}\rightarrow\infty + i\infty$. Maxwell's equations can now be solved in this infinite complex space along an appropriate trajectory, e.g. a linearly growing imaginary part. 
+
+.. Crucially, the choice $\Im(\breve{X})>0$ enforces that only the outgoing waves admit analytic continuation, since all propagative or evanescent waves of the form $\bm{\Psi}_{k}(y, z)\exp(-ikx-i\om t)$ exponentially diverge, i.e. $\exp(-ik\breve{X}-i\om t)\rightarrow\infty$ for $\breve{X}\rightarrow\infty+i\infty$. So, PMLs automatically implement the outgoing wave condition by construction. However, this condition is only met for QNMs with a sufficiently high quality factor $Q=-\frac{1}{2}\Re(\breve{\om}){}\Im(\breve{\om})$ that verifies:
+
+.. \begin{equation}
+..     \tan\theta>\frac{1}{2Q}
+.. \end{equation}
+
+.. \subsubsection{Practical Bounded PML-Regularisation}
+.. In practice, PMLs are not infinite, but bounded by an additional Dirichlet boundary. In principle, this hard boundary may cause radiating modes to reflect back into the simulation domain. With sufficiently high Q-factor QNMs, the modes have zero amplitude by the time they reach the hard boundary, and so won't reflect back in. However, some QNMs may have insufficiently high Q-factors, and therefore their regularised fields are not damped enough at the outer PML.  
+
+.. \textcolor{red}{\subsection{Calculating the Mode Expansion}}
+.. \textcolor{red}{Recall the QNM expansion:}
+
+.. \textcolor{red}{\begin{equation}
+..     \left[\eigfunc{E}(\bm{r}, \bm{\omega}), \eigfunc{H}(\bm{r}, \bm{\omega}) \right] \approx \sum_{m=1}^{M} \alpha_{m}(\omega) \left[\eigfunc{E}(\bm{r}), \eigfunc{H}(\bm{r})\right]
+.. \end{equation}}
+
+.. \textcolor{red}{Using this decomposition, the goal is to define an inner product by projecting the solution onto one of the QNMs. This can ultimately be be solved by summing over the residues of the unknown amplitude coefficient $\alpha_{m}(\om)$. The precise definition of $\alpha_{m}(\om)$ has been the subject of intense research activity over a number of years.}
+
+.. \textcolor{red}{Solving this system of equations to yield quasi-normal mode solutions has been the subject of much research effort.
+.. P. Kristensen, et al first discussed the inconsistency of the typical mode volume calculation for non-Hermitian systems \cite{kristensen2012generalized}, and then proposed a normalization method developed earlier by P. T. Leung et, al \cite{lee1999dyadic}, composed of a surface and volume integral, with a complex mode volume.}
+    
+.. \textcolor{red}{Later, C. Sauvan et al applied the Lorentz reciprocity theorem to normalize QNMs, alongside complex coordinate transforms \cite{sauvan2013theory}. They demonstrated that the integral of over the entire open space is convergent using a complex coordinate transform that damps the field, and thus unambiguously defines the mode volume.}
+
+.. \textcolor{red}{Sauvan also developed the PML PML normalization in \cite{sauvan2013theory}, which provides a numerical method to normalize QNMs by performing the volume integral in the numerical PML layer. This also provides mathematical mappings satisfying the outgoing wave conditions for many 3D geometries of general interest.}
+
+.. \subsection{Applying Lorentz Reciprocity to Cavity Fields}
+.. Before applying the reciprocity theorem to the cavity modes, a subtle nuance must first be addressed. The "conjugated" form of the theorem shown previously does not account for dispersion. Therefore, for analytical continuation, the volume integral must consider complex frequencies. Lecamp, Hugonin, and Lalanne derived an "unconjugated" form of the Lorentz reciprocity theorem \cite{lecamp2007theoretical}, which is more appropriate here.
+
+.. Applying the Green-Ostrogradski formula to the vector $\bm{E}_{2}\times\bm{H}_{1}$ on a closed surface $S$ of volume $V$:
+
+.. \begin{align}
+..     \oiint_{S}\left(\bm{E}_{2}\times\bm{H}_{1}\right) \cdot d\bm{S} = \iiint_{V} &i\left(\omega_{1}\bm{E}_{2}^{T}\bm{\epsilon}\bm{E}_{1} + \omega_{2}\bm{H}_{1}^{T} \bm{\mu}\bm{H}_{2}\right) d\nu \nonumber\\
+..     &- \bm{E}_{2}(\bm{R}_{1}) \cdot\bm{J}_{1}
+.. \end{align}
+
+.. Subtracting the related relation and swapping indices:
+
+.. \begin{align}
+..     \oiint_{S}\left(\bm{E}_{2}\times\bm{H}_{1} - \bm{E}_{1}\times\bm{H}_{2}\right) \cdot &d\bm{S} = \iiint_{V} i\left[\omega_{1}\left(\bm{E}_{2}^{T}\bm{\epsilon}\bm{E}_{1} -\bm{H}_{2}^{T} \bm{\mu}\bm{H}_{1} \right) \right.\nonumber\\
+..     &\left. - \omega_{2}\left(\bm{E}_{1}^{T}\bm{\epsilon}\bm{E}_{2} -\bm{H}_{1}^{T} \bm{\mu}\bm{H}_{2} \right)\right] d\nu \nonumber\\ 
+..     &-\left[ \bm{E}_{2}(\bm{r}_{1}) \cdot\bm{J}_{1} - \bm{E}_{1}(\bm{r}_{2})\cdot{J}_{2} \right] 
+.. \end{align}
+
+.. Since $\bm{E}_{2}^{T}\epsilon\bm{E}_{1}$ = $\bm{E}_{1}^{T}\epsilon\bm{E}_{2}$ and $\bm{H}_{2}^{T}\mu\bm{H}_{1}$ = $\bm{H}_{1}^{T}\mu\bm{H}_{2}$, considering the two domains $\Omega_{1}$ and $\omega_{2}$:
+
+.. \begin{align}
+..     \oiint_{\Omega_{1}}&\left(\bm{E}_{2}\times\bm{H}_{1} - \bm{E}_{1}\times\bm{H}_{2}\right) \cdot \bm{\Omega}_{1}d\bm{S} - \oiint_{\Omega_{2}}\left(\bm{E}_{2}\times\bm{H}_{1} - \bm{E}_{1}\times\bm{H}_{2}\right) \cdot \bm{\Omega}_{2}d\bm{S} = \nonumber \\
+..     & i \left(\omega_{1}-\omega_{2}\right) \iiint_{V} \left(\bm{E}_{1}^{T}\bm{\epsilon}\bm{E}_{2} - \bm{H}_{1}^{T}\bm{\mu}\bm{H}_{2}\right) d\nu \nonumber\\
+..     & - \left[ \bm{E}_{2}(\bm{r}_{1}) \cdot\bm{J}_{1} - \bm{E}_{1}(\bm{r}_{2})\cdot{J}_{2} \right] 
+.. \end{align}
+
+.. \begin{align}
+..         \oiint_{S} \left( \bm{E}_{2}\times\bm{H}_{1} - \bm{E}_{1}\right.&\left.\times\bm{H}_{2}  \right) d\bm{S} = i\iiint_{\Omega} \left\{ \bm{E}_{1}  \left[ \omega_{1}\bm{\epsilon}(\omega_{1}) - \omega_{2}\bm{\epsilon}(\omega_{2}) \right]\bm{E}_{2} \right. \nonumber \\ 
+..         &\left. -\bm{H}_{1}  \left[ \omega_{1}\bm{\mu}(\omega_{1}) - \omega_{2}\bm{\mu}(\omega_{2}) \right]\bm{H}_{2} \right\} d^{3}\bm{r} \nonumber \\
+..         &- \iiint_{\Omega}\left( \bm{J}_{1}\bm{E}_{2} - \bm{J}_{2}\bm{E}_{1} \right) d^{3}\bm{r}
+..         \label{eq:RecipCavity}
+.. \end{align}
+
+.. \subsubsection{Non-Dispersive Cavity}
+.. A non-dispersive cavity satisfies the unconjugated orthogonality relation. To see this, for the case of a frequency-independent permittivity $\epsilon$ and permeability $\mu$, we can take 
+
+.. \begin{align}
+..     \bm{E}_{1}&=\eigfunc{E} & \bm{E}_{2}=\eigfuncn{E} \nonumber \\
+..     \bm{H}_{1}&=\eigfunc{H} & \bm{H}_{2}=\eigfuncn{H} \nonumber \\
+..     \om_{1}&=\eigval{\om} & \om_{2}=\eigvaln{\om} \nonumber \\
+..     \bm{J}_{1}&=0 & \bm{J}_{2}=0 \nonumber
+.. \end{align}
+
+.. Combining this and the Cauchy integral theorem gives:
+
+.. \begin{equation}
+..     \left(\eigval{\omega} - \eigvaln{\omega}\right) \iiint_{\Omega}\left( \eigfunc{E}\cdot\bm{\epsilon}\eigvaln{E} - \eigfunc{H}\cdot\bm{\mu}\eigvaln{H}\right) = 0
+..     \label{eq:RecipFromDomain}
+.. \end{equation}
+
+.. This equation is only analytic when $n\ne m$. In this case, the volume integral is equal to 0, and therefore for a non-dispersive system, the QNMs are orthogonal.
+
+.. In the absence of dispersion, the linear system is diagonal, and the unknown parameter $\alpha_{n}$ can be found simply by:
+
+.. \begin{equation}
+..         \alpha_{n}(\omega) = \frac{ -\omega\bm{p}\cdot\eigfuncn{E}(\bm{r}_0) }{ (\omega-\eigvaln{\omega})\times \int\left( \eigfuncn{E}\cdot\bm{\epsilon}\eigfuncn{E} - \eigfuncn{H}\cdot \mu\eigfuncn{H} \right) d^{3}\bm{r} }
+.. \end{equation}
+
+.. Note that $\alpha_{n}$ has a pole for $\omega = \eigvaln{\omega}$, and so the system resonates whenever the excitation frequency is close to an eigenfrequency $\eigvaln{\omega}$, with residue:
+
+.. \begin{equation}
+..     \Res(\alpha_{n}(\om)) = \frac{ -\omega\bm{p}\cdot\eigfuncn{E}(\bm{r}_0) }{\int\left( \eigfuncn{E}\cdot\bm{\epsilon}\eigfuncn{E} - \eigfuncn{H}\cdot \mu\eigfuncn{H} \right) d^{3}\bm{r} }
+.. \end{equation}
+
+.. \begin{align}
+..     &\left<\left<\eigfunc{F}(\bm{r})^{\dagger}|\bm{F}(\bm{r},\om)\right>\right> = \sum_{n}\frac{\alpha_{n}(\om)}{\om-\eigvaln{\om}} \left<\left<\eigfunc{F}(\bm{r})^{\dagger}|\eigfuncn{F}(\bm{r})\right>\right> \nonumber \\
+..     &= \sum_{n} \frac{ -\omega\bm{p}\cdot\eigfuncn{E}(\bm{r}_0) }{\int\left( \eigfuncn{E}\cdot\bm{\epsilon}\eigfuncn{E} - \eigfuncn{H}\cdot \mu\eigfuncn{H} \right) d^{3}\bm{r} } \left<\left<\eigfunc{F}(\bm{r})^{\dagger}|\eigfuncn{F}(\bm{r})\right>\right>
+.. \end{align}
+
+.. The operator $\left<\left<\eigfunc{F}(\bm{r})^{\dagger}|\bm{F}(\bm{r},\om)\right>\right>$ projects the solution of the QNM expansion onto a QNM $\eigfunc{F}(\bm{r})$, where the projection is written as a sum over the residues of $\alpha_{n}$. The projection of one QNM onto another is zero, whilst when onto itself, is the well known normalisation condition.
+
+.. \subsection{Dispersive Cavity}
+
+
+
+.. If the cavity can be described/approximated as a closed, Hermitian system, the mode volume can be 
+
+.. .. math::
+
+..    V = \frac{\int \epsilon(r) \left| E(r) \right|^{2} d^{3} r}{\text{max} \left( \epsilon(r) \left| E(r) \right|^{2} \right)}
+
+.. .. math::
+..     V_{2D} = \frac{ \int_{0}^{r_{max}} \int_{z_{min}}^{z_{max}} 2 \pi r \epsilon(r, z) \left| E(r, z) \right|^{2} dz dr}{ \text{max} \left( \epsilon(r) \left| E(r) \right|^{2} \right)}

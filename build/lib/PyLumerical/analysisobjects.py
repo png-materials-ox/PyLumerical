@@ -97,7 +97,7 @@ class AnalysisObjects:
         self.fdtd.select('yz_middle')
         self.fdtd.addtogroup('mode volume 2D')   
         
-        with open('mode-vol_2D_script.txt', 'r', encoding="utf8") as f:
+        with open('modeVol_2D.txt', 'r', encoding="utf8") as f:
             script = f.read().rstrip()
     
         self.fdtd.set('analysis script', script)

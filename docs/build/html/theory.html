@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theory &mdash; PyLumerical 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Examples" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyLumerical
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#calculating-mode-volume">Calculating Mode Volume</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#open-boundary-conditions">Open Boundary Conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quasi-normal-mode-expansion">Quasi-Normal Mode Expansion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#qnm-spectrum">QNM Spectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#qnm-regularisation">QNM Regularisation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#regularisation-in-quantum-mechanics">Regularisation in Quantum Mechanics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyLumerical</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Theory</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/theory.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="theory">
+<h1>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h1>
+<section id="calculating-mode-volume">
+<h2>Calculating Mode Volume<a class="headerlink" href="#calculating-mode-volume" title="Permalink to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section is under development.</p>
+</div>
+<p>Precisely what is the mode volume $V$ of a cavity is a difficult quantity to define. Edwin Purcell defined this
+“the volume of the resonator”~cite{PurcellAPS1946}, and therefore the quantity may represent spatial confinement
+of the cavity mode. From this, one can intuit that the calculation of $V$ simply involves taking a volume integral
+over the domain of the resonator which supports electromagnetic waves.</p>
+<p>When quantised, by construction the mode volume is defined by the energy normalisation condition of the field per
+photon, $E_{0}$. In a closed system, there exists an inner product on a closed space of wavefunctions which
+guarantees orthogonality:</p>
+<div class="math notranslate nohighlight">
+\[\bra{\psi_m}\ket{\psi_{n}} = \int_{\Omega}\Psi^{*}_{m}(\zeta)\Psi_{n}(\zeta) d\zeta =\delta_{mn}\]</div>
+<p>An equivalent way to write the mode volume in the language of cavity QED therefore is:</p>
+<div class="math notranslate nohighlight">
+\[V = \frac{\bra{\Psi_{c}}\ket{\Psi_{c}}}{\epsilon(r_{c}) \Psi_{c}^{2}(r_{c})}\]</div>
+<p>….where $Psi_{c}$ represents a cavity mode, and $Psi_{c}(r_{0})$ is the cavity mode at a position which
+guarantees it is maximal. This form can be directly related to equation~ref{HermitianModeVolBckrnd}. If the
+Hamiltonian of the cavity is Hermitian, it is guaranteed to be diagonalisable in a basis of elements (here,
+normal modes) with real valued eigenvalues corresponding to energy / resonance frequency.</p>
+<p>Starting with the wave equation:</p>
+<div class="math notranslate nohighlight">
+\[\nabla\times\left[\epsilon^{-1}(r)\nabla \times H(r)\right] = \left(\frac{\omega}{c}\right)^{2} H(r)\]</div>
+<p>….the inner product is defined by</p>
+<div class="math notranslate nohighlight">
+\[\bra{\psi_m}\ket{\psi_{n}} = \frac{1}{2} \int_{V} \left(\epsilon E^{*}_{m} \cdot \epsilon E_{n} + \mu H^{*}_{m} \cdot \mu H_{n} \right) d^{3}r\]</div>
+<p>The normal modes of this system are $ket{Psi_{m}} = left[H_{m}, E_{m}right]$ with real eigenvalues $frac{omega^{2}_{m}}{c^{2}}$ corresponding to infinite lifetimes. The cavity modes are normalised by:</p>
+<div class="math notranslate nohighlight">
+\[\bra{\psi_m}\ket{\psi_{n}} = \frac{1}{2} \int_{V} \left(\epsilon \left|E\right|^{2} + \mu_{0} \left|H_{m}\right|^{2} \right) d^{3}r = 1\]</div>
+<p>Since the cavity modes are orthonormal, they can be said to be complete, since every Cauchy sequence of vectors
+admits a limit in the space itself. Therefore:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+    H \\ E
+\end{bmatrix}
+= \sum_{m}\beta_{m}
+\begin{bmatrix}
+    H_{m} \\ E_{m}
+\end{bmatrix}\end{split}\]</div>
+<p>….where $beta_{m}$ are the excitation coefficients or amplitudes of the normal mode $m$.</p>
+<p>When the EM field is induced by an excitation from an incident field $left[bm{H}_{inc}, bm{E}_{inc}right]$,
+the total EM field $left[bm{H}, bm{E}right]$ can therefore be expanded over the normal modes as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+    H \\ E
+\end{bmatrix}
+=
+\begin{bmatrix}
+    H_{\text{inc}} \\ E_\text{inc}
+\end{bmatrix}
++ \sum_{m}\beta_{m}
+\begin{bmatrix}
+    H_{m} \\ E_{m}
+\end{bmatrix}\end{split}\]</div>
+<p>Since the energy of the normal mode is $U_{m}=1$, the quantity $left|beta_{m}(omega)right|^{2}$ gives the
+total amount of energy stored in the mode. The mode volume is the ratio between the total energy in the normal
+mode $U_{m}=1$ and the maximum value of the density of the electronic energy
+maxima ($epsilon left|bm{E}_{m}right|^{2}/2$). Therefore, the mode volume can be written as:</p>
+<div class="math notranslate nohighlight">
+\[V = \frac{ \int_{V} \epsilon_{r}(r)\left| E_{m}(r) \right|^{2} + \mu_{r}(r)\left| H_{m}(r) \right|^{2}}{\max{\left(\epsilon_{r}(r)\left| E_{m}(r) \right|^{2}\right)}} = \frac{2U_{m}}{\max{\left(\epsilon_{r}(r)\left| E_{m}(r) \right|^{2}\right)}}
+\label{NormModeVol}\]</div>
+<p>It is clear then that the quantised mode volume for an Hermitian system directly corresponds to a physical
+intuition regarding the spatial confinement of the cavity mode.</p>
+<p>% and a general approach was derived following a normalisation condition given by~cite{lee1999dyadic}
+(since known as the LK-Norm).</p>
+<p>Neat though this overlap is, Kristensen and colleagues identified an evident problem in the derivation for most
+practical systems~cite{kristensen2012generalized}. The derivation of $V$ implicitly relied on two assumptions;
+namely, the boundary conditions can be described as Dirichlet or von-Neuman; and therefore, the Hamiltonian of
+the cavity is Hermitian. In this picture, the cavity mode lifetimes are infinite, although they do not radiate
+out to infinity due to the hard boundary.</p>
+<p>In reality, these conditions are not true, and in a similar manner to the Linbladian construction of the quantum
+dynamics of open systems, a description of open-system cavity QED is required.</p>
+<section id="open-boundary-conditions">
+<h3>Open Boundary Conditions<a class="headerlink" href="#open-boundary-conditions" title="Permalink to this heading"></a></h3>
+<p>In practical systems, energy within the cavity may dissipate through absorption, dispersion, and coupling to
+leaky radiative modes. Now, the mode lifetime $tau_{m}$ is finite, and the eigenfrequency $om$ takes on a
+complex component:</p>
+<div class="math notranslate nohighlight">
+\[\Im{\eigval{\omega}} = \frac{-1}{\tau_{m}}\]</div>
+<p>In addition, the assumption of Dirichlet boundary conditions is not physically meaningful. In reality, the cavity
+modes radiate in the limit as the distance $r$ goes to infinity. Consequently, the correct boundary condition
+must account for this radiation. A typically suitable choice is the Sommerfeld radiation condition~cite{sommerfeld1912greensche}. Starting with the inhomogeneous Helmholtz equation
+$left(nabla^{2}+k^{2} right)u = -f in mathbb{R}^{n}$, the boundary condition is:</p>
+<div class="math notranslate nohighlight">
+\[\lim_{|r|\rightarrow\infty} |r|^{\frac{n-1}{2}}\left( \frac{\partial}{\partial |r|} - ik\right) u(r) = 0\]</div>
+<p>textcolor{red}{Since the cavity modes are only conservative for a finite period, and the boundary condition is
+radiative, the time evolution operator is no longer Hermitian. Therefore, the cavity modes have been referred to
+as textit{quasi-normal modes} (QNMs) cite{sauvan2013theory}. This creates a problem when calculating the mode
+volume. As $Im{eigval{omega}} &lt; 0$, the EM fields become amplified as they propagate. This results in an
+exponential divergence of the QNM field as $|bm{r}|rightarrowinfty$, and the integral of eq.~ref{NormModeVol}
+therefore diverges also.}</p>
+</section>
+<section id="quasi-normal-mode-expansion">
+<h3>Quasi-Normal Mode Expansion<a class="headerlink" href="#quasi-normal-mode-expansion" title="Permalink to this heading"></a></h3>
+<p>Since the electric field mode forms a quasi normal basis, it can be decomposed into a small set of QNM modes:</p>
+<div class="math notranslate nohighlight">
+\[\left[\eigfunc{E}(r, \omega), \eigfunc{H}(r, \omega) \right] \approx \sum_{m=1}^{M} \alpha_{m}(\omega) \left[\eigfunc{E}(r), \eigfunc{H}(r)\right]\]</div>
+<p>…. where $alpha_{m}$ are unknown amplitude coefficients. The number of QNMs is determined by increasing M
+until convergence is reached.</p>
+<p>An adequate modal representation of a dissipative resonant system should rely on the natural eigenmodes of the
+structure. These are no longer normal modes with real eigenfrequencies but, rather, poles of the scattering matrix
+associated with complex eigenfrequencies.</p>
+<p>The eigenvalue distribution in the complex frequency plane consists of a discrete set of QNMs, represented with
+red dots. These are natural frequencies, since they are frequencies for which there is a finite response for even
+an infinitesimal excitation. They are thus poles of the scattering operator.</p>
+<p>From the causality principle, $bm{mu}^{*}(bm{r},om) = bm{mu}(bm{r},-om)$ and so if ($eigfunc{E}$,
+$eigfunc{H}$, $eigval{om}$) is a source free solution of Maxwell’s equations, so too is ($eigfunc{E}^{*}$,
+$eigfunc{H}^{*}$, $-eigval{om}^{*}$). This is why every eigenfrequency $eigval{om}$ in the lower right
+quadrant is paired with another twin frequency $-eigval{om}^{*}$ in the lower left quadrant.</p>
+</section>
+<section id="qnm-spectrum">
+<h3>QNM Spectrum<a class="headerlink" href="#qnm-spectrum" title="Permalink to this heading"></a></h3>
+<p><strong>Accumulation Points:</strong>  These can arise from materials resonances, manifesting as either poles of the
+$epsilon(om)$ or $mu(om)$, corner modes, or plasmonic resonances. The latter appear in the case of metallic
+particles surrounded by a dielectric material and correspond to complex frequencies for which
+$epsilon(om) = -epsilon_{B}$, where $epsilon_{B}$ is the permittivity of the dielectric medium.
+Accumulation points are responsible for physical effects such as quenching, which is a detrimental process for a
+light emitting molecule in the vicinity of a metallic material.</p>
+<p><strong>Branch Cuts:</strong> These can occur when the cavity is not surrounded by a uniform medium. Different outgoing
+wave conditions should be satisfied in two different half spaces; the substrate and superstrate. For cavities
+surrounded by complex environments which support guided modes, this becomes more difficult.</p>
+<p><strong>Exceptional Points:</strong>  These are spectral singularities for which two or more QNMs coalesce for specific
+values of an opto-geometrical parameter. These have have recently generated interest since optical gain and loss
+can be used as nonconservative ingredients to create exceptional points, which in turn result in new optical
+properties.</p>
+</section>
+<section id="qnm-regularisation">
+<h3>QNM Regularisation<a class="headerlink" href="#qnm-regularisation" title="Permalink to this heading"></a></h3>
+<p>The purpose of regularisation is to attempt to reproduce the tools of Hermitian electrodynamics, i.e. with a
+defined inner product, one can normalise vectors, construct an orthogonal basis, and project onto basis vectors.
+So, if an inner product can be defined for non-Hermitian systems, the treatment can be simplified significantly.</p>
+<section id="regularisation-in-quantum-mechanics">
+<h4>Regularisation in Quantum Mechanics<a class="headerlink" href="#regularisation-in-quantum-mechanics" title="Permalink to this heading"></a></h4>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gareth Sion Jones.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
