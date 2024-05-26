@@ -8,6 +8,7 @@ PyLumerical/cavity.py
 PyLumerical/cavityanalysis.py
 PyLumerical/main.py
 PyLumerical/monitor.py
+PyLumerical/pip.py
 PyLumerical/simulation.py
 PyLumerical/source.py
 PyLumerical.egg-info/PKG-INFO

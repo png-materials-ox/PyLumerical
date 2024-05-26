@@ -50,13 +50,12 @@
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Theory</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#calculating-mode-volume">Calculating Mode Volume</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exploiting-cyllindrical-symmetry">Exploiting Cyllindrical Symmetry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#open-boundary-conditions">Open Boundary Conditions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#quasi-normal-mode-expansion">Quasi-Normal Mode Expansion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#qnm-spectrum">QNM Spectrum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#qnm-regularisation">QNM Regularisation</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#regularisation-in-quantum-mechanics">Regularisation in Quantum Mechanics</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#qnm-regularisation">QNM Regularisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#regularisation-in-quantum-mechanics">Regularisation in Quantum Mechanics</a></li>
 </ul>
 </li>
 </ul>
@@ -95,20 +94,20 @@
 <p class="admonition-title">Note</p>
 <p>This section is under development.</p>
 </div>
-<p>Precisely what is the mode volume $V$ of a cavity is a difficult quantity to define. Edwin Purcell defined this
+<p>Precisely what is the mode volume <span class="math notranslate nohighlight">\(V\)</span> of a cavity is a difficult quantity to define. Edwin Purcell defined this
 “the volume of the resonator”~cite{PurcellAPS1946}, and therefore the quantity may represent spatial confinement
-of the cavity mode. From this, one can intuit that the calculation of $V$ simply involves taking a volume integral
+of the cavity mode. From this, one can intuit that the calculation of <span class="math notranslate nohighlight">\(V\)</span> simply involves taking a volume integral
 over the domain of the resonator which supports electromagnetic waves.</p>
 <p>When quantised, by construction the mode volume is defined by the energy normalisation condition of the field per
-photon, $E_{0}$. In a closed system, there exists an inner product on a closed space of wavefunctions which
+photon, <span class="math notranslate nohighlight">\(E_{0}\)</span>. In a closed system, there exists an inner product on a closed space of wavefunctions which
 guarantees orthogonality:</p>
 <div class="math notranslate nohighlight">
 \[\bra{\psi_m}\ket{\psi_{n}} = \int_{\Omega}\Psi^{*}_{m}(\zeta)\Psi_{n}(\zeta) d\zeta =\delta_{mn}\]</div>
 <p>An equivalent way to write the mode volume in the language of cavity QED therefore is:</p>
 <div class="math notranslate nohighlight">
 \[V = \frac{\bra{\Psi_{c}}\ket{\Psi_{c}}}{\epsilon(r_{c}) \Psi_{c}^{2}(r_{c})}\]</div>
-<p>….where $Psi_{c}$ represents a cavity mode, and $Psi_{c}(r_{0})$ is the cavity mode at a position which
-guarantees it is maximal. This form can be directly related to equation~ref{HermitianModeVolBckrnd}. If the
+<p>….where <span class="math notranslate nohighlight">\(\Psi_{c}\)</span> represents a cavity mode, and <span class="math notranslate nohighlight">\(\Psi_{c}(r_{0})\)</span> is the cavity mode at a position
+which guarantees it is maximal. This form can be directly related to equation~ref{HermitianModeVolBckrnd}. If the
 Hamiltonian of the cavity is Hermitian, it is guaranteed to be diagonalisable in a basis of elements (here,
 normal modes) with real valued eigenvalues corresponding to energy / resonance frequency.</p>
 <p>Starting with the wave equation:</p>
@@ -117,7 +116,8 @@ normal modes) with real valued eigenvalues corresponding to energy / resonance f
 <p>….the inner product is defined by</p>
 <div class="math notranslate nohighlight">
 \[\bra{\psi_m}\ket{\psi_{n}} = \frac{1}{2} \int_{V} \left(\epsilon E^{*}_{m} \cdot \epsilon E_{n} + \mu H^{*}_{m} \cdot \mu H_{n} \right) d^{3}r\]</div>
-<p>The normal modes of this system are $ket{Psi_{m}} = left[H_{m}, E_{m}right]$ with real eigenvalues $frac{omega^{2}_{m}}{c^{2}}$ corresponding to infinite lifetimes. The cavity modes are normalised by:</p>
+<p>The normal modes of this system are <span class="math notranslate nohighlight">\(\ket{\Psi_{m}} = \left[H_{m}, E_{m}\right]\)</span> with real eigenvalues
+<span class="math notranslate nohighlight">\(\frac{\omega^{2}_{m}}{c^{2}}\)</span> corresponding to infinite lifetimes. The cavity modes are normalised by:</p>
 <div class="math notranslate nohighlight">
 \[\bra{\psi_m}\ket{\psi_{n}} = \frac{1}{2} \int_{V} \left(\epsilon \left|E\right|^{2} + \mu_{0} \left|H_{m}\right|^{2} \right) d^{3}r = 1\]</div>
 <p>Since the cavity modes are orthonormal, they can be said to be complete, since every Cauchy sequence of vectors
@@ -130,9 +130,9 @@ admits a limit in the space itself. Therefore:</p>
 \begin{bmatrix}
     H_{m} \\ E_{m}
 \end{bmatrix}\end{split}\]</div>
-<p>….where $beta_{m}$ are the excitation coefficients or amplitudes of the normal mode $m$.</p>
-<p>When the EM field is induced by an excitation from an incident field $left[bm{H}_{inc}, bm{E}_{inc}right]$,
-the total EM field $left[bm{H}, bm{E}right]$ can therefore be expanded over the normal modes as</p>
+<p>….where <span class="math notranslate nohighlight">\(\beta_{m}`\)</span> are the excitation coefficients or amplitudes of the normal mode <span class="math notranslate nohighlight">\(m\)</span>.</p>
+<p>When the EM field is induced by an excitation from an incident field $left[H_{inc}, E_{inc}right]$,
+the total EM field <span class="math notranslate nohighlight">\(\left[H, E\right]\)</span> can therefore be expanded over the normal modes as</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{bmatrix}
     H \\ E
@@ -145,35 +145,38 @@ the total EM field $left[bm{H}, bm{E}right]$ can therefore be expanded over the 
 \begin{bmatrix}
     H_{m} \\ E_{m}
 \end{bmatrix}\end{split}\]</div>
-<p>Since the energy of the normal mode is $U_{m}=1$, the quantity $left|beta_{m}(omega)right|^{2}$ gives the
-total amount of energy stored in the mode. The mode volume is the ratio between the total energy in the normal
-mode $U_{m}=1$ and the maximum value of the density of the electronic energy
-maxima ($epsilon left|bm{E}_{m}right|^{2}/2$). Therefore, the mode volume can be written as:</p>
+<p>Since the energy of the normal mode is <span class="math notranslate nohighlight">\(U_{m}=1\)</span>, the quantity <span class="math notranslate nohighlight">\(\left|\beta_{m}(\omega)\right|^{2}`\)</span>
+gives the total amount of energy stored in the mode. The mode volume is the ratio between the total energy in
+the normal mode <span class="math notranslate nohighlight">\(U_{m}=1\)</span> and the maximum value of the density of the electronic energy
+maxima (<span class="math notranslate nohighlight">\(\epsilon \left|E_{m}\right|^{2}/2\)</span>). Therefore, the mode volume can be written as:</p>
 <div class="math notranslate nohighlight">
 \[V = \frac{ \int_{V} \epsilon_{r}(r)\left| E_{m}(r) \right|^{2} + \mu_{r}(r)\left| H_{m}(r) \right|^{2}}{\max{\left(\epsilon_{r}(r)\left| E_{m}(r) \right|^{2}\right)}} = \frac{2U_{m}}{\max{\left(\epsilon_{r}(r)\left| E_{m}(r) \right|^{2}\right)}}
 \label{NormModeVol}\]</div>
 <p>It is clear then that the quantised mode volume for an Hermitian system directly corresponds to a physical
 intuition regarding the spatial confinement of the cavity mode.</p>
-<p>% and a general approach was derived following a normalisation condition given by~cite{lee1999dyadic}
-(since known as the LK-Norm).</p>
 <p>Neat though this overlap is, Kristensen and colleagues identified an evident problem in the derivation for most
-practical systems~cite{kristensen2012generalized}. The derivation of $V$ implicitly relied on two assumptions;
+practical systems~cite{kristensen2012generalized}. The derivation of <span class="math notranslate nohighlight">\(V\)</span> implicitly relied on two assumptions;
 namely, the boundary conditions can be described as Dirichlet or von-Neuman; and therefore, the Hamiltonian of
 the cavity is Hermitian. In this picture, the cavity mode lifetimes are infinite, although they do not radiate
 out to infinity due to the hard boundary.</p>
 <p>In reality, these conditions are not true, and in a similar manner to the Linbladian construction of the quantum
 dynamics of open systems, a description of open-system cavity QED is required.</p>
+<section id="exploiting-cyllindrical-symmetry">
+<h3>Exploiting Cyllindrical Symmetry<a class="headerlink" href="#exploiting-cyllindrical-symmetry" title="Permalink to this heading"></a></h3>
+<div class="math notranslate nohighlight">
+\[V = \frac{ \int_{0}^{r_{max}} \int_{z_{min}}^{z_{max}} 2\pi r \epsilon(r,z) \left| E(r,z) \right|^{2} dz dr }{\max\left( \epsilon(r,z) \left| E(r,z) \right|^{2} \right)}\]</div>
+</section>
 <section id="open-boundary-conditions">
 <h3>Open Boundary Conditions<a class="headerlink" href="#open-boundary-conditions" title="Permalink to this heading"></a></h3>
 <p>In practical systems, energy within the cavity may dissipate through absorption, dispersion, and coupling to
-leaky radiative modes. Now, the mode lifetime $tau_{m}$ is finite, and the eigenfrequency $om$ takes on a
-complex component:</p>
+leaky radiative modes. Now, the mode lifetime <span class="math notranslate nohighlight">\(tau_{m}\)</span> is finite, and the eigenfrequency <span class="math notranslate nohighlight">\(\om\)</span>
+takes on a complex component:</p>
 <div class="math notranslate nohighlight">
 \[\Im{\eigval{\omega}} = \frac{-1}{\tau_{m}}\]</div>
 <p>In addition, the assumption of Dirichlet boundary conditions is not physically meaningful. In reality, the cavity
-modes radiate in the limit as the distance $r$ goes to infinity. Consequently, the correct boundary condition
+modes radiate in the limit as the distance <span class="math notranslate nohighlight">\(r\)</span> goes to infinity. Consequently, the correct boundary condition
 must account for this radiation. A typically suitable choice is the Sommerfeld radiation condition~cite{sommerfeld1912greensche}. Starting with the inhomogeneous Helmholtz equation
-$left(nabla^{2}+k^{2} right)u = -f in mathbb{R}^{n}$, the boundary condition is:</p>
+<span class="math notranslate nohighlight">\(\left(\nabla^{2}+k^{2} \right)u = -f \in \mathbb{R}^{n}\)</span>, the boundary condition is:</p>
 <div class="math notranslate nohighlight">
 \[\lim_{|r|\rightarrow\infty} |r|^{\frac{n-1}{2}}\left( \frac{\partial}{\partial |r|} - ik\right) u(r) = 0\]</div>
 <p>textcolor{red}{Since the cavity modes are only conservative for a finite period, and the boundary condition is
@@ -222,9 +225,9 @@ properties.</p>
 <p>The purpose of regularisation is to attempt to reproduce the tools of Hermitian electrodynamics, i.e. with a
 defined inner product, one can normalise vectors, construct an orthogonal basis, and project onto basis vectors.
 So, if an inner product can be defined for non-Hermitian systems, the treatment can be simplified significantly.</p>
-<section id="regularisation-in-quantum-mechanics">
-<h4>Regularisation in Quantum Mechanics<a class="headerlink" href="#regularisation-in-quantum-mechanics" title="Permalink to this heading"></a></h4>
 </section>
+<section id="regularisation-in-quantum-mechanics">
+<h3>Regularisation in Quantum Mechanics<a class="headerlink" href="#regularisation-in-quantum-mechanics" title="Permalink to this heading"></a></h3>
 </section>
 </section>
 </section>

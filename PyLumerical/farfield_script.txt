@@ -1,38 +1,3 @@
-##############################################
-# Far field radiation from closed box
-# This script calculates the far field projection in any desired range of angles for a 3D radiation plot.
-# It assumes a structure and source that are symmetric (or anti-symmetric) with respect to
-# the y=0 plane.
-#
-# Note: The far field projection calculation assumes that all of the monitors
-#       are in a single homogeneous material. If there is a substrate then
-#       include_z_min_boundary should be set to false in the Setup tab.
-#       If multiple frequency points are collected, the projection can be slower.
-# 
-# Input properties:
-# theta min and max: the min and max polar angles for visualization
-# N theta: number of points to resolve theta
-# N phi per half: number of points to resolve the azimuthal angle phi from 0 to 180 degrees.
-#                 the region from 180 to 360 degrees is constructed using symmetry.
-# project all wavelengths: can be 0, 1 for true, false. 
-#                         If true, all wavelengths will be projected which can take 10s of seconds or more, depending on
-#                         how many cores you have available.
-#                         If false, the single wavelength closest to the “target wavelength” will chosen for projection.
-# near field points per wavelength: The near fields can be downsampled for far field projection, which substantially 
-#                                   speeds up the projection. Values of 3 or 4 are typically sufficient. The minimum Nyquist
-#                                   limit of 2 is enforced. A value of 3 is typically ideal. Increasing this higher will 
-#                                   result in substantially longer far field projection times. If a value larger than
-#                                   10 is used it will be set to 10.
-#
-# 
-# Output properties:
-# farfield: 
-#
-# Tags: far field projection closed box
-#
-# Copyright 2020 Lumerical Solutions Inc
-##############################################
-
 # setup downsampling for far field projections
 farfieldsettings("override near field mesh",true);
 near_points = %near field points per wavelength%;

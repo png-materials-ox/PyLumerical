@@ -2,8 +2,17 @@
 Theory
 ************************************
 
+.. Theory
+.. ========
+
+.. Calculating Mode Volume
+.. ----------------------------------------------
+
+Theory
+------
+
 Calculating Mode Volume
-=======================
+^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note::
 
@@ -119,14 +128,14 @@ dynamics of open systems, a description of open-system cavity QED is required.
 
 
 Exploiting Cyllindrical Symmetry
---------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. math::
 
     V = \frac{ \int_{0}^{r_{max}} \int_{z_{min}}^{z_{max}} 2\pi r \epsilon(r,z) \left| E(r,z) \right|^{2} dz dr }{\max\left( \epsilon(r,z) \left| E(r,z) \right|^{2} \right)}
 
 Open Boundary Conditions 
-------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 In practical systems, energy within the cavity may dissipate through absorption, dispersion, and coupling to 
 leaky radiative modes. Now, the mode lifetime :math:`tau_{m}` is finite, and the eigenfrequency :math:`\om` 
@@ -160,7 +169,7 @@ exponential divergence of the QNM field as $|\bm{r}|\rightarrow\infty$, and the 
 therefore diverges also.} 
 
 Quasi-Normal Mode Expansion
----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Since the electric field mode forms a quasi normal basis, it can be decomposed into a small set of QNM modes:
 
@@ -193,7 +202,7 @@ $\eigfunc{H}^{*}$, $-\eigval{\om}^{*}$). This is why every eigenfrequency $\eigv
 quadrant is paired with another twin frequency $-\eigval{\om}^{*}$ in the lower left quadrant.
 
 QNM Spectrum 
-------------
+^^^^^^^^^^^^
 
 **Accumulation Points:**  These can arise from materials resonances, manifesting as either poles of the
 $\epsilon(\om)$ or $\mu(\om)$, corner modes, or plasmonic resonances. The latter appear in the case of metallic
@@ -212,14 +221,14 @@ can be used as nonconservative ingredients to create exceptional points, which i
 properties.
 
 QNM Regularisation
-------------------
+^^^^^^^^^^^^^^^^^^
 
 The purpose of regularisation is to attempt to reproduce the tools of Hermitian electrodynamics, i.e. with a
 defined inner product, one can normalise vectors, construct an orthogonal basis, and project onto basis vectors.
 So, if an inner product can be defined for non-Hermitian systems, the treatment can be simplified significantly. 
 
 Regularisation in Quantum Mechanics
------------------------------------
+"""""""""""""""""""""""""""""""""""
 
 .. Regularisation is used in QM to properly map divergent QNMs of open space onto a Hilbert space, and enforce QNMs to be square-integrable. These now bounded QNMs can be considered as new vectors of a new Hilbert space. Starting with the classical Hamiltonian format, and assigning $\breve{\Psi}=\left[\breve{\bm{E}}, \breve{\bm{H}}\right]$:
 
