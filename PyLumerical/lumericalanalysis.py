@@ -204,81 +204,120 @@ class LumericalAnalysis:
         # }
         
     
-    def mode_volume_2D_QNM(self, dipole_shift=0):
-    
-        x = self.fdtd.getdata('mode volume 2D::xy_middle',"x").flatten()    
-        y = self.fdtd.getdata('mode volume 2D::xy_middle',"y").flatten()
-        z = self.fdtd.getdata('mode volume 2D::xz_middle',"z").flatten()    
-    
+    def mode_volume_2D_QNM(self, dipole_shift=0, resonances=None):
+        
+        if resonances is None:
+            resonances = self.resonances()
+            
+        wr = 2 * np.pi * resonances.f0.values
+        Q = resonances.Q.values
+        f_spectrum = self.f_spectrum(plotting=False, saveplot=False)
+        
+        w_qnm = wr - 1j*(1/(2*Q))
+        
+        x = self.fdtd.getdata('mode volume 2D::xy_middle',"x")   
+        y = self.fdtd.getdata('mode volume 2D::xy_middle',"y")
+        z = self.fdtd.getdata('mode volume 2D::xz_middle',"z")   
+        
         x_pt = np.shape(x)           # Points in the axis
         z_pt = np.shape(z)           # Points in the z axis            
-    
-        f = self.fdtd.getresult('mode volume 2D::xy_middle', 'f');
-        wlen = sc.c/f;
-        midpoint_z_ind = int(self.fdtd.round(.5*self.fdtd.size(x , 1)))    # find the z midpoint index value
-        midpoint_x_ind = int(self.fdtd.floor(x_pt[0]/2)+1)
-
-        # Integration ranges (0 -> rmax, zmin -> zmax)
-        z_int_range = z                                               
-        r_int_range = x[0:midpoint_x_ind]
         
+        f = self.fdtd.getresult('mode volume 2D::xy_middle', 'f').flatten()
+        fres_indices = self.fdtd.find(f, resonances.f0.values).flatten()
+        fres_indices = [int(f) for f in fres_indices]
+        
+        wres = 2 * np.pi * f[fres_indices]
+        w = 2*np.pi*f
+        
+        midpoint_z_ind = self.fdtd.round(.5*self.fdtd.size(x , 1))    # find the z midpoint index value
+        midpoint_x_ind = int(self.fdtd.floor(x_pt[0]/2)+1)
+        
+        # Integration ranges (0 -> rmax, zmin -> zmax)
+        z_int_range = z; 
+        r_int_range = x[0:midpoint_x_ind]  
+            
         # Get electric fields
         E_xz = self.fdtd.pinch(self.fdtd.getelectric('mode volume 2D::xz_middle'))
         E_yz = self.fdtd.pinch(self.fdtd.getelectric('mode volume 2D::yz_middle'))
         
         # Get refractive indices
-        n_xz = self.fdtd.pinch(self.fdtd.getdata('mode volume 2D::n',"index_z"))                       
+        n_xz = self.fdtd.pinch(self.fdtd.getdata('mode volume 2D::n',"index_z"))
         
-        nv_zpos_ind = int(self.fdtd.find(z, dipole_shift))           # Position of the NV
+        nv_zpos_ind = int(self.fdtd.find(z, dipole_shift))            # Position of the NV
         n_nv_xz = np.real(n_xz[midpoint_x_ind, nv_zpos_ind]) # Refractive index at the position of the NV
-        n_nv_yz = np.real(n_xz[midpoint_x_ind, nv_zpos_ind])                                  
+        n_nv_yz = np.real(n_xz[midpoint_x_ind, nv_zpos_ind])                                   
         
         # Predefine arrays for looping
-        Vol_abs_xz = np.ones(len(f))
-        Vol_lam_xz = np.ones(len(f))
+        Vol_abs_xz = np.ones(len(fres_indices))
+        Vol_lam_xz = np.ones(len(fres_indices))
         
-        Vol_abs_yz = np.ones(len(f))
-        Vol_lam_yz = np.ones(len(f))
+        Vol_abs_yz = np.ones(len(fres_indices))
+        Vol_lam_yz = np.ones(len(fres_indices))
         
-        # Loop over each frequency
-        for i in range(len(f)):
+        for i in range(0, len(fres_indices)-1):
+            
             n = n_xz[0:midpoint_x_ind,0:z_pt[0]]
-        
-            E_xz_res = self.fdtd.pinch(E_xz, 3, 1)
-            E_xz_mid = E_xz_res[0:midpoint_x_ind,0:z_pt[0]]                      # half of the x-z cut
-            eps_E_xz = np.real(n**2)*E_xz_mid
-
-            # Calculate epsilon * E at the NV position 
-            eps_E_xz_at_nv = eps_E_xz[midpoint_x_ind-1, nv_zpos_ind]                          
-            eps_E_xz_max = max(eps_E_xz.flatten())    # Max value                                
             
-            E_yz_res = self.fdtd.pinch(E_yz, 3, 1)
-            E_yz_mid = E_yz_res[0:midpoint_x_ind,0:z_pt[0]]                      # half of the x-z cut
-            eps_E_yz = np.real(n**2)*E_yz_mid
-            eps_E_yz_at_nv = eps_E_yz[midpoint_x_ind-1, nv_zpos_ind]                         
-            eps_E_yz_max = max(eps_E_yz.flatten())
-                
+            wm = w_qnm[i]
+            wn = w_qnm[i+1]
             
-            V0_xz = E_xz_mid*np.real(n**2)*2*np.pi                                  # n^2 
+            delta_wqnm = wm * np.real(n**2) - wn*np.real(n**2)
+            
+            
+            Em_xz_res = self.fdtd.pinch(E_xz, 3, fres_indices[i])
+            Em_xz_mid = Em_xz_res[0:midpoint_x_ind, 0:z_pt[0]]                     # half of the x-z cut
+            
+            En_xz_res = self.fdtd.pinch(E_xz, 3, fres_indices[i+1])
+            En_xz_mid = En_xz_res[0:midpoint_x_ind,0:z_pt[0]]  
+            
+            E_qnm = Em_xz_mid * delta_wqnm * En_xz_mid
+            eps_E_xz = np.real(n**2)*Em_xz_mid
+            
+            
+            eps_E_xz_at_nv = eps_E_xz[-1, nv_zpos_ind] # THIS IS WRONG!!!!!!!!
+            eps_E_xz_max = max(eps_E_xz.flatten())
+            
+            V0_xz = E_qnm*np.real(n**2)*2*np.pi
             Vol_raw1_xz = self.fdtd.integrate(V0_xz,2,z_int_range)
-            Vol_raw2_xz = 1e18*abs(self.fdtd.integrate(Vol_raw1_xz*r_int_range,1,r_int_range)) # Unit in um^3.
+            Vol_raw2_xz = 1e18*abs(self.fdtd.integrate(Vol_raw1_xz*r_int_range,1,r_int_range))
             
-            Vol_abs_xz[i] = Vol_raw2_xz/eps_E_xz_max                         # unit:um^3, for air-like mode
-            Vol_lam_xz[i] = Vol_abs_xz[i]/(wlen[i]^3*1e18)  
+            Vol_abs_xz[i] = Vol_raw2_xz/(eps_E_xz_max)                         # unit:um^3, for air-like mode
+            Vol_lam_xz[i] = Vol_abs_xz[i]/(wres[i]**3*1e18)   
             
-            V0_yz = E_yz_mid*np.real(n**2)*2*np.i                                  # n^2 
+            
+            # REPEAT for YZ
+            Em_yz_res = self.fdtd.pinch(E_yz, 3, fres_indices[i])
+            Em_yz_mid = Em_yz_res[0:midpoint_x_ind, 0:z_pt[0]]                     # half of the x-z cut
+            
+            En_yz_res = self.fdtd.pinch(E_yz, 3, fres_indices[i+1])
+            En_yz_mid = En_yz_res[0:midpoint_x_ind,0:z_pt[0]]  
+            
+            E_qnm = Em_yz_mid * delta_wqnm * En_yz_mid
+            eps_E_yz = np.real(n**2)*Em_yz_mid
+            
+            
+            eps_E_yz_at_nv = eps_E_yz[-1, nv_zpos_ind] # THIS IS WRONG!!!!!!!!
+            eps_E_yz_max = max(eps_E_yz.flatten())
+            
+            V0_yz = E_qnm*np.real(n**2)*2*np.pi
             Vol_raw1_yz = self.fdtd.integrate(V0_yz,2,z_int_range)
-            Vol_raw2_yz = 1e18*abs(self.fdtd.integrate(Vol_raw1_yz*r_int_range,1,r_int_range)) # Unit in um^3.
+            Vol_raw2_yz = 1e18*abs(self.fdtd.integrate(Vol_raw1_yz*r_int_range,1,r_int_range))
             
             Vol_abs_yz[i] = Vol_raw2_yz/(eps_E_yz_max)                         # unit:um^3, for air-like mode
-            Vol_lam_yz[i] = Vol_abs_yz(i)/(wlen(i)^3*1e18)   
-        
-        
+            Vol_lam_yz[i] = Vol_abs_yz[i]/(wres[i]**3*1e18)   
+         
+            
         ## Average mode volume
-        Vol_abs_avg = (Vol_abs_xz+Vol_abs_yz)/2
-        Vol_lam_avg = (Vol_lam_xz+Vol_lam_yz)/2
-        n_nv_avg = (n_nv_xz+n_nv_yz)/2
-        In2_nv_avg = (eps_E_xz_at_nv+eps_E_yz_at_nv)/2
-        In2_max_avg = (eps_E_xz_max+eps_E_yz_max)/2          # unit:lam^3
+        Vol_abs_avg = (Vol_abs_xz + Vol_abs_yz)/2;
+        Vol_lam_avg = (Vol_lam_xz + Vol_lam_yz)/2;
+        n_nv_avg = (n_nv_xz + n_nv_yz)/2;
+        In2_nv_avg = (eps_E_xz_at_nv + eps_E_yz_at_nv)/2;
+        In2_max_avg = (eps_E_xz_max + eps_E_yz_max)/2;             # unit:lam^3    
         
-        return Vol_abs_avg
+        return pd.DataFrame(data={'Vol_abs_xz':Vol_abs_xz, 
+                                  'Vol_lam_xz':Vol_lam_yz,
+                                  'Vol_abs_yz':Vol_abs_xz,
+                                  'Vol_lam_yz':Vol_lam_yz,
+                                  'Vol_abs_avg':Vol_abs_avg,
+                                  'Vol_lam_avg':Vol_lam_avg
+                                  })

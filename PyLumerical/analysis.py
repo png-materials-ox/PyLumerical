@@ -15,7 +15,7 @@ fdtd = lumapi.FDTD()
 
 pdir = 'C:\\Users\\mans4209\\Documents\\LumericalFiles\\Philippa\\test\\'
 
-fdtd.load(pdir + 'fsp.fsp')
+fdtd.load(pdir + 'fsp4.fsp')
 
 analysis = lumericalanalysis.LumericalAnalysis(fdtd=fdtd)
 

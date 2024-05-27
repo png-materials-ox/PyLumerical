@@ -1,5 +1,6 @@
 runanalysis('Qanalysis');
 resonances = getresult('Qanalysis', 'resonances');
+
 wr = 2 * pi * resonances(:,1);
 Q = resonances(:,3);
 f_spectrum = getresult('Qanalysis', 'f_spectrum');
