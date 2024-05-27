@@ -273,18 +273,18 @@ class LumericalAnalysis:
                 En_xz_res = self.fdtd.pinch(E_xz, 3, fres_indices[i+1])
                 En_xz_mid = En_xz_res[0:midpoint_x_ind,0:z_pt[0]]  
                 
-                E_qnm = Em_xz_mid * delta_wqnm * En_xz_mid
+                E_qnm_xz = Em_xz_mid * delta_wqnm * En_xz_mid
                 eps_E_xz = np.real(n**2)*Em_xz_mid
                 
                 
                 eps_E_xz_at_nv = eps_E_xz[-1, nv_zpos_ind] # THIS IS WRONG!!!!!!!!
                 eps_E_xz_max = max(eps_E_xz.flatten())
                 
-                V0_xz = E_qnm*np.real(n**2)*2*np.pi
+                V0_xz = 2*np.pi*E_qnm_xz
                 Vol_raw1_xz = self.fdtd.integrate(V0_xz,2,z_int_range)
                 Vol_raw2_xz = 1e18*abs(self.fdtd.integrate(Vol_raw1_xz*r_int_range,1,r_int_range))
                 
-                Vol_abs_xz[i] = Vol_raw2_xz/(eps_E_xz_max)                         # unit:um^3, for air-like mode
+                Vol_abs_xz[i] = Vol_raw2_xz/(eps_E_xz_max)                        # unit:um^3, for air-like mode
                 Vol_lam_xz[i] = Vol_abs_xz[i]/(wres[i]**3)   
                 
                 
@@ -295,25 +295,25 @@ class LumericalAnalysis:
                 En_yz_res = self.fdtd.pinch(E_yz, 3, fres_indices[i+1])
                 En_yz_mid = En_yz_res[0:midpoint_x_ind,0:z_pt[0]]  
                 
-                E_qnm = Em_yz_mid * delta_wqnm * En_yz_mid
+                E_qnm_yz = Em_yz_mid * delta_wqnm * En_yz_mid
                 eps_E_yz = np.real(n**2)*Em_yz_mid
                 
                 
                 eps_E_yz_at_nv = eps_E_yz[-1, nv_zpos_ind] # THIS IS WRONG!!!!!!!!
                 eps_E_yz_max = max(eps_E_yz.flatten())
                 
-                V0_yz = E_qnm*np.real(n**2)*2*np.pi
+                V0_yz = 2*np.pi*E_qnm_yz
                 Vol_raw1_yz = self.fdtd.integrate(V0_yz,2,z_int_range)
                 Vol_raw2_yz = 1e18*abs(self.fdtd.integrate(Vol_raw1_yz*r_int_range,1,r_int_range))
                 
-                Vol_abs_yz[i] = Vol_raw2_yz/(eps_E_yz_max)                         # unit:um^3, for air-like mode
+                Vol_abs_yz[i] = Vol_raw2_yz/(eps_E_yz_max)
                 Vol_lam_yz[i] = Vol_abs_yz[i]/(wres[i]**3)   
                 
                 bar.update(i)
          
             
         ## Average mode volume
-        Vol_abs_avg = (Vol_abs_xz + Vol_abs_yz)/2;
+        Vol_abs_avg = ((Vol_abs_xz + Vol_abs_yz)/2);
         Vol_lam_avg = (Vol_lam_xz + Vol_lam_yz)/2;
         n_nv_avg = (n_nv_xz + n_nv_yz)/2;
         In2_nv_avg = (eps_E_xz_at_nv + eps_E_yz_at_nv)/2;
