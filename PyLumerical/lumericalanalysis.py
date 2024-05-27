@@ -11,6 +11,7 @@ from matplotlib import rcParams
 import numpy as np
 import pandas as pd
 import scipy.constants as sc
+import progressbar
 
 class LumericalAnalysis:
     
@@ -254,57 +255,61 @@ class LumericalAnalysis:
         Vol_abs_yz = np.ones(len(fres_indices))
         Vol_lam_yz = np.ones(len(fres_indices))
         
-        for i in range(0, len(fres_indices)-1):
-            
-            n = n_xz[0:midpoint_x_ind,0:z_pt[0]]
-            
-            wm = w_qnm[i]
-            wn = w_qnm[i+1]
-            
-            delta_wqnm = wm * np.real(n**2) - wn*np.real(n**2)
-            
-            
-            Em_xz_res = self.fdtd.pinch(E_xz, 3, fres_indices[i])
-            Em_xz_mid = Em_xz_res[0:midpoint_x_ind, 0:z_pt[0]]                     # half of the x-z cut
-            
-            En_xz_res = self.fdtd.pinch(E_xz, 3, fres_indices[i+1])
-            En_xz_mid = En_xz_res[0:midpoint_x_ind,0:z_pt[0]]  
-            
-            E_qnm = Em_xz_mid * delta_wqnm * En_xz_mid
-            eps_E_xz = np.real(n**2)*Em_xz_mid
-            
-            
-            eps_E_xz_at_nv = eps_E_xz[-1, nv_zpos_ind] # THIS IS WRONG!!!!!!!!
-            eps_E_xz_max = max(eps_E_xz.flatten())
-            
-            V0_xz = E_qnm*np.real(n**2)*2*np.pi
-            Vol_raw1_xz = self.fdtd.integrate(V0_xz,2,z_int_range)
-            Vol_raw2_xz = 1e18*abs(self.fdtd.integrate(Vol_raw1_xz*r_int_range,1,r_int_range))
-            
-            Vol_abs_xz[i] = Vol_raw2_xz/(eps_E_xz_max)                         # unit:um^3, for air-like mode
-            Vol_lam_xz[i] = Vol_abs_xz[i]/(wres[i]**3*1e18)   
-            
-            
-            # REPEAT for YZ
-            Em_yz_res = self.fdtd.pinch(E_yz, 3, fres_indices[i])
-            Em_yz_mid = Em_yz_res[0:midpoint_x_ind, 0:z_pt[0]]                     # half of the x-z cut
-            
-            En_yz_res = self.fdtd.pinch(E_yz, 3, fres_indices[i+1])
-            En_yz_mid = En_yz_res[0:midpoint_x_ind,0:z_pt[0]]  
-            
-            E_qnm = Em_yz_mid * delta_wqnm * En_yz_mid
-            eps_E_yz = np.real(n**2)*Em_yz_mid
-            
-            
-            eps_E_yz_at_nv = eps_E_yz[-1, nv_zpos_ind] # THIS IS WRONG!!!!!!!!
-            eps_E_yz_max = max(eps_E_yz.flatten())
-            
-            V0_yz = E_qnm*np.real(n**2)*2*np.pi
-            Vol_raw1_yz = self.fdtd.integrate(V0_yz,2,z_int_range)
-            Vol_raw2_yz = 1e18*abs(self.fdtd.integrate(Vol_raw1_yz*r_int_range,1,r_int_range))
-            
-            Vol_abs_yz[i] = Vol_raw2_yz/(eps_E_yz_max)                         # unit:um^3, for air-like mode
-            Vol_lam_yz[i] = Vol_abs_yz[i]/(wres[i]**3*1e18)   
+        with progressbar.ProgressBar(max_value=len(fres_indices)) as bar:
+        
+            for i in range(0, len(fres_indices)-1):
+                
+                n = n_xz[0:midpoint_x_ind,0:z_pt[0]]
+                
+                wm = w_qnm[i]
+                wn = w_qnm[i+1]
+                
+                delta_wqnm = wm * np.real(n**2) - wn*np.real(n**2)
+                
+                
+                Em_xz_res = self.fdtd.pinch(E_xz, 3, fres_indices[i])
+                Em_xz_mid = Em_xz_res[0:midpoint_x_ind, 0:z_pt[0]]                     # half of the x-z cut
+                
+                En_xz_res = self.fdtd.pinch(E_xz, 3, fres_indices[i+1])
+                En_xz_mid = En_xz_res[0:midpoint_x_ind,0:z_pt[0]]  
+                
+                E_qnm = Em_xz_mid * delta_wqnm * En_xz_mid
+                eps_E_xz = np.real(n**2)*Em_xz_mid
+                
+                
+                eps_E_xz_at_nv = eps_E_xz[-1, nv_zpos_ind] # THIS IS WRONG!!!!!!!!
+                eps_E_xz_max = max(eps_E_xz.flatten())
+                
+                V0_xz = E_qnm*np.real(n**2)*2*np.pi
+                Vol_raw1_xz = self.fdtd.integrate(V0_xz,2,z_int_range)
+                Vol_raw2_xz = 1e18*abs(self.fdtd.integrate(Vol_raw1_xz*r_int_range,1,r_int_range))
+                
+                Vol_abs_xz[i] = Vol_raw2_xz/(eps_E_xz_max)                         # unit:um^3, for air-like mode
+                Vol_lam_xz[i] = Vol_abs_xz[i]/(wres[i]**3)   
+                
+                
+                # REPEAT for YZ
+                Em_yz_res = self.fdtd.pinch(E_yz, 3, fres_indices[i])
+                Em_yz_mid = Em_yz_res[0:midpoint_x_ind, 0:z_pt[0]]                     # half of the x-z cut
+                
+                En_yz_res = self.fdtd.pinch(E_yz, 3, fres_indices[i+1])
+                En_yz_mid = En_yz_res[0:midpoint_x_ind,0:z_pt[0]]  
+                
+                E_qnm = Em_yz_mid * delta_wqnm * En_yz_mid
+                eps_E_yz = np.real(n**2)*Em_yz_mid
+                
+                
+                eps_E_yz_at_nv = eps_E_yz[-1, nv_zpos_ind] # THIS IS WRONG!!!!!!!!
+                eps_E_yz_max = max(eps_E_yz.flatten())
+                
+                V0_yz = E_qnm*np.real(n**2)*2*np.pi
+                Vol_raw1_yz = self.fdtd.integrate(V0_yz,2,z_int_range)
+                Vol_raw2_yz = 1e18*abs(self.fdtd.integrate(Vol_raw1_yz*r_int_range,1,r_int_range))
+                
+                Vol_abs_yz[i] = Vol_raw2_yz/(eps_E_yz_max)                         # unit:um^3, for air-like mode
+                Vol_lam_yz[i] = Vol_abs_yz[i]/(wres[i]**3)   
+                
+                bar.update(i)
          
             
         ## Average mode volume

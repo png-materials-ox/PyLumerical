@@ -6,6 +6,7 @@ import imp
 import scipy.constants as sc
 import cavityanalysis
 import lumericalanalysis
+import matplotlib.pyplot as plt
 # import analysisbuilder
 
 # os.add_dll_directory("C:\\Program Files\\Lumerical\\v232\\api\\python\\")
@@ -33,6 +34,9 @@ Efields = analysis.electric_field_magnitude()
 # farfield = analysis.farfield_analysis()
 
 V = analysis.mode_volume_2D_QNM(dipole_shift=0)
+
+plt.plot(V['Vol_lam_avg']); plt.show()
+plt.plot(V['Vol_abs_avg']); plt.show()
 
 # Farfield Analysis
 
