@@ -346,19 +346,22 @@ class AnalysisObjects:
         #     script = f.read().rstrip()
         
         script = """
+            
             dipole_shift = 0; 
             
             x = getdata('xy_middle',"x");    
             y = getdata('xy_middle',"y");
             z = getdata('xz_middle',"z");    
             
+            x_pt=size(x);           # Points in the axis
+            z_pt=size(z);           # Points in the z axis            
+            
             f = getresult('xy_middle', 'f');
             wlen = c/f;
             midpoint_z_ind = round(.5*size(x , 1));    # find the z midpoint index value
             midpoint_x_ind = floor(x_pt(1)/2)+1;
             
-            x_pt=size(x);           # Points in the axis
-            z_pt=size(z);           # Points in the z axis
+            
             
             # Integration ranges (0 -> rmax, zmin -> zmax)
             z_int_range = z;                                               
@@ -372,16 +375,8 @@ class AnalysisObjects:
             n_xz = pinch(getdata('n',"index_z"));                       
             
             nv_zpos_ind = find(z, dipole_shift);            # Position of the NV
-            n_nv_xz = real(n(midpoint_x_ind, nv_zpos_ind)); # Refractive index at the position of the NV
-            n_nv_yz = real(n(midpoint_x_ind, nv_zpos_ind));
-            
-            # Calculate epsilon * E at the NV position 
-            eps_E_xz_at_nv = eps_E_xz(midpoint_x_ind, nv_zpos_ind);                          
-            eps_E_xz_max = max(eps_E_xz);    # Max value                                
-            
-            # repeat for yz axis
-            eps_E_yz_at_nv = eps_E_yz(midpoint_x_ind, nv_zpos_ind);                          
-            eps_E_yz_max = max(eps_E_yz);                                    
+            n_nv_xz = real(n_xz(midpoint_x_ind, nv_zpos_ind)); # Refractive index at the position of the NV
+            n_nv_yz = real(n_xz(midpoint_x_ind, nv_zpos_ind));                                   
             
             # Predefine arrays for looping
             Vol_abs_xz = ones(length(f));
@@ -397,10 +392,15 @@ class AnalysisObjects:
                 E_xz_res = pinch(E_xz, 3, 1);
                 E_xz_mid = E_xz_res(1:midpoint_x_ind,1:z_pt(1));                      # half of the x-z cut
                 eps_E_xz = real(n^2)*E_xz_mid;
+                # Calculate epsilon * E at the NV position 
+                eps_E_xz_at_nv = eps_E_xz(midpoint_x_ind, nv_zpos_ind);                          
+                eps_E_xz_max = max(eps_E_xz);    # Max value                                
                 
                 E_yz_res = pinch(E_yz, 3, 1);
                 E_yz_mid = E_yz_res(1:midpoint_x_ind,1:z_pt(1));                      # half of the x-z cut
                 eps_E_yz = real(n^2)*E_yz_mid;
+                eps_E_yz_at_nv = eps_E_yz(midpoint_x_ind, nv_zpos_ind);                          
+                eps_E_yz_max = max(eps_E_yz); 
                     
                 
                 V0_xz = E_xz_mid*real(n^2)*2*pi;                                  # n^2 

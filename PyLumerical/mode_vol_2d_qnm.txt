@@ -1,0 +1,124 @@
+runanalysis('Qanalysis');
+resonances = getresult('Qanalysis', 'resonances');
+wr = 2 * pi * resonances(:,1);
+Q = resonances(:,3);
+f_spectrum = getresult('Qanalysis', 'f_spectrum');
+t = getdata('Qanalysis::t1', 't');
+#spectrum = getresult('Qanalysis', 'spectrum');
+#plot(spectrum.lambda, f_spectrum);
+
+w_qnm = wr - 1i*(1/(2*Q));
+
+dipole_shift = 0; 
+
+x = getdata('mode volume 2D::xy_middle',"x");    
+y = getdata('mode volume 2D::xy_middle',"y");
+z = getdata('mode volume 2D::xz_middle',"z");    
+
+x_pt=size(x);           # Points in the axis
+z_pt=size(z);           # Points in the z axis            
+
+f = getresult('mode volume 2D::xy_middle', 'f');
+fres_indices = find(f, resonances(:,1));
+
+wres = 2 * pi * f(fres_indices);
+w = 2*pi*f;
+wlen = c/f;
+midpoint_z_ind = round(.5*size(x , 1));    # find the z midpoint index value
+midpoint_x_ind = floor(x_pt(1)/2)+1;
+
+# Integration ranges (0 -> rmax, zmin -> zmax)
+z_int_range = z;                                               
+r_int_range = x(1:midpoint_x_ind);                                      
+
+# Get electric fields
+E_xz = pinch(getelectric('mode volume 2D::xz_middle'));
+E_yz = pinch(getelectric('mode volume 2D::yz_middle'));
+
+# Get refractive indices
+n_xz = pinch(getdata('mode volume 2D::n',"index_z"));                       
+
+nv_zpos_ind = find(z, dipole_shift);            # Position of the NV
+n_nv_xz = real(n_xz(midpoint_x_ind, nv_zpos_ind)); # Refractive index at the position of the NV
+n_nv_yz = real(n_xz(midpoint_x_ind, nv_zpos_ind));                                   
+
+# Predefine arrays for looping
+Vol_abs_xz = ones(length(fres_indices));
+Vol_lam_xz = ones(length(fres_indices));
+
+Vol_abs_yz = ones(length(fres_indices));
+Vol_lam_yz = ones(length(fres_indices));
+
+i = 1;
+
+n = n_xz(1:midpoint_x_ind,1:z_pt(1));
+
+#E_xz_res = pinch(E_xz, 3, 1);
+#E_xz_mid = E_xz_res(1:midpoint_x_ind,1:z_pt(1));                      # half of the x-z cut
+#eps_E_xz = real(n^2)*E_xz_mid;
+# Calculate epsilon * E at the NV position 
+#eps_E_xz_at_nv = eps_E_xz(midpoint_x_ind, nv_zpos_ind);                          
+#eps_E_xz_max = max(eps_E_xz);    # Max value      
+
+
+for(i=1:length(fres_indices)-1){
+    Em_xz_res = pinch(E_xz, 3, fres_indices(i));
+    Em_xz_mid = sqrt(Em_xz_res(1:midpoint_x_ind,1:z_pt(1)));                      # half of the x-z cut
+    
+    En_xz_res = pinch(E_xz, 3, fres_indices(i+1));
+    En_xz_mid = En_xz_res(1:midpoint_x_ind,1:z_pt(1));  
+    
+    wm = w_qnm(1);
+    wn = w_qnm(2);
+    
+    delta_wqnm = wm * real(n^2) - wn*real(n^2);
+    E_qnm = Em_xz_mid * delta_wqnm * En_xz_mid;
+    eps_E_xz = real(n^2)*Em_xz_mid;
+    
+    eps_E_xz_at_nv = eps_E_xz(midpoint_x_ind, nv_zpos_ind);                          
+    eps_E_xz_max = max(eps_E_xz);         
+    
+    V0_xz = E_qnm*real(n^2)*2*pi;                                  # n^2 
+    Vol_raw1_xz = integrate(V0_xz,2,z_int_range);
+    Vol_raw2_xz = 1e18*abs(integrate(Vol_raw1_xz*r_int_range,1,r_int_range)); # Unit in um^3.
+    
+    Vol_abs_xz(i) = Vol_raw2_xz/(eps_E_xz_max);                         # unit:um^3, for air-like mode
+    Vol_lam_xz(i) = Vol_abs_xz(i)/(wres(i)^3*1e18);   
+
+
+    # REPEAT for YZ
+    Em_yz_res = pinch(E_yz, 3, fres_indices(i));
+    Em_yz_mid = sqrt(Em_yz_res(1:midpoint_x_ind,1:z_pt(1)));                      # half of the x-z cut
+    
+    En_yz_res = pinch(E_yz, 3, fres_indices(i+1));
+    En_yz_mid = En_yz_res(1:midpoint_x_ind,1:z_pt(1));  
+    
+    wm = w_qnm(1);
+    wn = w_qnm(2);
+    
+    delta_wqnm = wm * real(n^2) - wn*real(n^2);
+    E_qnm = Em_yz_mid * delta_wqnm * En_yz_mid;
+    eps_E_yz = real(n^2)*Em_yz_mid;
+    
+    eps_E_yz_at_nv = eps_E_yz(midpoint_x_ind, nv_zpos_ind);                          
+    eps_E_yz_max = max(eps_E_yz);         
+    
+    V0_yz = E_qnm*real(n^2)*2*pi;                                  # n^2 
+    Vol_raw1_yz = integrate(V0_yz,2,z_int_range);
+    Vol_raw2_yz = 1e18*abs(integrate(Vol_raw1_yz*r_int_range,1,r_int_range)); # Unit in um^3.
+    
+    Vol_abs_yz(i) = Vol_raw2_yz/(eps_E_yz_max);                         # unit:um^3, for air-like mode
+    Vol_lam_yz(i) = Vol_abs_yz(i)/(wres(i)^3*1e18);   
+
+
+}
+    
+## Average mode volume
+Vol_abs_avg = (Vol_abs_xz+Vol_abs_yz)/2;
+Vol_lam_avg = (Vol_lam_xz+Vol_lam_yz)/2;
+n_nv_avg = (n_nv_xz+n_nv_yz)/2;
+In2_nv_avg = (eps_E_xz_at_nv+eps_E_yz_at_nv)/2;
+In2_max_avg = (eps_E_xz_max+eps_E_yz_max)/2;             # unit:lam^3    
+    
+plot(f(fres_indices), Vol_abs_avg);
+
