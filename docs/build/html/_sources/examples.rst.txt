@@ -179,3 +179,50 @@ Analysis
    This section is still under heavy development. This analysis has been done well in Lumerical's in-built 
    scripting language, but at present, I am porting this over to python in the most natural way I can. As a 
    result, this will take a bit of time to get fully finished.
+
+This package contains bespoke custom scripts alongside invokations of Lumerical's in-built analysis groups. 
+For the present example, we combine both custom and in-built methods.
+
+.. code-block:: python
+
+    import numpy as np
+    import imp
+    import scipy.constants as sc
+    from PyLumerical import cavityanalysis, lumericalanalysis
+    import matplotlib.pyplot as plt
+
+Start by loading the lumerical simulation file which has previously been run and contains simulation data.
+
+.. code-block:: python
+
+    # os.add_dll_directory("C:\\Program Files\\Lumerical\\v232\\api\\python\\")
+    lumapi = imp.load_source("lumapi","C:\\Program Files\\Lumerical\\v232\\api\\python\\lumapi.py")
+
+    fdtd = lumapi.FDTD()
+
+    pdir = "<DIRECTORY CONTAINING SIMULATION FILE WITH DATA>"
+
+    fdtd.load(pdir + 'fsp.fsp')
+
+The Lumerical analysis class can now be instantiated. This class contains the methods necessary for running and analysing the quality factor, purcell factor, mode volume, 
+collection efficiency, etc, of the microcavity.
+
+.. code-block:: python
+
+    analysis = lumericalanalysis.LumericalAnalysis(fdtd=fdtd)
+
+The resonant frequencies, quality factors, etc of each peak:
+
+.. code-block:: python 
+
+    resonances = analysis.resonances()
+    w0 = 2*np.pi*resonances['f0'].values
+    Q = resonances['Q'].values
+
+    eigenfreqs = analysis.complex_eigenfrequency(omega0=w0, Q=Q) 
+    f_spectrum = analysis.f_spectrum(plotting=True, saveplot=False)
+
+.. code-block:: python
+
+    Efields = analysis.electric_field_magnitude()
+    farfield = analysis.farfield_analysis(NA=0.9)

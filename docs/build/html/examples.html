@@ -21,6 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Theory" href="theory.html" />
     <link rel="prev" title="Usage" href="usage.html" /> 
 </head>
 
@@ -54,6 +55,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 
         </div>
@@ -229,6 +231,44 @@ directory.</p>
 scripting language, but at present, I am porting this over to python in the most natural way I can. As a
 result, this will take a bit of time to get fully finished.</p>
 </div>
+<p>This package contains bespoke custom scripts alongside invokations of Lumerical’s in-built analysis groups.
+For the present example, we combine both custom and in-built methods.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">imp</span>
+<span class="kn">import</span> <span class="nn">scipy.constants</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">from</span> <span class="nn">PyLumerical</span> <span class="kn">import</span> <span class="n">cavityanalysis</span><span class="p">,</span> <span class="n">lumericalanalysis</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+<p>Start by loading the lumerical simulation file which has previously been run and contains simulation data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># os.add_dll_directory(&quot;C:\\Program Files\\Lumerical\\v232\\api\\python\\&quot;)</span>
+<span class="n">lumapi</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">load_source</span><span class="p">(</span><span class="s2">&quot;lumapi&quot;</span><span class="p">,</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Program Files</span><span class="se">\\</span><span class="s2">Lumerical</span><span class="se">\\</span><span class="s2">v232</span><span class="se">\\</span><span class="s2">api</span><span class="se">\\</span><span class="s2">python</span><span class="se">\\</span><span class="s2">lumapi.py&quot;</span><span class="p">)</span>
+
+<span class="n">fdtd</span> <span class="o">=</span> <span class="n">lumapi</span><span class="o">.</span><span class="n">FDTD</span><span class="p">()</span>
+
+<span class="n">pdir</span> <span class="o">=</span> <span class="s2">&quot;&lt;DIRECTORY CONTAINING SIMULATION FILE WITH DATA&gt;&quot;</span>
+
+<span class="n">fdtd</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pdir</span> <span class="o">+</span> <span class="s1">&#39;fsp.fsp&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The Lumerical analysis class can now be instantiated. This class contains the methods necessary for running and analysing the quality factor, purcell factor, mode volume,
+collection efficiency, etc, of the microcavity.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">analysis</span> <span class="o">=</span> <span class="n">lumericalanalysis</span><span class="o">.</span><span class="n">LumericalAnalysis</span><span class="p">(</span><span class="n">fdtd</span><span class="o">=</span><span class="n">fdtd</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The resonant frequencies, quality factors, etc of each peak:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">resonances</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">resonances</span><span class="p">()</span>
+<span class="n">w0</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">resonances</span><span class="p">[</span><span class="s1">&#39;f0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="n">resonances</span><span class="p">[</span><span class="s1">&#39;Q&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">eigenfreqs</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">complex_eigenfrequency</span><span class="p">(</span><span class="n">omega0</span><span class="o">=</span><span class="n">w0</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="n">Q</span><span class="p">)</span>
+<span class="n">f_spectrum</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">f_spectrum</span><span class="p">(</span><span class="n">plotting</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">saveplot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Efields</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">electric_field_magnitude</span><span class="p">()</span>
+<span class="n">farfield</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">farfield_analysis</span><span class="p">(</span><span class="n">NA</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 </section>
@@ -238,6 +278,7 @@ result, this will take a bit of time to get fully finished.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="theory.html" class="btn btn-neutral float-right" title="Theory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

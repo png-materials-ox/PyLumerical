@@ -70,41 +70,18 @@ class LumericalAnalysis:
         
         
     
-    def farfield_analysis(self):
+    def farfield_analysis(self, NA=0.9):
         # start_unix_time = now;
         if not self.fdtd.havedata('farfield'):
             self.fdtd.runanalysis
-        
-        # savebool = 'no';
-        
-        # s=splitstring(pwd, '/');
-        # if(s{1}=='C:'){    
-        #     fname = s{length(s)};    
-        #     ?fname;
-        # }
-        # else{
-        #     save == "no";
-        #     ?"Save directory is not in the C drive. File not saved";
-        # }
-        #loaddata('C:\Users\mans4209\Documents\Lumerical Files\SIL_Simulations\fsf\workspace_data\rect_test_2_monitor_0p1um_below.ldf');
-        # start_farfield_unix_time = now;
-        
+            
+                
         ##############################################
         # Plot results from single simulation
         
         ## Scaling factors for plots
-        um = 1e6;
-        nm = 1e9;
-        
-        ##############################################
-        # Get field from y-normal monitor
-        #x = getdata("xz_profile", "x");
-        #z = getdata("xz_profile", "z");
-        #E2 = getelectric("xz_profile");
-        ##x = getdata("xz_mid", "x");
-        ##z = getdata("xz_mid", "z");
-        ##E2 = getelectric("xz_mid");
-        #image(x*um, z*um, pinch(E2, 4, 10), "x (um)", "z (um)", "", "logplot");
+        um = 1e6
+        nm = 1e9
         
         ##############################################
         # Get field from z-normal monitor (farfield::z2)
@@ -116,7 +93,8 @@ class LumericalAnalysis:
         ##############################################
         # Get results from "farfield" analysis group
         ## Total transmission
-        T = self.fdtd.getresult("farfield", "T");
+        T = self.fdtd.getresult("farfield", "T").flatten()
+        fig = plt.figure()
         plt.plot(T['lambda']*nm, T['T']) 
         plt.xlabel('$\lambda$ (nm)')
         plt.ylabel('Total transmission')
@@ -127,7 +105,8 @@ class LumericalAnalysis:
         self.fdtd.visualize(S)
         
         ## P_vs_theta
-        P_vs_theta = self.fdtd.getresult("farfield", "P_vs_theta");
+        P_vs_theta = self.fdtd.getresult("farfield", "P_vs_theta")
+        fig = plt.figure()
         plt.plot(P_vs_theta['theta_degrees'], self.fdtd.pinch(P_vs_theta['P'], 2, 1))
         plt.xlabel('theta (degrees)')
         plt.ylabel('Normalized Power')
@@ -135,74 +114,47 @@ class LumericalAnalysis:
         
         ## Purcell factor
         Purcell = self.fdtd.getresult("farfield", "Purcell")
+        fig = plt.figure()
         plt.plot(Purcell['lambda']*nm, Purcell['purcell'])
         plt.xlabel('lambda (nm)')
         plt.ylabel('Purcell factor')
+        plt.show()
         
         ## Power in angular cone
         # create 2D mesh of theta
-        NA = 0.55
-        cone_angle = np.arcsin(0.55)*180/np.pi
+        cone_angle = np.arcsin(NA)*180/np.pi
         Theta = self.fdtd.meshgridx(P_vs_theta['theta_radians'],P_vs_theta['f'])
         # integrate over specified cone
         T34 = 0.5*2*np.pi*np.real(self.fdtd.integrate(P_vs_theta['P']*self.fdtd.sin(Theta)*(Theta<=cone_angle*np.pi/180),1,P_vs_theta['theta_radians']))
         
         # plot final results
+        fig = plt.figure()
         plt.plot(P_vs_theta['lambda']*nm,T34, label="Normalized power")
         plt.plot(P_vs_theta['lambda']*nm,T34/Purcell['purcell'], label="Optical extraction efficiency")
         plt.xlabel('wavelength (nm)')
         plt.legend()
+        plt.show()
         
-        # cone_angle = 0:1:70;
-        # T34_m = matrix(length(P_vs_theta.lambda),length(cone_angle));
+        ff = self.fdtd.getresult('farfield', 'farfield')
+        f = self.fdtd.getdata("farfield::x2", "f").flatten()
+        #f = getdata('xy_mid','f');
+        wlen = P_vs_theta['lambda'].flatten()
+        Fp = Purcell['purcell'].flatten()
+        theta = P_vs_theta['theta_degrees'].flatten()
+        P_v_theta = self.fdtd.pinch(P_vs_theta['P'], 2, 1).flatten()
+        Twlen = T['lambda'].flatten()*nm
+        trans = T['T'].flatten()
+        sp = self.fdtd.sourcepower(f).flatten()
+        dp = self.fdtd.dipolepower(f).flatten()
         
-        # for(i=1:length(cone_angle)){ #degrees
-        #     # integrate over specified cone
-        #     #print(cone_angle(i));
-        #     T34_m(:,i) = 0.5*2*pi*real(integrate(P_vs_theta.P*sin(Theta)*(Theta<=cone_angle(i)*pi/180),1,P_vs_theta.theta_radians));
-        # }
+        fig = plt.figure()
+        plt.plot(wlen, trans*(self.fdtd.sourcepower(f)/self.fdtd.dipolepower(f)))
+        plt.show()
         
-        # end_unix_time = now;
-        
-        #  ?"Farfield simulation took " + num2str((end_unix_time - start_farfield_unix_time)/60) + " minutes";
-        #  ?"Total simulation took " + num2str((end_unix_time - start_unix_time)/60) + " minutes";
-        
-        # ##### SAVE ####
-        # #get_datetime;
-        # ?fname;
-        # select("::model::hemisph_surf");
-        # r = get("radius");
-        
-        # dx = getdata('dipole_source','x');
-        # dy = getdata('dipole_source','y');
-        # dz = getdata('dipole_source','z');
-        
-        # dx = pinch(dx,1);
-        # dy = pinch(dy,1);
-        # dz = pinch(dz,1);
-        
-        # #>>>> Save Data <<<<
-        # if (savebool=="yes"){
-        #     ff = getresult('farfield', 'farfield');
-        #     f = getdata('xy_profile','f');
-        #     #f = getdata('xy_mid','f');
-        #     wlen = P_vs_theta.lambda;
-        #     Fp = Purcell.purcell;
-        #     theta = P_vs_theta.theta_degrees;
-        #     P_v_theta = pinch(P_vs_theta.P, 2, 1);
-        #     Twlen = T.lambda*nm;
-        #     trans = T.T;
-        #     sp = sourcepower(f);
-        #     dp = dipolepower(f);
-        #     plot(wlen, trans*(sourcepower(f)/dipolepower(f)));
-            
-        #     vtksave(fname + ".vtu",ff);
-        #     matlabsave(fname + ".mat", f, sp, dp, wlen, Fp, cone_angle, T34, T34_m, theta, P_v_theta, Twlen, trans);
-        # }else if (savebool == "no"){
-        #     ?"Data not saved";
-        # }else{
-        #     ?"Save toggle incorrect. Use yes or no";
-        # }
+        #vtksave(fname + ".vtu",ff);
+        return {'f':f, 'sp':sp, 'dp':dp, 'wlen':wlen, 'Fp':Fp, 'cone_angle':cone_angle, 
+                'T34':T34, 'theta':theta, 'P_v_theta':P_v_theta, 
+                'Twlen':Twlen, 'trans':trans}
         
     
     def mode_volume_2D_QNM(self, dipole_shift=0, resonances=None):
