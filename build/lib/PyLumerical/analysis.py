@@ -5,21 +5,57 @@ import imp
 # import os
 import scipy.constants as sc
 import cavityanalysis
-
-import analysisbuilder
+import lumericalanalysis
+import matplotlib.pyplot as plt
+# import analysisbuilder
 
 # os.add_dll_directory("C:\\Program Files\\Lumerical\\v232\\api\\python\\")
 lumapi = imp.load_source("lumapi","C:\\Program Files\\Lumerical\\v232\\api\\python\\lumapi.py")
 
 fdtd = lumapi.FDTD()
 
-pdir = 'C:\\Users\\mans4209\\Desktop\\testsim\\'
+pdir = 'C:\\Users\\mans4209\\Documents\\LumericalFiles\\Philippa\\test\\'
 
-monitor_names = {'m0':'n', 'm1':'xy_exoplanar', 'm2':'xy_middle',
-                 'm3':'xy_exofeatured', 'm4':'xz_middle','m5':'xz_edge',
-                 'm6':'yz_middle', 'm7':'yz_edge'}
+fdtd.load(pdir + 'fsp4.fsp')
 
-builder = analysisbuilder.AnalysisBuilder(fdtd=fdtd, pdir=pdir, monitor_names=monitor_names, min_wlen=630e-09, max_wlen=638e-09)
+analysis = lumericalanalysis.LumericalAnalysis(fdtd=fdtd)
+
+resonances = analysis.resonances()
+# w = analysis.omega()
+w0 = 2*np.pi*resonances['f0'].values
+Q = resonances['Q'].values
+
+eigenfreqs = analysis.complex_eigenfrequency(omega0=w0, Q=Q) 
+
+f_spectrum = analysis.f_spectrum(plotting=True, saveplot=False)
+
+Efields = analysis.electric_field_magnitude()
+
+# farfield = analysis.farfield_analysis()
+
+V = analysis.mode_volume_2D_QNM(dipole_shift=0)
+
+plt.plot(V['Vol_lam_xz']); plt.show()
+plt.plot(V['Vol_abs_xz']); plt.show()
+
+# Farfield Analysis
+
+
+# # Qfactor analysis
+# fdtd.runanalysis('Qanalysis')
+# resonances = fdtd.getresult('Qanalysis', 'resonances')
+# spectrum = fdtd.getresult('Qanalysis', 'spectrum')
+# f_spectrum = fdtd.getresult('Qanalysis', 'f_spectrum')
+# Q = fdtd.getresult('Qanalysis', 'Q')
+
+# wres = resonances[:,0]
+
+
+# monitor_names = {'m0':'n', 'm1':'xy_exoplanar', 'm2':'xy_middle',
+#                  'm3':'xy_exofeatured', 'm4':'xz_middle','m5':'xz_edge',
+#                  'm6':'yz_middle', 'm7':'yz_edge'}
+
+# builder = analysisbuilder.AnalysisBuilder(fdtd=fdtd, pdir=pdir, monitor_names=monitor_names, min_wlen=630e-09, max_wlen=638e-09)
 
 # fdtd.load(pdir + 'fsp.fsp')
 # fdtd.loaddata(pdir + 'lnp.ldf')
@@ -54,8 +90,8 @@ builder = analysisbuilder.AnalysisBuilder(fdtd=fdtd, pdir=pdir, monitor_names=mo
 # f_range_max = sc.c/min_wlen
 # f_range_min = sc.c/max_wlen
 
-cavana = cavityanalysis.CavityAnalysis(builder=builder, fdtd=fdtd)
-cavana.Qfactor()
+# cavana = cavityanalysis.CavityAnalysis(builder=builder, fdtd=fdtd)
+# cavana.Qfactor()
 
 
 # ## Decide whether to run the convergence test

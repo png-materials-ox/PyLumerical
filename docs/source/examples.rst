@@ -179,3 +179,6 @@ Analysis
    This section is still under heavy development. This analysis has been done well in Lumerical's in-built 
    scripting language, but at present, I am porting this over to python in the most natural way I can. As a 
    result, this will take a bit of time to get fully finished.
+
+This package contains bespoke custom scripts alongside invokations of Lumerical's in-built analysis groups. 
+For the present example, we combine both custom and in-built methods.

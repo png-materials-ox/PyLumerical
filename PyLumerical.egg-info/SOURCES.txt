@@ -6,6 +6,7 @@ PyLumerical/analysisbuilder.py
 PyLumerical/analysisobjects.py
 PyLumerical/cavity.py
 PyLumerical/cavityanalysis.py
+PyLumerical/lumericalanalysis.py
 PyLumerical/main.py
 PyLumerical/monitor.py
 PyLumerical/pip.py

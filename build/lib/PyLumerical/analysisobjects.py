@@ -389,14 +389,14 @@ class AnalysisObjects:
             for(i=1:length(f)){
                 n = n_xz(1:midpoint_x_ind,1:z_pt(1));
             
-                E_xz_res = pinch(E_xz, 3, 1);
+                E_xz_res = pinch(E_xz, 3, i);
                 E_xz_mid = E_xz_res(1:midpoint_x_ind,1:z_pt(1));                      # half of the x-z cut
                 eps_E_xz = real(n^2)*E_xz_mid;
                 # Calculate epsilon * E at the NV position 
                 eps_E_xz_at_nv = eps_E_xz(midpoint_x_ind, nv_zpos_ind);                          
                 eps_E_xz_max = max(eps_E_xz);    # Max value                                
                 
-                E_yz_res = pinch(E_yz, 3, 1);
+                E_yz_res = pinch(E_yz, 3, i);
                 E_yz_mid = E_yz_res(1:midpoint_x_ind,1:z_pt(1));                      # half of the x-z cut
                 eps_E_yz = real(n^2)*E_yz_mid;
                 eps_E_yz_at_nv = eps_E_yz(midpoint_x_ind, nv_zpos_ind);                          

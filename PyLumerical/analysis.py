@@ -35,8 +35,8 @@ Efields = analysis.electric_field_magnitude()
 
 V = analysis.mode_volume_2D_QNM(dipole_shift=0)
 
-plt.plot(V['Vol_lam_avg']); plt.show()
-plt.plot(V['Vol_abs_avg']); plt.show()
+plt.plot(V['Vol_lam_xz']); plt.show()
+plt.plot(V['Vol_abs_xz']); plt.show()
 
 # Farfield Analysis
 
