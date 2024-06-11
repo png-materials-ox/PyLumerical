@@ -384,3 +384,8 @@ Regularisation in Quantum Mechanics
 
 .. .. math::
 ..     V_{2D} = \frac{ \int_{0}^{r_{max}} \int_{z_{min}}^{z_{max}} 2 \pi r \epsilon(r, z) \left| E(r, z) \right|^{2} dz dr}{ \text{max} \left( \epsilon(r) \left| E(r) \right|^{2} \right)}
+
+
+
+Quality Factor
+=======================

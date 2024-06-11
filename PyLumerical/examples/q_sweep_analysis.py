@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
+"""
+Created on Wed Jun  5 18:23:45 2024
+
+@author: mans4209
+"""
+
+# -*- coding: utf-8 -*-
 
 import numpy as np
 import imp
 # import os
 import scipy.constants as sc
-import cavityanalysis
-import lumericalanalysis
+from PyLumerical import cavityanalysis, lumericalanalysis
 import matplotlib.pyplot as plt
 # import analysisbuilder
 
@@ -14,9 +20,10 @@ lumapi = imp.load_source("lumapi","C:\\Program Files\\Lumerical\\v232\\api\\pyth
 
 fdtd = lumapi.FDTD()
 
-pdir = 'C:\\Users\\mans4209\\Documents\\LumericalFiles\\Philippa\\test\\'
+basedir = 'C://Users//mans4209//Documents//LumericalFiles//monolithic_cavity_sweep//sweep_q_mesh1//'
+pdir = basedir + 'coarse_sweep/20240605_monolithic_diamond_cavity_roc_q28_Lsub20nm_theta90//'
 
-fdtd.load(pdir + 'fsp4.fsp')
+fdtd.load(pdir + 'fsp.fsp')
 
 analysis = lumericalanalysis.LumericalAnalysis(fdtd=fdtd)
 
@@ -31,12 +38,27 @@ f_spectrum = analysis.f_spectrum(plotting=True, saveplot=False)
 
 Efields = analysis.electric_field_magnitude()
 
-# farfield = analysis.farfield_analysis()
+f = fdtd.getresult('farfield::x2', 'f').flatten()
+dp = fdtd.dipolepower(f).flatten()
+sp = fdtd.sourcepower(f).flatten()
+purcell = dp / sp
 
-V = analysis.mode_volume_2D_QNM(dipole_shift=0)
+plt.plot(sc.c/f, purcell)
+plt.show()
 
-plt.plot(V['Vol_lam_xz']); plt.show()
-plt.plot(V['Vol_abs_xz']); plt.show()
+mode_vol = analysis.mode_volume_2D()
+
+
+purcell_by_V = (3/(4*np.pi**2)) * (637e-09 / 2.41)**3 * (max(resonances['Q']) / mode_vol['Vol_lam_avg'])
+plt.plot(sc.c/f, purcell_by_V)
+plt.show()
+
+# farfield = analysis.farfield_analysis(NA=0.9)
+
+# V = analysis.mode_volume_2D_QNM(dipole_shift=0)
+
+# plt.plot(V['Vol_lam_xz']); plt.show()
+# plt.plot(V['Vol_abs_xz']); plt.show()
 
 # Farfield Analysis
 

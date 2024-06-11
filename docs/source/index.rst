@@ -22,11 +22,13 @@ bespoke analysis objects for calculating mode volume and Purcell enhancement.
    This project is under active development.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Contents:
 
-   usage
+   usage     
+   
    examples
+   
    theory
 
 Indices and tables

@@ -93,7 +93,7 @@ class LumericalAnalysis:
         ##############################################
         # Get results from "farfield" analysis group
         ## Total transmission
-        T = self.fdtd.getresult("farfield", "T").flatten()
+        T = self.fdtd.getresult("farfield", "T")
         fig = plt.figure()
         plt.plot(T['lambda']*nm, T['T']) 
         plt.xlabel('$\lambda$ (nm)')
@@ -126,6 +126,7 @@ class LumericalAnalysis:
         Theta = self.fdtd.meshgridx(P_vs_theta['theta_radians'],P_vs_theta['f'])
         # integrate over specified cone
         T34 = 0.5*2*np.pi*np.real(self.fdtd.integrate(P_vs_theta['P']*self.fdtd.sin(Theta)*(Theta<=cone_angle*np.pi/180),1,P_vs_theta['theta_radians']))
+        T34 = T34.flatten()
         
         # plot final results
         fig = plt.figure()
@@ -320,3 +321,23 @@ class LumericalAnalysis:
                                   'Vol_abs_avg':Vol_abs_avg,
                                   'Vol_lam_avg':Vol_lam_avg
                                   })
+    
+    def mode_volume_2D(self):
+        if not self.fdtd.havedata('mode volume 2D'):
+            self.fdtd.runanalysis
+    
+    
+        Vol_abs_xz = self.fdtd.getresult('mode volume 2D', 'Vol_abs_xz').flatten()
+        Vol_lam_xz = self.fdtd.getresult('mode volume 2D', 'Vol_lam_xz').flatten()
+        Vol_abs_yz = self.fdtd.getresult('mode volume 2D', 'Vol_abs_yz').flatten()
+        Vol_lam_yz = self.fdtd.getresult('mode volume 2D', 'Vol_lam_yz').flatten()
+        Vol_abs_avg = self.fdtd.getresult('mode volume 2D', 'Vol_abs_avg').flatten()
+        Vol_lam_avg = self.fdtd.getresult('mode volume 2D', 'Vol_lam_avg').flatten()
+        
+        return pd.DataFrame(data={'Vol_abs_xz':Vol_abs_xz, 
+                                      'Vol_lam_xz':Vol_lam_yz,
+                                      'Vol_abs_yz':Vol_abs_xz,
+                                      'Vol_lam_yz':Vol_lam_yz,
+                                      'Vol_abs_avg':Vol_abs_avg,
+                                      'Vol_lam_avg':Vol_lam_avg
+                                      })
