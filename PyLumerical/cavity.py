@@ -179,10 +179,6 @@ class Cavity:
         Returns:
 
         """
-        thickness_1 = self.wlen/(4*n1);                      
-        thickness_2 = self.wlen/(4*n2);                      
-                   
-        dbr_thickness = thickness_1 + thickness_2
 
         #Generate planar upper mirror
         self.fdtd.addrect()
@@ -192,7 +188,7 @@ class Cavity:
         self.fdtd.set("y min",-self.xy_span_bleed/2)
         self.fdtd.set("index",n2)
         self.fdtd.set("z min",0)
-        self.fdtd.set("z max",thickness_2)
+        self.fdtd.set("z max",self.thickness_2)
         self.fdtd.set("name","hi layer template")
         self.fdtd.set('render type','wireframe')
 
@@ -202,19 +198,19 @@ class Cavity:
         self.fdtd.set("y max",self.xy_span_bleed/2)
         self.fdtd.set("y min",-self.xy_span_bleed/2)
         self.fdtd.set("index",n1)
-        self.fdtd.set("z min",thickness_2)
-        self.fdtd.set("z max",dbr_thickness)
+        self.fdtd.set("z min",self.thickness_2)
+        self.fdtd.set("z max",self.thickness)
         self.fdtd.set("name","lo layer template")
         self.fdtd.set('render type','wireframe')
 
         #DBR code stacks object called layer_profile
         for i in range(1, num):
             self.fdtd.select("hi layer template")
-            self.fdtd.copy(0,0,(i-1)*dbr_thickness)
+            self.fdtd.copy(0,0,(i-1)*self.thickness)
             self.fdtd.set("name", "hi layer")
             self.fdtd.addtogroup('planar mirror')
             self.fdtd.select("lo layer template")
-            self.fdtd.copy(0,0,(i-1)*dbr_thickness)
+            self.fdtd.copy(0,0,(i-1)*self.thickness)
             self.fdtd.set("name", "lo layer")
             self.fdtd.addtogroup('planar mirror')
 
@@ -231,8 +227,8 @@ class Cavity:
         self.fdtd.set("y max",self.xy_span_bleed/2)
         self.fdtd.set("y min",-self.xy_span_bleed/2)
         self.fdtd.set("index",nsub)
-        self.fdtd.set("z min",(num-1)*dbr_thickness)
-        self.fdtd.set("z max",((num-1)*dbr_thickness) + Lsub) 
+        self.fdtd.set("z min",(num-1)*self.thickness)
+        self.fdtd.set("z max",((num-1)*self.thickness) + Lsub) 
         self.fdtd.set("name","substrate")
         self.fdtd.set('render type','wireframe')
         self.fdtd.addtogroup('planar mirror')
@@ -256,11 +252,6 @@ class Cavity:
 
         """
         
-        thickness_1 = self.wlen/(4*n1);                      
-        thickness_2 = self.wlen/(4*n2);                      
-                   
-        dbr_thickness = thickness_1 + thickness_2
-        
         feat = self.convex_feature()
         # Create upper surface with thickness depth 
         self.fdtd.addimport()
@@ -269,24 +260,24 @@ class Cavity:
         self.fdtd.set('render type','wireframe')
         self.fdtd.set("index",n2)
         self.fdtd.set("z max", -feat['mir_sep'])
-        self.fdtd.set("z min", -self.cavity_length() - thickness_2)
+        self.fdtd.set("z min", -self.cav_length - self.thickness_2)
         
         self.fdtd.addimport()
         self.fdtd.importsurface2(feat['Z'], feat['x'], feat['y'], 1) 
         self.fdtd.set("name","lo layer template")
         self.fdtd.set('render type','wireframe')
         self.fdtd.set("index",n1)
-        self.fdtd.set("z max", -feat['mir_sep'] - thickness_2)
-        self.fdtd.set("z min", -self.cavity_length() - dbr_thickness)
+        self.fdtd.set("z max", -feat['mir_sep'] - self.thickness_2)
+        self.fdtd.set("z min", -self.cav_length - self.thickness)
         
         for i in range(num):
             self.fdtd.select("hi layer template")
-            self.fdtd.copy(0,0,(i-1)*(-dbr_thickness))
+            self.fdtd.copy(0,0,(i-1)*(-self.thickness))
             self.fdtd.set("index",n2)
             self.fdtd.set("name","hi layer")
             self.fdtd.addtogroup('featured mirror')
             self.fdtd.select("lo layer template")
-            self.fdtd.copy(0,0,(i-1)*(-dbr_thickness))
+            self.fdtd.copy(0,0,(i-1)*(-self.thickness))
             self.fdtd.set("index",n1)
             self.fdtd.set("name","low layer")
             self.fdtd.addtogroup('featured mirror')
@@ -303,12 +294,12 @@ class Cavity:
         self.fdtd.set("name","substrate")
         self.fdtd.set('render type','wireframe')
         self.fdtd.set("index", nsub)
-        self.fdtd.set("z max", -feat['mir_sep'] - ((num-1)*dbr_thickness))
-        self.fdtd.set("z min", -self.cavity_length() - ((num-1)*dbr_thickness) - Lsub)
+        self.fdtd.set("z max", -feat['mir_sep'] - ((num-1)*self.thickness))
+        self.fdtd.set("z min", -self.cav_length - ((num-1)*self.thickness) - Lsub)
         self.fdtd.addtogroup('featured mirror')
 
     
-    def cavity_medium(self):
+    def cavity_medium(self, length=None):
         """Create a dielectric medium representing the cavity.
 
         This method adds a rectangular dielectric medium object to the simulation domain,
@@ -327,9 +318,13 @@ class Cavity:
         self.fdtd.set("y max",self.xy_span_bleed/2)
         self.fdtd.set("y min",-self.xy_span_bleed/2)
         self.fdtd.set('z max',0)
-        self.fdtd.set('z min',-self.cavity_length()) 
+        if length:
+            self.fdtd.set('z min',-length) 
+        else:
+            self.fdtd.set('z min',-self.cav_length )
         
-    def build_cavity(self, num_planar=10, num_feat=10, n1=2.21, n2=42, nsub=1.45, Lsub=27e-09, resolution=512):
+    def build_cavity(self, num_planar=10, num_feat=10, n1=2.21, n2=42, nsub=1.45, Lsub=27e-09, resolution=512, 
+                     mirror='dbr', t_mirror=0, cav_length=None):
         """Build the complete optical cavity structure.
 
         This method constructs the optical cavity by adding planar DBR layers, the cavity medium, and convex DBR layers.
@@ -353,9 +348,110 @@ class Cavity:
         Returns:
 
         """
+        
+        if cav_length:
+            self.cav_length=cav_length
+        else:
+            self.cav_length = self.cavity_length()
+            
+        self.thickness_1 = self.wlen/(4*n1);                      
+        self.thickness_2 = self.wlen/(4*n2);                      
+                   
+        dbr_thickness = self.thickness_1 + self.thickness_2
+        
+        if mirror == 'dbr':
+            self.thickness = dbr_thickness
+        elif mirror == 'metal':
+            self.thickness = t_mirror
+        
         self.planar_dbr(num=num_planar, n1=n1, n2=n2, nsub=nsub, Lsub=Lsub)
         self.cavity_medium()
         self.convex_dbr(num=num_feat, n1=n1, n2=n2, nsub=nsub, Lsub=Lsub)    
+        
+        self.fdtd.addstructuregroup()
+        self.fdtd.set('name','structure');
+        self.fdtd.select('planar mirror');
+        self.fdtd.addtogroup('structure');
+        self.fdtd.select('featured mirror');
+        self.fdtd.addtogroup('structure');
+        self.fdtd.select('dielectric medium');
+        self.fdtd.set('override mesh order from material database',1);
+        self.fdtd.set('mesh order',3);
+        self.fdtd.addtogroup('structure');
+        
+        self.fdtd.select('structure::featured mirror::hi layer');
+        
+        self.fdtd.select('structure');
+        self.fdtd.set('first axis','y');
+        self.fdtd.set('rotation 1',180);
+        self.fdtd.set('x',0);
+        self.fdtd.set('y',0);
+        self.fdtd.set('z',0);
+        
+        self.fdtd.select('structure::planar mirror');   
+        self.fdtd.set('x',0);
+        self.fdtd.set('y',0);
+        self.fdtd.set('z',0);
+        
+        self.fdtd.select('structure::featured mirror');
+        self.fdtd.set('x',0);
+        self.fdtd.set('y',0);
+        self.fdtd.set('z',0);
+        
+    def planar_mirror_metal(self, t, nmirror):
+        self.fdtd.addrect()
+        self.fdtd.set("x max",self.xy_span_bleed/2)
+        self.fdtd.set("x min",-self.xy_span_bleed/2)
+        self.fdtd.set("y max",self.xy_span_bleed/2)
+        self.fdtd.set("y min",-self.xy_span_bleed/2)
+        self.fdtd.set("index", nmirror)
+        self.fdtd.set("z min",0)
+        self.fdtd.set("z max", t)
+        self.fdtd.set("name","planar mirror")
+        
+        self.fdtd.addrect()
+        self.fdtd.set("x max",self.xy_span_bleed/2)
+        self.fdtd.set("x min",-self.xy_span_bleed/2)
+        self.fdtd.set("y max",self.xy_span_bleed/2)
+        self.fdtd.set("y min",-self.xy_span_bleed/2)
+        self.fdtd.set("index",1)
+        self.fdtd.set("z min",t)
+        self.fdtd.set("z max",t) 
+        self.fdtd.set("name","substrate")
+        self.fdtd.set('render type','wireframe')
+        self.fdtd.addtogroup('planar mirror')
+            
+    def featured_mirror_metal(self, t, nmirror):
+        self.fdtd.addrect()
+        self.fdtd.set("x max",self.xy_span_bleed/2)
+        self.fdtd.set("x min",-self.xy_span_bleed/2)
+        self.fdtd.set("y max",self.xy_span_bleed/2)
+        self.fdtd.set("y min",-self.xy_span_bleed/2)
+        self.fdtd.set("index", nmirror)
+        self.fdtd.set("z min",0)
+        self.fdtd.set("z max", t)
+        self.fdtd.set("name","featured mirror")
+        
+        feat = self.convex_feature()        
+        
+        # Create substrate extending to Region_min
+        self.fdtd.addimport()
+        self.fdtd.importsurface2(feat['Z'], feat['x'], feat['y'], 1)
+        self.fdtd.set("name","substrate")
+        self.fdtd.set('render type','wireframe')
+        self.fdtd.set("index", 1)
+        self.fdtd.set("z max", -feat['mir_sep'] - t)
+        self.fdtd.set("z min", -self.cav_length - t)
+        self.fdtd.addtogroup('featured mirror')
+        
+        
+    def build_cavity_metal_boundaries(self, t1=50e-09, t2=50e-09, cav_length=10e-09, nmirror=0.13511, resolution=512):
+        
+        self.cav_length = cav_length
+        
+        self.planar_mirror_metal(t1, nmirror)
+        self.cavity_medium()
+        self.featured_mirror_metal(t1, nmirror)  
         
         self.fdtd.addstructuregroup()
         self.fdtd.set('name','structure');
