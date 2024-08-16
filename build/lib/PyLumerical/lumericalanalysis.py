@@ -7,6 +7,7 @@ Created on Sun May 26 16:30:57 2024
 import matplotlib.pyplot as plt
 from  matplotlib import patches
 from matplotlib.figure import Figure
+from matplotlib.colors import LogNorm
 from matplotlib import rcParams
 import numpy as np
 import pandas as pd
@@ -341,3 +342,76 @@ class LumericalAnalysis:
                                       'Vol_abs_avg':Vol_abs_avg,
                                       'Vol_lam_avg':Vol_lam_avg
                                       })
+    
+    def get_field_profiles(self, monitor):
+        f = self.fdtd.getresult(monitor, 'f')
+        x = self.fdtd.getresult(monitor, 'x')
+        y = self.fdtd.getresult(monitor, 'y')
+        z = self.fdtd.getresult(monitor, 'z')
+        Ex = self.fdtd.getresult(monitor, 'Ex')
+        Ey = self.fdtd.getresult(monitor, 'Ey')
+        Ez = self.fdtd.getresult(monitor, 'Ez')
+        Px = self.fdtd.getresult(monitor, 'Px')
+        Py = self.fdtd.getresult(monitor, 'Py')
+        Pz = self.fdtd.getresult(monitor, 'Pz')
+        
+        return {'f':f, 'x':x, 'y':y, 'z':z, 'Ex':Ex, 'Ey':Ey, 'Ez':Ez, 'Px':Px, 'Py':Py, 'Pz':Pz}
+    
+    def get_single_field_profile(self, monitor, wlen=637e-09):
+        field_profiles = self.get_field_profiles(monitor)
+        f = field_profiles['f'].flatten()
+        wavelength = sc.c / f
+        
+        # TODO CHANGE FOR GENERALITY
+        x = field_profiles['x'].flatten()*1e06
+        y = field_profiles['z'].flatten()*1e06
+        X, Y = np.meshgrid(y, x)
+        
+        Ex = np.squeeze(field_profiles['Ex'])
+        Ey = np.squeeze(field_profiles['Ey'])
+        Ez = np.squeeze(field_profiles['Ez'])
+        Z = np.sqrt(Ex**2 + Ey**2 + Ez**2)
+        
+        Z = np.real(np.sqrt(Ex**2 + Ey**2 + Ez**2))
+        
+        wlen_idx = np.abs(wavelength-wlen).argmin()
+        
+        Z = np.squeeze(Z)[:,:,wlen_idx]
+        
+        return {'x':x, 'y':y, 'X':X, 'Y':Y, 'Z':Z}
+    
+    def plot_field_profile(self, monitor, wlen=637e-09, savefig=False, 
+                           title='', filename=''):
+        
+        field_profiles = self.get_field_profiles(monitor)
+        f = field_profiles['f'].flatten()
+        wavelength = sc.c / f
+        
+        # TODO CHANGE FOR GENERALITY
+        X, Y = np.meshgrid(field_profiles['z'].flatten()*1e06, field_profiles['x'].flatten()*1e06)
+        
+        Ex = np.squeeze(field_profiles['Ex'])
+        Ey = np.squeeze(field_profiles['Ey'])
+        Ez = np.squeeze(field_profiles['Ez'])
+        Z = np.sqrt(Ex**2 + Ey**2 + Ez**2)
+        
+        Z = np.real(np.sqrt(Ex**2 + Ey**2 + Ez**2))
+        
+        wlen_idx = np.abs(wavelength-wlen).argmin()
+        
+        Z = np.squeeze(Z)[:,:,wlen_idx]
+        
+        
+        fig, ax = plt.subplots()
+        
+        # c = ax.pcolor(Yyz, Xyz, Zyz, shading='auto',
+        #                norm=LogNorm(vmin=Zyz.min(), vmax=Zyz.max()), cmap='afmhot')
+        c = ax.pcolor(Y, X, Z, shading='auto')
+        fig.colorbar(c, ax=ax)
+        ax.set_title(title)
+        ax.set_xlabel('y ($\mu$m)')
+        ax.set_ylabel('z ($\mu$m)')
+        if savefig:
+            plt.savefig(filename, bbox_inches="tight")
+        plt.show()
+                
