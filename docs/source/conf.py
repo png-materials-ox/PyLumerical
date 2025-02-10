@@ -9,7 +9,7 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath('../PyLumerical/'))  
+sys.path.insert(0, os.path.abspath('../'))  
 
 project = 'PyLumerical'
 copyright = '2024, Gareth Sion Jones'
