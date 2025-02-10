@@ -181,7 +181,7 @@ Analysis
    result, this will take a bit of time to get fully finished.
 
 This package contains bespoke custom scripts alongside invokations of Lumerical's in-built analysis groups. 
-For the present example, we combine both custom and in-built methods.
+For the present example, we combine both custom and in-built methods. Please be aware that the 'imp' library has been deprecated for modern python versions, so you may need to use a different library. For more details, see the 'usage' page.
 
 .. code-block:: python
 
@@ -221,6 +221,8 @@ The resonant frequencies, quality factors, etc of each peak:
 
     eigenfreqs = analysis.complex_eigenfrequency(omega0=w0, Q=Q) 
     f_spectrum = analysis.f_spectrum(plotting=True, saveplot=False)
+
+To get the electric field profiles:
 
 .. code-block:: python
 

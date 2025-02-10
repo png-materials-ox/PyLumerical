@@ -10,5 +10,5 @@ setup(
         author="Gareth Sion Jones",
         author_email="gareth.jones@materials.ox.ac.uk",
         python_requires='>3.4.0',
-        install_requires=['numpy', 'matplotlib', 'sphinx_rtd_theme', 'progressbar2']
+        install_requires=['numpy', 'matplotlib', 'sphinx_rtd_theme', 'pydata_sphinx_theme', 'progressbar2']
     ) 
