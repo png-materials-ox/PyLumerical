@@ -60,6 +60,7 @@ To use PyLumerical, a user must make a call the Lumerical API file stored locall
 However, in Python 3.12 **imp** was deprecated, and for distributions higher than this, it is now necessary to use python's in-built **importlib** library:
 
 **Windows**
+
 .. code-block:: python
 
     import importlib.util
@@ -68,6 +69,7 @@ However, in Python 3.12 **imp** was deprecated, and for distributions higher tha
     spec_win.loader.exec_module(lumapi)
 
 **Linux**
+
 .. code-block:: python
 
     import importlib.util
