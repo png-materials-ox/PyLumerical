@@ -6,6 +6,11 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath('../PyLumerical/'))  
+
 project = 'PyLumerical'
 copyright = '2024, Gareth Sion Jones'
 author = 'Gareth Sion Jones'
