@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PyLumerical package &#8212; PyLumerical 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="pylumerical-package">
+<h1>PyLumerical package<a class="headerlink" href="#pylumerical-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="pylumerical-analysisbuilder-module">
+<h2>PyLumerical.analysisbuilder module<a class="headerlink" href="#pylumerical-analysisbuilder-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="pylumerical-analysisobjects-module">
+<h2>PyLumerical.analysisobjects module<a class="headerlink" href="#pylumerical-analysisobjects-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-PyLumerical.cavity">
+<span id="pylumerical-cavity-module"></span><h2>PyLumerical.cavity module<a class="headerlink" href="#module-PyLumerical.cavity" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PyLumerical.cavity.</span></span><span class="sig-name descname"><span class="pre">Cavity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.37e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncav</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rough</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fdtd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Define the geometry of a Fabry-Perot optical microcavity</p>
+<p>Author       : Gareth Sion jones
+Date         : May, 2024
+Version      : 0.1
+Organisation : University of Oxford</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.beam_waist">
+<span class="sig-name descname"><span class="pre">beam_waist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.beam_waist" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the cavity beam waist.</p>
+<p>Params:</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>float: </dt><dd><p>beam waist.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.beam_waist_at_feature">
+<span class="sig-name descname"><span class="pre">beam_waist_at_feature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.beam_waist_at_feature" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the cavity beam waist at the feature.</p>
+<p>Params:</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>float: </dt><dd><p>beam waist at feature.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.build_cavity">
+<span class="sig-name descname"><span class="pre">build_cavity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_planar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_feat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.21</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lsub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.7e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mirror</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dbr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_mirror</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cav_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.build_cavity" title="Link to this definition">¶</a></dt>
+<dd><p>Build the complete optical cavity structure.</p>
+<p>This method constructs the optical cavity by adding planar DBR layers, the cavity medium, and convex DBR layers.</p>
+<dl class="simple">
+<dt>Params:</dt><dd><dl class="simple">
+<dt>num_planar (int, optional): </dt><dd><p>Number of planar DBR layers. Default is 10.</p>
+</dd>
+<dt>num_feat (int, optional): </dt><dd><p>Number of convex DBR layers. Default is 10.</p>
+</dd>
+<dt>n1 (float, optional): </dt><dd><p>Refractive index of the first material. Default is 2.21.</p>
+</dd>
+<dt>n2 (float, optional): </dt><dd><p>Refractive index of the second material. Default is 42.</p>
+</dd>
+<dt>nsub (float, optional): </dt><dd><p>Refractive index of the substrate. Default is 1.45.</p>
+</dd>
+<dt>Lsub (float, optional): </dt><dd><p>Thickness of the substrate in meters. Default is 27e-09.</p>
+</dd>
+<dt>resolution (int, optional): </dt><dd><p>Resolution of the grid. Default is 512.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.build_cavity_metal_boundaries">
+<span class="sig-name descname"><span class="pre">build_cavity_metal_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cav_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmirror</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.13511</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.build_cavity_metal_boundaries" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.cavity_length">
+<span class="sig-name descname"><span class="pre">cavity_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.cavity_length" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the length of the optical cavity.</p>
+<p>Params:</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>float: </dt><dd><p>Length of the optical cavity.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.cavity_medium">
+<span class="sig-name descname"><span class="pre">cavity_medium</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.cavity_medium" title="Link to this definition">¶</a></dt>
+<dd><p>Create a dielectric medium representing the cavity.</p>
+<p>This method adds a rectangular dielectric medium object to the simulation domain,
+representing the optical cavity.</p>
+<p>Params:</p>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.convex_dbr">
+<span class="sig-name descname"><span class="pre">convex_dbr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.21</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.42</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lsub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.7e-08</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.convex_dbr" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a convex distributed Bragg reflector (DBR) structure.</p>
+<dl class="simple">
+<dt>Params:</dt><dd><dl class="simple">
+<dt>num (int, optional): </dt><dd><p>Number of DBR layers. Default is 10.</p>
+</dd>
+<dt>n1 (float, optional): </dt><dd><p>Refractive index of the first material. Default is 2.21.</p>
+</dd>
+<dt>n2 (float, optional): </dt><dd><p>Refractive index of the second material. Default is 1.42.</p>
+</dd>
+<dt>nsub (float, optional): </dt><dd><p>Refractive index of the substrate. Default is 1.45.</p>
+</dd>
+<dt>Lsub (float, optional): </dt><dd><p>Thickness of the substrate in meters. Default is 27e-09.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.convex_feature">
+<span class="sig-name descname"><span class="pre">convex_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.convex_feature" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the convex feature of the cavity surface and optionally plot it.</p>
+<dl class="simple">
+<dt>Params:</dt><dd><dl class="simple">
+<dt>resolution (int, optional): </dt><dd><p>Resolution of the grid. Default is 512.</p>
+</dd>
+<dt>plotting (bool, optional): </dt><dd><p>Flag indicating whether to plot the feature. Default is False.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>dict: Dictionary containing grid data and mirror separation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.featured_mirror_metal">
+<span class="sig-name descname"><span class="pre">featured_mirror_metal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmirror</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.featured_mirror_metal" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.guoy_shift">
+<span class="sig-name descname"><span class="pre">guoy_shift</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.guoy_shift" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the cavity Guoy shift.</p>
+<p>Params:</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>float: </dt><dd><p>Guoy shift.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.planar_dbr">
+<span class="sig-name descname"><span class="pre">planar_dbr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.21</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.42</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lsub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.7e-08</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.planar_dbr" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a planar distributed Bragg reflector (DBR) structure.</p>
+<dl class="simple">
+<dt>Params:</dt><dd><dl class="simple">
+<dt>num (int, optional): </dt><dd><p>Number of DBR layers. Default is 10.</p>
+</dd>
+<dt>n1 (float, optional): </dt><dd><p>Refractive index of the first material. Default is 2.21.</p>
+</dd>
+<dt>n2 (float, optional): </dt><dd><p>Refractive index of the second material. Default is 1.42.</p>
+</dd>
+<dt>nsub (float, optional): </dt><dd><p>Refractive index of the substrate. Default is 1.45.</p>
+</dd>
+<dt>Lsub (float, optional): </dt><dd><p>Thickness of the substrate in meters. Default is 27e-09.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.planar_mirror_metal">
+<span class="sig-name descname"><span class="pre">planar_mirror_metal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmirror</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.planar_mirror_metal" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.cavity.Cavity.rayleigh_range">
+<span class="sig-name descname"><span class="pre">rayleigh_range</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.cavity.Cavity.rayleigh_range" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the cavity rayleigh range.</p>
+<p>Params:</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>float: </dt><dd><p>rayleigh range.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="pylumerical-cavityanalysis-module">
+<h2>PyLumerical.cavityanalysis module<a class="headerlink" href="#pylumerical-cavityanalysis-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="pylumerical-lumericalanalysis-module">
+<h2>PyLumerical.lumericalanalysis module<a class="headerlink" href="#pylumerical-lumericalanalysis-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="pylumerical-main-module">
+<h2>PyLumerical.main module<a class="headerlink" href="#pylumerical-main-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-PyLumerical.monitor">
+<span id="pylumerical-monitor-module"></span><h2>PyLumerical.monitor module<a class="headerlink" href="#module-PyLumerical.monitor" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PyLumerical.monitor.Monitor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PyLumerical.monitor.</span></span><span class="sig-name descname"><span class="pre">Monitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fdtd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor_pt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor_span</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.37e-07</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.monitor.Monitor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for creating monitors in FDTD simulations.</p>
+<p>Author       : Gareth Sion jones
+Date         : May, 2024
+Version      : 0.1
+Organisation : University of Oxford</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.monitor.Monitor.Q_monitor">
+<span class="sig-name descname"><span class="pre">Q_monitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Qmonitor_zspan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Qmonitor_zlayer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dipole_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.monitor.Monitor.Q_monitor" title="Link to this definition">¶</a></dt>
+<dd><p>Add Q monitors to the simulation.</p>
+<p>This method adds time monitors to the simulation for extracting information 
+about quality factor</p>
+<dl class="simple">
+<dt>Params:</dt><dd><dl class="simple">
+<dt>Qmonitor_zspan (float, optional): </dt><dd><p>Half span in the z-direction for the Q monitors in nanometers. Default is 0.</p>
+</dd>
+<dt>Qmonitor_zlayer (int, optional): </dt><dd><p>Number of layers in the z-direction for the Q monitors. Default is 0.</p>
+</dd>
+<dt>t_sample (int, optional): </dt><dd><p>Minimum sampling per cycle for the monitors. Default is 10.</p>
+</dd>
+<dt>dipole_shift (float, optional): </dt><dd><p>Shift along the z-axis of the dipole position in meters. Default is 0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.monitor.Monitor.index_monitor">
+<span class="sig-name descname"><span class="pre">index_monitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'n'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2D</span> <span class="pre">Y-normal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.monitor.Monitor.index_monitor" title="Link to this definition">¶</a></dt>
+<dd><p>Add an index monitor to the simulation.</p>
+<p>This method adds an index monitor to the simulation with specified parameters.</p>
+<dl class="simple">
+<dt>Params:</dt><dd><dl class="simple">
+<dt>name (str, optional): </dt><dd><p>Name of the index monitor. Default is “n”.</p>
+</dd>
+<dt>monitor_type (str, optional): </dt><dd><p>Type of the index monitor. Default is “2D Y-normal”.</p>
+</dd>
+<dt>x_min (float, optional): </dt><dd><p>Minimum x-coordinate of the monitor region. Default is 0.</p>
+</dd>
+<dt>x_max (float, optional): </dt><dd><p>Maximum x-coordinate of the monitor region. Default is 1e-06.</p>
+</dd>
+<dt>z_min (float, optional): </dt><dd><p>Minimum z-coordinate of the monitor region. Default is 0.</p>
+</dd>
+<dt>z_max (float, optional): </dt><dd><p>Maximum z-coordinate of the monitor region. Default is 1e-06.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.monitor.Monitor.power_monitor">
+<span class="sig-name descname"><span class="pre">power_monitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'power_monitor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">montype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2D</span> <span class="pre">Z-normal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Start'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apod_center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apod_time_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.monitor.Monitor.power_monitor" title="Link to this definition">¶</a></dt>
+<dd><p>Add a power monitor to the simulation.</p>
+<p>This method adds a power monitor to the simulation with specified parameters.</p>
+<dl class="simple">
+<dt>Params:</dt><dd><dl class="simple">
+<dt>name (str, optional): </dt><dd><p>Name of the power monitor. Default is ‘power_monitor’.</p>
+</dd>
+<dt>montype (str, optional): </dt><dd><p>Type of the power monitor. Default is “2D Z-normal”.</p>
+</dd>
+<dt>plane (str, optional): </dt><dd><p>Plane of the power monitor (‘xy’, ‘xz’, or ‘yz’). Default is “xy”.</p>
+</dd>
+<dt>x_min (float, optional): </dt><dd><p>Minimum x-coordinate of the monitor region. Default is 0.</p>
+</dd>
+<dt>x_max (float, optional): </dt><dd><p>Maximum x-coordinate of the monitor region. Default is 1e-06.</p>
+</dd>
+<dt>y_min (float, optional): </dt><dd><p>Minimum y-coordinate of the monitor region. Default is 0.</p>
+</dd>
+<dt>y_max (float, optional): </dt><dd><p>Maximum y-coordinate of the monitor region. Default is 1e-06.</p>
+</dd>
+<dt>z_min (float, optional):</dt><dd><p>Minimum z-coordinate of the monitor region. Default is 0.</p>
+</dd>
+<dt>z_max (float, optional): </dt><dd><p>Maximum z-coordinate of the monitor region. Default is 1e-06.</p>
+</dd>
+<dt>x (float, optional):</dt><dd><p>x-coordinate of the monitor point. Default is 1e-06.</p>
+</dd>
+<dt>y (float, optional): </dt><dd><p>y-coordinate of the monitor point. Default is 1e-06.</p>
+</dd>
+<dt>z (float, optional): </dt><dd><p>z-coordinate of the monitor point. Default is 1e-06.</p>
+</dd>
+<dt>apod (str, optional): </dt><dd><p>Apodization type for the monitor. Default is “Start”.</p>
+</dd>
+<dt>apod_center (float, optional): </dt><dd><p>Apodization center in seconds. Default is 0e-15.</p>
+</dd>
+<dt>apod_time_width (float, optional): </dt><dd><p>Apodization time width in seconds. Default is 0e-15.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-PyLumerical.simulation">
+<span id="pylumerical-simulation-module"></span><h2>PyLumerical.simulation module<a class="headerlink" href="#module-PyLumerical.simulation" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PyLumerical.simulation.Simulation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PyLumerical.simulation.</span></span><span class="sig-name descname"><span class="pre">Simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fdtd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xy_span_bleed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meshacc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.simulation.Simulation" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class representing a simulation environment for FDTD simulations.</p>
+<p>Author       : Gareth Sion jones
+Date         : May, 2024
+Version      : 0.1
+Organisation : University of Oxford</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.simulation.Simulation.add_mesh">
+<span class="sig-name descname"><span class="pre">add_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mesh'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xspan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yspan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">based_on_struct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">struct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.simulation.Simulation.add_mesh" title="Link to this definition">¶</a></dt>
+<dd><p>Add an overriding mesh region to the simulation.</p>
+<dl class="simple">
+<dt>Params:</dt><dd><dl class="simple">
+<dt>name (str, optional): </dt><dd><p>Name of the mesh. Default is ‘mesh’.</p>
+</dd>
+<dt>x (float, optional):</dt><dd><p>x-coordinate of the mesh origin. Default is 0.</p>
+</dd>
+<dt>y (float, optional): </dt><dd><p>y-coordinate of the mesh origin. Default is 0.</p>
+</dd>
+<dt>zmin (float, optional): </dt><dd><p>Minimum z-coordinate of the mesh region. Default is 0.</p>
+</dd>
+<dt>zmax (float, optional): </dt><dd><p>Maximum z-coordinate of the mesh region. Default is 1e-06.</p>
+</dd>
+<dt>xspan (float, optional): </dt><dd><p>x-span of the mesh region. Default is 1e-06.</p>
+</dd>
+<dt>yspan (float, optional): </dt><dd><p>y-span of the mesh region. Default is 1e-06.</p>
+</dd>
+<dt>dx (float, optional): </dt><dd><p>Spatial step size in the x-direction. Default is 0.1e-06.</p>
+</dd>
+<dt>dy (float, optional): </dt><dd><p>Spatial step size in the y-direction. Default is 0.1e-06.</p>
+</dd>
+<dt>dz (float, optional): </dt><dd><p>Spatial step size in the z-direction. Default is 0.1e-06.</p>
+</dd>
+<dt>based_on_struct (bool, optional):</dt><dd><p>Choose whether to base the mesh geometry on an existing structure</p>
+</dd>
+<dt>struct (string, optional):</dt><dd><p>structure on which to base the mesh, if based_on_struct is True</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.simulation.Simulation.fdtd_region">
+<span class="sig-name descname"><span class="pre">fdtd_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min_bc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PML'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_min_bc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PML'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min_bc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PML'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt_stab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.99</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fdtd_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoshutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.simulation.Simulation.fdtd_region" title="Link to this definition">¶</a></dt>
+<dd><p>Configure FDTD simulation region parameters.</p>
+<p>This method sets up the FDTD simulation region with specified boundary conditions,
+simulation time, mesh accuracy, and PML settings.</p>
+<dl class="simple">
+<dt>Params:</dt><dd><dl class="simple">
+<dt>x_min_bc (str, optional): </dt><dd><p>Boundary condition at the minimum x-coordinate. Default is “PML”.</p>
+</dd>
+<dt>y_min_bc (str, optional):</dt><dd><p>Boundary condition at the minimum y-coordinate. Default is “PML”.</p>
+</dd>
+<dt>z_min_bc (str, optional): </dt><dd><p>Boundary condition at the minimum z-coordinate. Default is “PML”.</p>
+</dd>
+<dt>dt_stab (float, optional): </dt><dd><p>Stability factor for time step. Default is 0.99.</p>
+</dd>
+<dt>fdtd_layers (int, optional): </dt><dd><p>Number of PML layers. Default is 8.</p>
+</dd>
+<dt>min_layers (int, optional): </dt><dd><p>Minimum number of PML layers. Default is 8.</p>
+</dd>
+<dt>max_layers (int, optional): </dt><dd><p>Maximum number of PML layers. Default is 64.</p>
+</dd>
+<dt>autoshutoff (float, optional): </dt><dd><p>Automatic shutoff threshold. Default is 1e-05.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-PyLumerical.source">
+<span id="pylumerical-source-module"></span><h2>PyLumerical.source module<a class="headerlink" href="#module-PyLumerical.source" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PyLumerical.source.Source">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PyLumerical.source.</span></span><span class="sig-name descname"><span class="pre">Source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fdtd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.000637</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.source.Source" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class representing a light source in FDTD simulations.</p>
+<p>Author       : Gareth Sion jones
+Date         : May, 2024
+Version      : 0.1
+Organisation : University of Oxford</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyLumerical.source.Source.dipole">
+<span class="sig-name descname"><span class="pre">dipole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emission_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyLumerical.source.Source.dipole" title="Link to this definition">¶</a></dt>
+<dd><p>Add a dipole source to the simulation.</p>
+<p>This method adds a dipole source to the simulation with specified parameters.</p>
+<dl class="simple">
+<dt>Params:</dt><dd><dl class="simple">
+<dt>theta (float, optional): </dt><dd><p>Angle of the dipole orientation in degrees. Default is 90.</p>
+</dd>
+<dt>shift (float, optional): </dt><dd><p>Shift along the z-axis from the origin in meters. Default is 0.</p>
+</dd>
+<dt>emission_width (float, optional): </dt><dd><p>Wavelength span of the emission in meters. Default is 100e-09.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyLumerical</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Gareth Sion Jones.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/PyLumerical.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

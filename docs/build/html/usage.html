@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Usage &#8212; PyLumerical 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=cb25574f" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Theory" href="theory.html" />
+    <link rel="next" title="Examples" href="examples.html" />
     <link rel="prev" title="Welcome to PyLumerical’s documentation!" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -32,9 +33,9 @@
           <div class="body" role="main">
             
   <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h1>
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h1>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
 <p>PyLumerical can be installed directly as-is by downloading using pip:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>PyLumerical
 </pre></div>
@@ -52,7 +53,7 @@ installed into the python namespace by navigating to the directory and running t
 </pre></div>
 </div>
 <p>Now, the package can be imported in your python code by:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">PyLumerical</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">PyLumerical</span>
 </pre></div>
 </div>
 <p>Alternatively, the software can be used in the local ‘source’ folder, with a main calling script. This might be
@@ -63,10 +64,34 @@ is not appropriate for long term use. To do this, navigate to the source directo
 </pre></div>
 </div>
 <p>In the main file, call the necessary libraries, e.g.:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cavity</span>
-<span class="kn">import</span> <span class="nn">simulation</span>
-<span class="kn">import</span> <span class="nn">source</span>
-<span class="kn">import</span> <span class="nn">monitor</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">cavity</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">simulation</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">source</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">monitor</span>
+</pre></div>
+</div>
+<p>To use PyLumerical, a user must make a call the Lumerical API file stored locally in the Lumerical directory. For python distributions up to and including Python 3.11, this can be done using Python’s in-built <strong>imp</strong> library:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">imp</span>
+<span class="n">lumapi</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">load_source</span><span class="p">(</span><span class="s2">&quot;lumapi&quot;</span><span class="p">,</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Program Files</span><span class="se">\\</span><span class="s2">Lumerical</span><span class="se">\\</span><span class="s2">v232</span><span class="se">\\</span><span class="s2">api</span><span class="se">\\</span><span class="s2">python</span><span class="se">\\</span><span class="s2">lumapi.py&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>However, in Python 3.12 <strong>imp</strong> was deprecated, and for distributions higher than this, it is now necessary to use python’s in-built <strong>importlib</strong> library:</p>
+<p><strong>Windows</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span>
+<span class="n">spec_win</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s1">&#39;lumapi&#39;</span><span class="p">,</span> <span class="s1">&#39;C:</span><span class="se">\\</span><span class="s1">Program Files</span><span class="se">\\</span><span class="s1">Lumerical</span><span class="se">\\</span><span class="s1">v242</span><span class="se">\\</span><span class="s1">api</span><span class="se">\\</span><span class="s1">python</span><span class="se">\\</span><span class="s1">lumapi.py&#39;</span><span class="p">)</span>
+<span class="n">lumapi</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec_win</span><span class="p">)</span> <span class="c1">#windows</span>
+<span class="n">spec_win</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">lumapi</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Linux</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span>
+<span class="n">spec_lin</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s1">&#39;lumapi&#39;</span><span class="p">,</span> <span class="s2">&quot;/opt/lumerical/v242/api/python/lumapi.py&quot;</span><span class="p">)</span>
+<span class="n">lumapi</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec_lin</span><span class="p">)</span>
+<span class="n">spec_lin</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">lumapi</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now with the lumapi object, and FDTD session can be created by:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fdtd</span> <span class="o">=</span> <span class="n">lumapi</span><span class="o">.</span><span class="n">FDTD</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
@@ -77,7 +102,7 @@ is not appropriate for long term use. To do this, navigate to the source directo
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <h1 class="logo"><a href="index.html">PyLumerical</a></h1>
 
@@ -95,6 +120,7 @@ is not appropriate for long term use. To do this, navigate to the source directo
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 
@@ -103,11 +129,11 @@ is not appropriate for long term use. To do this, navigate to the source directo
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="index.html" title="previous chapter">Welcome to PyLumerical’s documentation!</a></li>
-      <li>Next: <a href="theory.html" title="next chapter">Theory</a></li>
+      <li>Next: <a href="examples.html" title="next chapter">Examples</a></li>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -115,7 +141,7 @@ is not appropriate for long term use. To do this, navigate to the source directo
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -130,11 +156,11 @@ is not appropriate for long term use. To do this, navigate to the source directo
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2024, Gareth Sion Jones.
+      &#169;2024, Gareth Sion Jones.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |
       <a href="_sources/usage.rst.txt"

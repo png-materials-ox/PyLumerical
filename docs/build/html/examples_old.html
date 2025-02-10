@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Examples &#8212; PyLumerical 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=cb25574f" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -30,20 +31,20 @@
           <div class="body" role="main">
             
   <section id="examples">
-<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h1>
+<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h1>
 <section id="d-fabry-perot-open-access-optical-microcavity">
-<h2>3D Fabry-Perot Open-Access Optical Microcavity<a class="headerlink" href="#d-fabry-perot-open-access-optical-microcavity" title="Permalink to this heading">¶</a></h2>
+<h2>3D Fabry-Perot Open-Access Optical Microcavity<a class="headerlink" href="#d-fabry-perot-open-access-optical-microcavity" title="Link to this heading">¶</a></h2>
 <section id="building-the-simulation-file">
-<h3>Building the Simulation File<a class="headerlink" href="#building-the-simulation-file" title="Permalink to this heading">¶</a></h3>
+<h3>Building the Simulation File<a class="headerlink" href="#building-the-simulation-file" title="Link to this heading">¶</a></h3>
 <p>The full example code for building the geometry can be found <a class="reference internal" href="example1_geometry.html"><span class="doc">here</span></a></p>
 <p>First, start by importing the necessary python libraries</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">imp</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">imp</span>
 <span class="c1"># import os</span>
-<span class="kn">import</span> <span class="nn">cavity</span>
-<span class="kn">import</span> <span class="nn">simulation</span>
-<span class="kn">import</span> <span class="nn">source</span>
-<span class="kn">import</span> <span class="nn">monitor</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cavity</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">simulation</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">source</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">monitor</span>
 </pre></div>
 </div>
 <p>‘imp’ is a standard python library which allows us to import a local file. We need to link the main script to the
@@ -180,7 +181,7 @@ with a seperate mesh for each mirror:</p>
 </div>
 </section>
 <section id="analysis">
-<h3>Analysis<a class="headerlink" href="#analysis" title="Permalink to this heading">¶</a></h3>
+<h3>Analysis<a class="headerlink" href="#analysis" title="Link to this heading">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This section is still under heavy development. This analysis has been done well in Lumerical’s in-built
@@ -189,11 +190,11 @@ result, this will take a bit of time to get fully finished.</p>
 </div>
 <p>As before, we start by importing the necessary libraries. this time, we need to import the cavityanalysis class,
 which contains the required methods for calculating Quality Factor, Purcell Factor, Mode Volume, etc.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">imp</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">imp</span>
 <span class="c1"># import os</span>
-<span class="kn">import</span> <span class="nn">scipy.constants</span> <span class="k">as</span> <span class="nn">sc</span>
-<span class="kn">import</span> <span class="nn">cavityanalysis</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.constants</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cavityanalysis</span>
 </pre></div>
 </div>
 <p>The FDTD object must be instantiated again:</p>
@@ -273,7 +274,7 @@ over which to search for the peak centre frequency and bandwidth:</p>
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <h1 class="logo"><a href="index.html">PyLumerical</a></h1>
 
@@ -288,6 +289,7 @@ over which to search for the peak centre frequency and bandwidth:</p>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
 
@@ -298,7 +300,7 @@ over which to search for the peak centre frequency and bandwidth:</p>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -306,7 +308,7 @@ over which to search for the peak centre frequency and bandwidth:</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -321,11 +323,11 @@ over which to search for the peak centre frequency and bandwidth:</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2024, Gareth Sion Jones.
+      &#169;2024, Gareth Sion Jones.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |
       <a href="_sources/examples_old.rst.txt"

@@ -49,3 +49,36 @@ In the main file, call the necessary libraries, e.g.:
     import simulation
     import source
     import monitor
+
+To use PyLumerical, a user must make a call the Lumerical API file stored locally in the Lumerical directory. For python distributions up to and including Python 3.11, this can be done using Python's in-built **imp** library:
+
+.. code-block:: python
+
+    import imp
+    lumapi = imp.load_source("lumapi","C:\\Program Files\\Lumerical\\v232\\api\\python\\lumapi.py")
+
+However, in Python 3.12 **imp** was deprecated, and for distributions higher than this, it is now necessary to use python's in-built **importlib** library:
+
+**Windows**
+
+.. code-block:: python
+
+    import importlib.util
+    spec_win = importlib.util.spec_from_file_location('lumapi', 'C:\\Program Files\\Lumerical\\v242\\api\\python\\lumapi.py')
+    lumapi = importlib.util.module_from_spec(spec_win) #windows
+    spec_win.loader.exec_module(lumapi)
+
+**Linux**
+
+.. code-block:: python
+
+    import importlib.util
+    spec_lin = importlib.util.spec_from_file_location('lumapi', "/opt/lumerical/v242/api/python/lumapi.py")
+    lumapi = importlib.util.module_from_spec(spec_lin)
+    spec_lin.loader.exec_module(lumapi)
+
+Now with the lumapi object, and FDTD session can be created by:
+
+.. code-block:: python
+
+    fdtd = lumapi.FDTD()

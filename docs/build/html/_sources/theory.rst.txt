@@ -388,4 +388,4 @@ Regularisation in Quantum Mechanics
 
 
 Quality Factor
-=======================
+===============

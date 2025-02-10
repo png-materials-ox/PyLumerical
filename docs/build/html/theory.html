@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Theory &#8212; PyLumerical 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=cb25574f" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -18,8 +18,9 @@
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -32,9 +33,9 @@
           <div class="body" role="main">
             
   <section id="theory">
-<h1>Theory<a class="headerlink" href="#theory" title="Permalink to this heading">¶</a></h1>
+<h1>Theory<a class="headerlink" href="#theory" title="Link to this heading">¶</a></h1>
 <section id="calculating-mode-volume">
-<h2>Calculating Mode Volume<a class="headerlink" href="#calculating-mode-volume" title="Permalink to this heading">¶</a></h2>
+<h2>Calculating Mode Volume<a class="headerlink" href="#calculating-mode-volume" title="Link to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This section is under development.</p>
@@ -107,12 +108,12 @@ out to infinity due to the hard boundary.</p>
 <p>In reality, these conditions are not true, and in a similar manner to the Linbladian construction of the quantum
 dynamics of open systems, a description of open-system cavity QED is required.</p>
 <section id="exploiting-cyllindrical-symmetry">
-<h3>Exploiting Cyllindrical Symmetry<a class="headerlink" href="#exploiting-cyllindrical-symmetry" title="Permalink to this heading">¶</a></h3>
+<h3>Exploiting Cyllindrical Symmetry<a class="headerlink" href="#exploiting-cyllindrical-symmetry" title="Link to this heading">¶</a></h3>
 <div class="math notranslate nohighlight">
 \[V = \frac{ \int_{0}^{r_{max}} \int_{z_{min}}^{z_{max}} 2\pi r \epsilon(r,z) \left| E(r,z) \right|^{2} dz dr }{\max\left( \epsilon(r,z) \left| E(r,z) \right|^{2} \right)}\]</div>
 </section>
 <section id="open-boundary-conditions">
-<h3>Open Boundary Conditions<a class="headerlink" href="#open-boundary-conditions" title="Permalink to this heading">¶</a></h3>
+<h3>Open Boundary Conditions<a class="headerlink" href="#open-boundary-conditions" title="Link to this heading">¶</a></h3>
 <p>In practical systems, energy within the cavity may dissipate through absorption, dispersion, and coupling to
 leaky radiative modes. Now, the mode lifetime <span class="math notranslate nohighlight">\(tau_{m}\)</span> is finite, and the eigenfrequency <span class="math notranslate nohighlight">\(\om\)</span>
 takes on a complex component:</p>
@@ -132,7 +133,7 @@ exponential divergence of the QNM field as $|bm{r}|rightarrowinfty$, and the int
 therefore diverges also.}</p>
 </section>
 <section id="quasi-normal-mode-expansion">
-<h3>Quasi-Normal Mode Expansion<a class="headerlink" href="#quasi-normal-mode-expansion" title="Permalink to this heading">¶</a></h3>
+<h3>Quasi-Normal Mode Expansion<a class="headerlink" href="#quasi-normal-mode-expansion" title="Link to this heading">¶</a></h3>
 <p>Since the electric field mode forms a quasi normal basis, it can be decomposed into a small set of QNM modes:</p>
 <div class="math notranslate nohighlight">
 \[\left[\eigfunc{E}(r, \omega), \eigfunc{H}(r, \omega) \right] \approx \sum_{m=1}^{M} \alpha_{m}(\omega) \left[\eigfunc{E}(r), \eigfunc{H}(r)\right]\]</div>
@@ -150,7 +151,7 @@ $eigfunc{H}^{*}$, $-eigval{om}^{*}$). This is why every eigenfrequency $eigval{o
 quadrant is paired with another twin frequency $-eigval{om}^{*}$ in the lower left quadrant.</p>
 </section>
 <section id="qnm-spectrum">
-<h3>QNM Spectrum<a class="headerlink" href="#qnm-spectrum" title="Permalink to this heading">¶</a></h3>
+<h3>QNM Spectrum<a class="headerlink" href="#qnm-spectrum" title="Link to this heading">¶</a></h3>
 <p><strong>Accumulation Points:</strong>  These can arise from materials resonances, manifesting as either poles of the
 $epsilon(om)$ or $mu(om)$, corner modes, or plasmonic resonances. The latter appear in the case of metallic
 particles surrounded by a dielectric material and correspond to complex frequencies for which
@@ -166,17 +167,17 @@ can be used as nonconservative ingredients to create exceptional points, which i
 properties.</p>
 </section>
 <section id="qnm-regularisation">
-<h3>QNM Regularisation<a class="headerlink" href="#qnm-regularisation" title="Permalink to this heading">¶</a></h3>
+<h3>QNM Regularisation<a class="headerlink" href="#qnm-regularisation" title="Link to this heading">¶</a></h3>
 <p>The purpose of regularisation is to attempt to reproduce the tools of Hermitian electrodynamics, i.e. with a
 defined inner product, one can normalise vectors, construct an orthogonal basis, and project onto basis vectors.
 So, if an inner product can be defined for non-Hermitian systems, the treatment can be simplified significantly.</p>
 </section>
 <section id="regularisation-in-quantum-mechanics">
-<h3>Regularisation in Quantum Mechanics<a class="headerlink" href="#regularisation-in-quantum-mechanics" title="Permalink to this heading">¶</a></h3>
+<h3>Regularisation in Quantum Mechanics<a class="headerlink" href="#regularisation-in-quantum-mechanics" title="Link to this heading">¶</a></h3>
 </section>
 </section>
 <section id="quality-factor">
-<h2>Quality Factor<a class="headerlink" href="#quality-factor" title="Permalink to this heading">¶</a></h2>
+<h2>Quality Factor<a class="headerlink" href="#quality-factor" title="Link to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -185,7 +186,7 @@ So, if an inner product can be defined for non-Hermitian systems, the treatment 
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <h1 class="logo"><a href="index.html">PyLumerical</a></h1>
 
@@ -224,7 +225,7 @@ So, if an inner product can be defined for non-Hermitian systems, the treatment 
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -232,7 +233,7 @@ So, if an inner product can be defined for non-Hermitian systems, the treatment 
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -247,11 +248,11 @@ So, if an inner product can be defined for non-Hermitian systems, the treatment 
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2024, Gareth Sion Jones.
+      &#169;2024, Gareth Sion Jones.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |
       <a href="_sources/theory.rst.txt"
