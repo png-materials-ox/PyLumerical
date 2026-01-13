@@ -11,7 +11,7 @@ class Cavity:
     Organisation : University of Oxford
     """
     
-    def __init__(self, roc=2, wlen=637e-09, q=2, ncav=2.1, rough=False, fdtd=None):
+    def __init__(self, roc=2, wlen=637e-09, q=2, ncav=2.1, L_depth=None, rough=False, fdtd=None):
         """
         
         Constructor method
@@ -42,7 +42,10 @@ class Cavity:
         self.rough = rough
         self.wlen_effective = self.wlen/self.ncav
         
-        self.L_depth = .5 * self.wlen 
+        if L_depth == None:
+            self.L_depth = .5 * self.wlen 
+        else:
+            self.L_depth = L_depth
         self.feature_width = 2*np.sqrt(self.roc**2-(self.roc-self.L_depth)**2)
         self.xy_span = 1.5*self.feature_width
         self.xy_span_bleed = self.xy_span + 300e-09
